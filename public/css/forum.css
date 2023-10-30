@@ -1,0 +1,92 @@
+
+/*GENERALE*/
+
+/*reset*/
+*, ::after, ::before {
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+}
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+:root {
+    /*font familly*/
+    --primary-font-family : 'fira sans', 'sans-serif';
+    --secondary-font-family : 'roboto', 'sans-serif';
+    /*color*/
+    --sky-bleu: #00A3DD;
+    --bleu-navy: #161B35;
+    --pale-red : #EB6379;
+    --pale-yellow: #FFF4CD;
+}
+
+html {
+    font-size: 16px;
+    font-family: var(--secondary-font-family);   
+}
+
+.wrapper {
+    width: 960px;
+    margin: 0 auto;
+}
+
+
+
+/*Hearder*/
+/* Top header*/
+#top-header {
+    background-color: var(--bleu-navy);
+    color: #fff;   
+}
+
+#top-header .wrapper {
+    display: flex;
+    justify-content: space-between;
+    padding: 20px 0;
+    
+}
+
+.buttons a {
+    color: inherit;
+    font-size: 1rem;
+    text-transform: uppercase;
+    font-weight: 700;
+    padding: 10px;
+    margin: 0 15px;
+    border-radius: 5px;
+}
+
+#login {
+    background-color: var(--sky-bleu);
+}
+#register, #logout {
+    background-color: var(--pale-red);
+}
+
+.header-navbar {
+    background-color: white !important;
+    height: 120px;
+}
+
+.header-navbar ul li a {
+    font-family: var(--primary-font-family);
+    font-size: 1rem;
+    text-transform: uppercase;
+    font-weight: bold;
+    color: #161B35;
+}
+
+/*base header*/
+
+#home {
+    margin-right: 20px;
+}
+
+.header-navbar form button {
+    background-color: var(--bleu-navy);
+    color: #fff;
+    border: none;
+}

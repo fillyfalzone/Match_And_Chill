@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}Welcome!{% endblock %}</title>
+   <!--Google font -->
+   <style>
+    @import url('https://fonts.googleapis.com/css2?family=Fira+Sans:wght@400;600;700;900&family=Roboto:ital,wght@0,300;0,400;0,700;1,400;1,500;1,700&display=swap');
+  </style>
+
+  <!--Dépendance css Bootstrao -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+  <!--css local -->
+  <link rel="stylesheet" href="../../public/css/forum.css">
+</head>
+<body>
+  <header>
+    <div id="top-header">
+        <div class="wrapper">
+          <h1>
+            <a href=""><img src="../../public/img/logo/logo.png" alt="Match and Chill" id="logo"></a>
+          </h1>
+          <div class="buttons">
+            <a href=""  id="login">se connecter</a>
+            <a href="" id="register">s'inscrire</a>
+            <a href="" id="logout">se déconnecté</a>
+          </div>
+        </div>
+    </div>
+
+    <div id="base-header">
+      <div class="wrapper">
+        <nav class="header-navbar navbar navbar-expand-lg bg-body-tertiary">
+          <div class="container-fluid">
+            <div><a href="" class=""></a></div>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+              <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+              <a href="" id="home"><img src="../../public/img/home.png" alt=""></a>
+              <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                  <a class="nav-link"  href="#">maths</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="#">évènements</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="#">forum</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="#">à propos</a>
+                </li>
+              
+              </ul>
+              <form class="d-flex" role="search">
+                <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+                <button class="btn btn-outline-success" type="submit">Search</button>
+              </form>
+            </div>
+          </div>
+      </nav>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <div class="wrapper">
+        <nav id="main-navbar">
+            <ul>
+                <li><a href="">catégories</a></li>
+                <li><a href="">mes sujets</a></li>
+                <li><a href="">sujets suivi</a></li>
+                <li><a href="">messagerie</a></li>
+                <li><a href="">liste des membres</a></li>
+            </ul>
+        </nav>
+
+        {% block body %} {% endblock %}
+
+    </div>
+  </main>
+  <footer></footer>
+
+
+  <!--Dépendance JS Bootstrao -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+</body>
+</html>
