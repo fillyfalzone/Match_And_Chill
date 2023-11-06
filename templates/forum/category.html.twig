@@ -1,0 +1,26 @@
+{% extends 'forum/index.html.twig' %}
+
+{% block title %}Training list{% endblock %}
+
+{% block body %}
+<div id="category">
+    <a href="" id="add-category"><img src="{{ asset('img/puces/add.png')}}" alt="edit" title="Add"></a>
+    <article class="category-articles">
+        <div class="left">
+            <h2 class="categoryName">CategoryName</h2>
+            <p class="description">Description Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolor nemo quae</p>
+        </div>
+        <div class="right">
+            <a href=""><img src="{{ asset('img/puces/edit.png')}}" alt="edit" title="Edit"></a>
+            <a href=""><img src="{{ asset('img/puces/delete.png')}}" alt="delete" title="Delete"></a>
+            <a href="">
+                <div class="puce-topic" title="nombre de topics" >
+                    <img src="{{ asset('img/puces/topic.png')}}" alt="topic"> <span>12</span>
+                </div>
+            </a>
+        </div>
+    </article>
+</div>
+
+
+{% endblock %}

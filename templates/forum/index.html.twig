@@ -1,7 +1,90 @@
-{% extends 'baseForum.html.twig' %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}Welcome!{% endblock %}</title>
+   <!--Google font -->
+   <style>
+    @import url('https://fonts.googleapis.com/css2?family=Fira+Sans:wght@400;600;700;900&family=Roboto:ital,wght@0,300;0,400;0,700;1,400;1,500;1,700&display=swap');
+  </style>
 
-{% block title %}Training list{% endblock %}
+  <!--css local -->
+  <link rel="stylesheet" href="{{ asset('css/forum.css') }}">
+</head>
+<body>
+  <header>
+    <div id="top-header">
+        <div class="wrapper">
+          <h1>
+            <a href=""><img src="{{ asset('img/logo/logo.png') }}" alt="Match and Chill" id="logo"></a>
+          </h1>
+          <div class="buttons">
+            <a href=""  id="login">se connecter</a>
+            <a href="" id="register">s'inscrire</a>
+            <a href="" id="logout">se déconnecté</a>
+          </div>
+        </div>
+    </div>
 
-{% block body %}
-    Salut bien
-{% endblock %}
+    <div id="base-header">
+      <div class="wrapper">
+        <nav id="header-navbar">
+          <a href="" id="home"><img src="{{ asset('img/home.png') }}" alt="Home"></a>
+          <ul id="nav-list">
+            <li class="list-items">
+              <a class=""  href="#">match</a>
+            </li>
+            <li class="list-items">
+              <a class="" href="#">évènements</a>
+            </li>
+            <li class="list-items">
+              <a class="" href="#">forum</a>
+            </li>
+            <li class="list-items">
+              <a class="" href="#">à propos</a>
+            </li>
+          </ul>
+          <form role="search">
+            <input type="search" name="seach" id="search">
+            <input type="submit" value="Search" id="search-btn">
+          </form>
+        </nav>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <div class="wrapper">
+        <nav id="main-navbar">
+            <ul>
+                <li class="list-items"><a href="">catégories</a></li>
+                <li class="list-items"><a href="">mes sujets</a></li>
+                <li class="list-items"><a href="">sujets suivis</a></li>
+                <li class="list-items"><a href="">messagerie</a></li>
+                <li class="list-items"><a href="">liste des membres</a></li>
+            </ul>
+        </nav>
+
+        {% block body %} {% endblock %}
+
+    </div>
+  </main>
+  <footer>
+    <p> Match&Chill  produit par - Arnaud Elan Formation - toute reproduction est interdite-session mai 2023   </p>
+
+    <ul>
+      <li>
+        <a href=""><img src="{{ asset('img/instagram.png') }}" alt="instagram">
+      </li>
+      <li>
+        <a href=""><img src="{{ asset('img/facebook.png') }}" alt="facebook">
+      </li>
+      <li>
+        <a href=""><img src="{{ asset('img/snapchat.png') }}" alt="snapchat">
+      </li>
+    </ul>
+  </footer>
+
+</body>
+</html>
