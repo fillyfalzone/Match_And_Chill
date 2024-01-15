@@ -1,0 +1,68 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello FootDataController!{% endblock %}
+
+{% block body %}
+
+    <section id="section-center">
+        {#  ------------------- file d'ariane START ------------ #}
+        <div class="file-ariane mb-3">
+            <a class="home-ariane" href="{{ path('app_home') }}">
+                <iconify-icon class="icon" icon="ion:home-sharp" width="13" height="13"></iconify-icon>
+                <span>Match&amp;Chill <span class="slash">/</span></span>
+            </a>
+            <a class="second-ariane" href="{{ path('app_matchsList') }}">
+                Matchs 
+                <span class="slash">/</span>
+            </a>
+            <span>{{ match.team1.teamName }} vs {{ match.team2.teamName }}</span>
+        </div>
+        {# --------------------- file d'ariane END -----------  #}
+        
+        {# ---------------  Match details card -----------------------#}
+
+        <div id="match-card">
+            <div class="match-container">
+                <div class="team">
+                    <img src="{{ asset('images/emblemes/' ~ match.team1.teamId ~ '.png') }}" alt="emblème de l'équipe {{ match.team1.teamName }}" class="team-logo">
+                    <p class="team-name">{{ match.team1.teamName }}</p>
+                  </div>
+                
+                <div class="match-info">
+                  <p class="match-date-time">{{ match.matchDateTime |date("d-m-Y h:i") }}</p>
+                  <div class="scoreboard">
+                    {% if match.matchResults[1].pointsTeam1 is not same as("") %}
+                        <span class="score">{{ match.matchResults[1].pointsTeam1 }} </span> 
+                     {% endif %}
+    
+                    <span class="dash">-</span>
+    
+                    {% if match.matchResults[1].pointsTeam1 is not same as("") %}
+                    <span class="score">{{ match.matchResults[1].pointsTeam2 }} </span> 
+                    {% endif %}
+                  </div>
+                  <p class="match-status">MI-TEMPS</p>
+                </div>
+                
+                <div class="team">
+                  <img src="{{ asset('images/emblemes/' ~ match.team2.teamId ~ '.png') }}" alt="emblème de l'équipe {{ match.team2.teamName }}" class="team-logo">
+                  <p class="team-name">{{ match.team2.teamName }}</p>
+                </div>
+            </div>
+            <nav id="match-nav">
+                <ul class="match-nav-list">
+                    <li class="match-nav-item"><a href="">discussions</a></li>
+                    <li class="match-nav-item"><a href="">évènements</a></li>
+                </ul>
+            </nav>
+        </div>
+       
+          
+
+
+
+    </section>
+
+
+
+{% endblock %}

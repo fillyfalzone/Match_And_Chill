@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Match&amp;Chill{% endblock %}</title>
+    <meta name="description" content="match and chill">
+    <link rel="icon" href="{{ asset('images/icon/icon-bleu.png') }}" type="image/png">
+
+    {# Google font #}
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Fira+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,700;1,800;1,900&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
+    </style>
+
+    {# Link CSs  local #}
+    <link rel="stylesheet" href="{{ asset('css/style.css') }}">
+</head>
+<body>
+    <header id="header-home">
+        <div class="wrapper">
+            <div class="top-bar">
+                <a href="{{ path('app_home') }}"><img src="{{ asset('images/logo/logo-bleu.svg') }}" alt="logo match and chill" class="logo"></a>
+                <nav class="nav-bar">
+                    <button class="burger-close">
+                        <span></span>
+                        <span></span>
+                    </button>
+                    <ul class="nav-list">
+                        <li class="list-item"><a href="{{ path('app_matchsList') }}">matchs</a></li>
+                        <li class="list-item"><a href="{{ path('app_events') }}">évènements</a></li>
+                        <li class="list-item"><a href="{{ path('app_forum') }}">forum</a></li>
+                        <li class="list-item"><a href="{{ path('app_contact') }}">nous contacter</a></li>
+                    </ul>
+                </nav>
+                <button class="burger">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+                <div class="logs">
+                    <a href="{{ path('app_logout') }}" id="logout">se déconnecter</a>
+                    <a href="{{ path('app_login') }}" id="login">se connecter</a>
+                    <a href="{{ path('app_register') }}" id="register" class="button">s'inscrire</a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main id="main">
+        {# ---- SECTION MATCHS STAR -------- #}
+        <section id="matchs" class="fade-in-section">
+            <aside id="smooth-scroll">
+                <ul class="scroll-list">
+                    <li class="scroll-items">
+                        <a href="#matchs" class="nav-link">
+                            <iconify-icon class="iconify" icon="tabler:play-football"  width="25" height="25"></iconify-icon>
+                            <span>matchs</span>
+                        </a>
+                    </li>
+                    <li class="scroll-items">
+                        <a href="#events" class="nav-link">
+                            <iconify-icon class="iconify" icon="streamline:party-popper"  width="25" height="25"></iconify-icon>
+                            <span>évènements</span>
+                        </a>
+                    </li>
+                    <li class="scroll-items">
+                        <a href="#community" class="nav-link">
+                            <iconify-icon class="iconify" icon="carbon:events"  width="25" height="25"></iconify-icon>
+                            <span>communauté</span>
+                        </a>
+                    </li>
+                    <li class="scroll-items">
+                        <a href="#about" class="nav-link">
+                            <iconify-icon class="iconify" icon="akar-icons:info"  width="25" height="25"></iconify-icon>
+                            <span>a propos</span>
+                        </a>
+                    </li>
+                </ul>
+            </aside>
+            <div class="wrapper">
+                <article class="articles-home">
+                    <h1 class="heading-home margin-auto">LE MEILLEUR DU FOOTBALL</h1>
+                        <p class="text-home margin-auto">le rendez-vous ultime pour les <strong class="text-access">fans de football</strong>. préparez-vous pour des aventures passionnantes.</p>
+                </article>
+                <a href="" class="cta-home">rejoingnez-nous</a>
+                <ul class="counter-container">
+                    <li class="circle"><span class="counter">25</span><small>grands championnats</small></li>
+                    <li class="circle"><span class="counter">150</span><small>équipes historiques</small></li>
+                    <li class="circle"><span class="counter">380</span><small>matchs passionnants</small></li>
+                </ul>
+            </div>
+        </section>
+        {# -----SECTION MATCHS END ---------- #}
+
+         {# ---- SECTION EVENTS STAR -------- #}
+        <section id="events" class="fade-in-section">
+            <div class="wrapper">
+                <article class="articles-home">
+                    <h2 class="heading-home">DES EVENEMENTS MEMORABLES</h2>
+                        <p class="text-home">Créez des moments mémorables autour des matchs ! Planifiez vos <strong class="text-access">événements</strong> sur <strong>Match&amp;Chill</strong>.</p>
+                </article>
+                <a href="" class="cta-home">organiser un évènement</a>
+                <ul class="counter-container">
+                    <li class="circle"><span class="slogan">organiser</span></li>
+                    <li class="circle"><span class="slogan">rencontrer</span></li>
+                    <li class="circle"><span class="slogan">chiller</span></li>
+                </ul>
+            </div>
+        </section>
+        {# -----SECTION EVENT END ---------- #}
+
+         {# ---- SECTION COMMUNITY STAR -------- #}
+        <section id="community" class="fade-in-section">
+            <div class="wrapper">
+                <article class="articles-home">
+                    <h1 class="heading-home">un espace d'échange commun</h1>
+                        <p class="text-home">l'endroit où les fans de tout bord se réunissent pour <strong class="text-access">partager, discuter, et partager</strong> leur amour du football</p>
+                </article>
+                <a href="" class="cta-home">venez discuter</a>
+                <ul class="counter-container">
+                    <li class="circle"><span class="counter">2500</span><small>membres actifs</small></li>
+                    <li class="circle"><span class="counter">1235</span><small>évènements</small></li>
+                    <li class="circle"><span class="counter">250</span><small>sujets de discussions</small></li>
+                </ul>
+            </div>
+        </section>
+         {# ---- SECTION COMMUNITY END -------- #}
+
+          {# ---- SECTION ABOUTS US STAR -------- #}
+        <section id="about" class="fade-in-section"></section>
+         {# ---- SECTION ABOUT US END -------- #}
+    </main>
+
+    <footer>
+
+    </footer>
+
+    {# Script Icinyfy  #}
+    <script src="{{ asset('https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js') }}"></script>
+     
+     {# Script Javascript local #}
+    <script src="{{ asset('js/script.js') }}"></script>
+</body>
+</html>

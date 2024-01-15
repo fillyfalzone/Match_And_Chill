@@ -1,0 +1,23 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello EventsController!{% endblock %}
+
+{% block body %}
+<body>
+  <main>
+    <div class="">
+        <nav id="main-navbar">
+            <ul id="forum-list">
+                <li class="forum-list-items"><a href="{{ path('read_categoriesForum') }}">catégories</a></li>
+                <li class="forum-list-items"><a href="">mes sujets <sup>10</sup></a></li>
+                <li class="forum-list-items"><a href="">sujets suivis <sup>10</sup></a></li>
+                <li class="forum-list-items"><a href="">messagerie <sup>10</sup></a></li>
+                <li class="forum-list-items"><a href="">liste des membres <sup>10</sup></a></li>
+            </ul>
+        </nav>
+    </div>
+  </main>
+{% endblock %}
+
+
+

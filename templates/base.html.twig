@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>{% block title %}Welcome!{% endblock %}</title>
+        <link rel="icon" href="{{ asset('images/icon/icon-bleu.png') }}" type="image/png"">
+     
+        {# Google fonts #}
+        <style>
+            @import url('https://fonts.googleapis.com/css2?family=Fira+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,700;1,800;1,900&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
+        </style>
+        {# CDN style Bootstrap #}
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+        
+        {# Link CSs  local #}
+        <link rel="stylesheet" href="{{ asset('css/forum.css')}}">
+        <link rel="stylesheet" href="{{ asset('css/events.css')}}">
+        <link rel="stylesheet" href="{{ asset('css/matchs.css')}}">
+        <link rel="stylesheet" href="{{ asset('css/style-base.css')}}">
+    </head>
+    <body>
+        <header id="header-base">
+            <div class="top-bar">
+                <div class="container py-2">
+                    <a href="{{ path('app_home') }}"><img src="{{ asset('images/logo/logo-bleu.svg') }}" alt="logo match and chill" class="logo"></a>
+                    <div class="logs">
+                        <a href="{{ path('app_logout') }}" id="logout">se déconnecter</a>
+                        <a href="{{ path('app_login') }}" id="login">se connecter</a>
+                        <a href="{{ path('app_register') }}" id="register" class="button">s'inscrire</a>
+                    </div>
+                </div>
+            </div>
+            <div class="banner"></div>
+            <div class="low-bar">
+                <div class="container">
+                    <nav class="navbar navbar-expand-lg bg-body-tertiary">
+                        <div class="container-fluid px-0">
+                            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                                <span class="navbar-toggler-icon"></span>
+                            </button>
+                            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                                <ul class="navbar-nav mb-2 mb-lg-0 px-0">
+                                <li class="nav-item">
+                                    <a class="nav-link" href="{{ path('app_matchsList') }}">
+                                        <iconify-icon class="icon" icon="tabler:play-football" width="20" height="20"></iconify-icon>
+                                        <span>Matchs</span>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="{{ path('app_events') }}">
+                                        <iconify-icon class="icon" icon="lucide:party-popper" width="20" height="20"></iconify-icon>
+                                        <span>évènéments</span>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="{{ path('app_forum') }}">
+                                        <iconify-icon class="icon" icon="fluent:people-community-16-regular" width="20" height="20"></iconify-icon>
+                                        <span>forum</span>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="{{ path('app_contact') }}">
+                                        <iconify-icon class="icon" icon="jam:write-f" width="20" height="20"></iconify-icon>
+                                        <span>contact</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="navbar bg-body-tertiary">
+                            <div class="container-fluid px-0">
+                                <form class="d-flex form-low-bar" role="search">
+                                    <input class="form-control me-2" type="search" placeholder="Recherche" aria-label="Recherche">
+                                    <button class="btn btn-outline-success" type="submit">Recherche</button>
+                                </form>
+                            </div>
+                        </div>
+                    </nav>
+                </div>
+            </div>
+        </header>
+        <main id="main-base">
+            <div id="base-container" class="container pb-4">
+                {# ------------ aside left Start -------------------------  #}
+            <aside id="profil" class="aside-left">
+                <figure class="block-img">
+                    <img src="{{ asset('images/icon/user.svg') }}" alt="photo de profil" class="img-profil">
+                    <figcaption>
+                        profilName
+                    </figcaption>
+                </figure>
+
+                <ul class="profil-details">
+                    <li class="detail-item">
+                        <a href="">
+                            teamName
+                        </a>
+                    </li>
+                    <li class="detail-item">
+                        <a href="">
+                         mes matchs 
+                        </a>
+                    </li>
+                    <li class="detail-item">
+                        <a href="">
+                            mes évènement 
+                        </a>
+                    </li>
+                    <li class="detail-item">
+                        <a href="">
+                            ma messagerie <sup id="nb-message">3</sup>
+                        </a>
+                    </li>
+                    <li class="detail-item">
+                        <a href="">
+                            mon compte
+                        </a>
+                    </li>
+                </ul>
+            </aside>
+                {# ------------ aside left End-------------------------  #}
+                
+                {# --------------------- Page des sites START --------------------- #}
+                {% block body %}{% endblock %}
+                {# --------------------- Page des sites END --------------------- #}
+
+            </div>
+        </main>
+
+        <footer id="footer-base">
+            <div class="container py-2">
+                <p> Match&amp;Chill  produit par - Arnaud Elan Formation - toute reproduction est interdite-session mai 2023   </p>
+                <ul class="media-list-footer">
+                    <li class="item-list-footer">
+                        <a class="link"><iconify-icon icon="lets-icons:message" style="color: #f0f0f0;" width="30" height="30"></iconify-icon></a>
+                    </li>
+                    <li class="item-list-footer">
+                        <a class="link"><iconify-icon icon="ant-design:facebook-outlined" style="color: #f0f0f0;" width="30" height="30"></iconify-icon></a>
+                    </li>
+                    <li class="item-list-footer">
+                        <a class="link"><iconify-icon icon="mdi:instagram" style="color: #f0f0f0;" width="30" height="30"></iconify-icon></a>
+                    </li>
+                    <li class="item-list-footer">
+                        <a class="link"><script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script></a>
+                    </li>
+                    <li class="item-list-footer">
+                        <a class="link"><iconify-icon icon="entypo-social:google" style="color: #f0f0f0;" width="30" height="30"></iconify-icon></a>
+                    </li>
+                </ul>
+            </div>
+        </footer>
+
+
+        {# --------- CDN Days JQuery ------------  #}
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+        {# --------- CDN Days JS ------------  #}
+        <script src="https://cdn.jsdelivr.net/npm/dayjs@1.11.10/dayjs.min.js"></script>
+        {# Script Icinyfy  #}
+        <script src="{{ asset('https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js') }}"></script>
+        {# CDN Script Bootstrap #}
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+
+        {# ------------------ script javascript local ----------------  #}
+        <script src="{{ asset('js/matchs.js') }}"></script>
+    </body>
+</html>

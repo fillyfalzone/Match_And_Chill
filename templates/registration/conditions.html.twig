@@ -1,0 +1,73 @@
+{% extends 'base.html.twig' %}
+
+
+
+
+{% block title %}conditions d'utilisations{% endblock %}
+
+{% block body %}
+    <div class="container mt-5">
+        <h1 class="text-center mb-4">Conditions d'utilisation - Match&Chill</h1>
+
+        <div class="text-container">
+            <h2 class="">1. Inscription et Compte Utilisateur</h2>
+            <p class="text-card">
+                a. Pour vous inscrire sur Match&Chill, vous devez fournir des informations exactes, complètes et à jour, notamment un pseudo, un mot de passe sécurisé, une adresse e-mail valide, et un avatar.
+            </p>
+            <p class="text-card">
+                b. La confidentialité de votre mot de passe est de votre responsabilité. Informez-nous immédiatement de toute utilisation non autorisée de votre compte.
+            </p>
+        </div>
+    
+    
+        <div class="text-container">
+            <h2 class="">2. Utilisation du Service</h2>
+            <p class="text-card">
+                a. Utilisez Match&Chill conformément aux lois et réglementations en vigueur. Une utilisation illégale, abusive ou frauduleuse est interdite.            </p>
+            <p class="text-card">
+                b. Ne violez pas les droits de tiers en utilisant Match&Chill.            </p>
+        </div>
+    
+
+    
+        <div class="text-container">
+            <h2 class="">3. Contenu Utilisateur</h2>
+            <p class="text-card">
+                a. Vous conservez la propriété de tout contenu que vous soumettez à Match&Chill. En soumettant du contenu, vous accordez à Match&Chill une licence pour utiliser, reproduire, distribuer et afficher ce contenu.
+            </p>
+            <p class="text-card">
+                b. Vous garantissez que le contenu que vous fournissez respecte les droits de tiers.
+            </p>
+        </div>
+    
+    
+        <div class="text-container">
+            <h2 class="">4. Respect de la Vie Privée</h2>
+            <p class="text-card">
+                a. Match&Chill s'engage à protéger votre vie privée conformément à notre politique de confidentialité disponible sur le site.
+            </p>
+        </div>
+    
+    
+        <div class="text-container">
+            <h2 class="">5. Modification des Conditions d'utilisation</h2>
+            <p class="text-card">
+                a. Match&Chill se réserve le droit de modifier ces conditions d'utilisation à tout moment. Les modifications prendront effet dès leur publication sur le site. Il est de votre responsabilité de consulter régulièrement ces conditions.
+            </p>
+        </div>
+        
+    
+        <div class="text-container">
+            <h2 class="">6. Résiliation</h2>
+            <p class="text-card">
+            a. Match&Chill peut résilier ou suspendre votre compte à tout moment, avec ou sans préavis, en cas de violation de ces conditions d'utilisation.
+            </p>
+        </div>
+        
+        <div class="col-sx-2">
+            <a href="{{ path('app_register') }}" class="btn btn-lg btn-success my-2">Retourner</a>
+        </div>
+       
+
+    </div>
+{% endblock %}

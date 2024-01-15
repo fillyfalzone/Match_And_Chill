@@ -1,0 +1,285 @@
+/* ---------- ROOT ----------------------*/
+
+:root {
+    --blood-red: #9c001a;
+    --pal-red: #e05b83;
+    --sky-blue: #00A3DD;
+    --bleu-navy: #161B35;
+    --light: #f0f0f0;
+    --gray: #616161;
+    --dark : #080808;
+    --fira-sans: 'Fira Sans', arial, sans-serif;
+    --roboto: 'Roboto', 'Montserrat', sans-serif;
+}
+
+
+/*
+    *Header -------------------------
+*/
+
+
+/*
+    *Top-bar -----------------
+*/
+
+/*Banner*/
+.banner {
+    height: 300px;
+    background: linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)), url('../images/stade.jpg') 50% 60%/ cover no-repeat;
+}
+
+
+/*
+    *Low-bar ----------------------------
+*/
+
+.low-bar .navbar {
+    background: none !important;
+}
+.low-bar ul {
+    display: flex !important;
+    width: 100% !important;
+    padding: 10px;
+    justify-content: space-between !important;
+    gap: 10px !important;
+}
+.low-bar .nav-link {
+    font-family: var(--fira-sans) !important;
+    font-weight: bold !important;
+    color: var(--bleu-navy);
+    padding: 5px;
+    border-radius: 5px;
+    transition: all 0.3s;
+    
+}
+
+.low-bar .nav-item .nav-link {
+    text-transform: uppercase;
+    display: flex;
+    align-items: center;
+    flex-wrap: nowrap;
+    gap: 5px;
+}
+
+.low-bar .nav-item:hover .nav-link {
+    background-color: var(--bleu-navy);
+    color: var(--light);
+}
+
+.low-bar .nav-item .icon {
+    color: var(--bleu-navy);
+}
+.low-bar .nav-item:hover .icon {
+    color: var(--light);
+}
+
+/*
+    * Button search
+*/
+.form-low-bar {
+    margin-left: 30px;
+}
+.btn-outline-success  {
+    border-color: var(--bleu-navy);
+    color: var(--bleu-navy);
+}
+.btn-outline-success:hover {
+    background-color: var(--bleu-navy);
+    color: var(--light);
+}
+
+
+/*
+    * Base container ------------------------------
+*/
+
+#base-container{
+    display: flex;
+    gap: 10px;
+    padding: 0;
+}
+/*
+    * Aside left
+*/
+.aside-left{
+    flex: 1;
+    padding-right: 5px;
+    min-height: 500px;
+    max-width:200px;
+    min-width: 150px;
+    box-shadow: 5px -5px 5px -5px rgba(0, 0, 0, 0.5);
+}  
+
+/*
+    * Aside center
+*/
+#section-center {
+    flex: 4;
+    min-height: 500px;
+}
+
+
+/*
+    *File d'ariane
+*/
+.file-ariane {
+    display: flex;
+    gap: 5px;
+    flex-wrap: wrap;
+    align-items: center;
+    font-size: 0.800rem;
+    font-family: var(--roboto);
+    background-color: var(--light);
+}
+
+.home-ariane {
+    color: var(--sky-blue);
+    font-weight: 500;
+}
+
+/*
+    *Footer --------------------
+*/
+
+#footer-base {
+    background-color: var(--bleu-navy);
+}
+
+#footer-base .container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+}
+
+.media-list-footer {
+    padding: 0;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+#footer-base .container p {
+    color: var(--light);
+}
+
+
+
+/* 
+    * Register Style
+*/
+
+
+.register-bg > div {
+    background-color: rgba(114, 211, 250, 0.5) !important;
+    max-width: 500px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    margin: 0 auto;
+}
+
+.register-bg .heading {
+    font-family: var(--fira-sans);
+    text-transform: uppercase;
+}
+
+/* 
+    * Login Style
+*/
+
+
+#form-container {
+    background-color: #72d3fa33 !important;
+    max-width: 500px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    margin: 0 auto;
+    padding: 20px;
+}
+
+#form-container h1 {
+    font-family: var(--fira-sans);
+    width: fit-content;
+    text-transform: uppercase;
+}
+
+/*
+    *Profil -------------------------
+*/
+
+#profil  {
+    font-family: var(--roboto);
+}
+
+.block-img img {
+    display: block !important;
+    margin: 10px auto !important;
+    padding: 5px;
+    border-radius: 50%;
+    box-shadow: 0 0 10px -2px black;
+}
+
+
+
+.block-img figcaption {
+    color: var(--bleu-navy);
+    text-align: center;
+    font-weight: bold;
+    font-size: 0.7rem;
+    text-transform: uppercase;
+}
+
+.profil-details {
+   
+    padding: 0 !important;
+}
+
+.detail-item {
+    padding: 7px 0;
+    width: 100%;
+    border: 1px solid rgba(0, 0, 0, 0);
+    transition: all 0.3s linear;
+}
+.detail-item:hover {
+    border: 1px solid rgba(158, 158, 158, 0.774);
+    background-color: var(--light);
+    transition: all 0.3s linear;
+}
+
+.detail-item a {
+    text-transform: capitalize;
+    color: var(--bleu-navy);
+} 
+
+.detail-item a::before {
+    content: "";
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    background: url('../images/icon/heart.svg') center center / cover no-repeat;
+    margin-right: 5px;
+    vertical-align: middle;
+}
+
+.detail-item:nth-child(4) a {
+    white-space: nowrap;
+}
+
+.detail-item:nth-child(2) a::before  {
+    background: url('../images/icon/match.svg') center center / cover no-repeat;
+}
+.detail-item:nth-child(3) a::before  {
+    background: url('../images/icon/event.svg') center center / cover no-repeat;
+}
+.detail-item:nth-child(4) a::before  {
+    background: url('../images/icon/message.svg') center center / cover no-repeat;
+}
+.detail-item:nth-child(5) a::before  {
+    background: url('../images/icon/setting.svg') center center / cover no-repeat;
+}
+
+.detail-item:nth-child(4) a sup {
+    color: var(--blood-red);
+    font-weight: 600;
+}

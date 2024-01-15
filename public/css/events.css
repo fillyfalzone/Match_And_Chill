@@ -1,0 +1,59 @@
+/* ---------star- ROOT ----------------------*/
+
+:root {
+    --blood-red: #9c001a;
+    --pal-red: #e05b83;
+    --sky-blue: #00A3DD;
+    --bleu-navy: #161B35;
+    --light: #f0f0f0;
+    --gray: #616161;
+    --dark : #080808;
+    --fira-sans: 'Fira Sans', arial, sans-serif;
+    --roboto: 'Roboto', 'Montserrat', sans-serif;
+}
+/* REST CSS*/
+* , *::after, *::before {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+* a {
+    text-decoration: none;
+}
+
+li {
+    list-style: none;
+}
+
+html {
+    font-size: 16px;
+}
+
+body {
+    position: relative;
+}
+
+/*
+    *File d'ariane
+*/
+.file-ariane {
+    display: flex;
+    gap: 5px;
+    flex-wrap: wrap;
+    align-items: center;
+    font-size: 0.800rem;
+    font-family: var(--roboto);
+    background-color: var(--light);
+}
+
+.home-ariane, .events-ariane {
+    color: var(--sky-blue);
+    font-weight: 500;
+}
+
+.file-ariane .slash, .file-ariane p{
+    color: var(--bleu-navy);
+}
+
+

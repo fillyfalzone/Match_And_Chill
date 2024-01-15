@@ -1,0 +1,314 @@
+/* ---------star- ROOT ----------------------*/
+
+:root {
+    --blood-red: #9c001a;
+    --pal-red: #e05b83;
+    --sky-blue: #00A3DD;
+    --bleu-navy: #161B35;
+    --light: #f0f0f0;
+    --gray: #616161;
+    --dark : #080808;
+    --fira-sans: 'Fira Sans', arial, sans-serif;
+    --roboto: 'Roboto', 'Montserrat', sans-serif;
+}
+/* REST CSS*/
+* , *::after, *::before {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+* a {
+    text-decoration: none;
+}
+
+li {
+    list-style: none;
+}
+
+
+.wrapper {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 0 10px;
+}
+
+html {
+    font-size: 16px;
+}
+
+body {
+    position: relative;
+}
+
+/* Log buttons*/
+.logs {
+    display: flex;
+    gap: 10px;
+}
+#logout, #login, #register, .button {
+    font-family: var(--roboto);
+    font-size: 0.700rem;
+    font-weight: bold;
+    color: var(--light);
+    text-transform: uppercase;
+    padding: 5px;
+    border: 1px solid var(--light);
+    border-radius: 5px;
+    transition: all .3s;
+}
+#login {
+    background-color: var(--sky-blue);
+}
+
+#logout, #register, .button {
+    background-color: var(--pal-red);
+}
+
+#logout:hover, #register:hover, .button:hover  {
+    background-color: rgb(189, 0, 0);
+    border:1px solid #00a2dd00;
+}
+
+#login:hover {
+    background-color: var(--light);
+    border:1px solid #00a2dd00;
+    color: var(--dark);
+}
+
+#logout:active, #login:active, #register:active, .button:active{
+    scale: 0.9;
+}
+
+.button {
+    font-size: 1rem;
+}
+
+.margin-auto {
+    margin: 0 auto;
+    width: fit-content;
+}
+/*---  DESKTOP HEADER ------*/
+
+.top-bar, .top-bar .container {  
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+/*
+    *File d'ariane
+*/
+.file-ariane {
+    display: flex;
+    gap: 5px;
+    flex-wrap: wrap;
+    align-items: center;
+    font-size: 0.800rem;
+    font-family: var(--roboto);
+    background-color: var(--light);
+}
+
+.home-ariane, .second-ariane {
+    color: var(--sky-blue);
+    font-weight: 500;
+}
+
+.file-ariane .slash, .file-ariane p{
+    color: var(--bleu-navy);
+}
+
+/*
+    * Filters
+*/
+.filter-select {
+    display: flex !important;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.filter-block {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.filter-date, .filter-status, .filter-sort {
+    width: 150px !important;
+    display: inline-block !important;
+}
+
+.date-container {
+    display: flex;
+    align-items: center;
+    flex-wrap: nowrap;
+}
+
+
+/*
+    * Section center
+*/
+
+
+/*------------- Championship Card  ----------------------------*/
+.championship-card {
+    font-family: var(--roboto);
+    font-size: 0.800rem;
+}
+
+.championship-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 5px;
+    background-color: var(--bleu-navy) !important;
+}
+
+.championship {
+    display: flex;
+    align-items: center;
+}
+
+
+.championship-head span {
+    color: var(--light);
+    text-transform: uppercase;
+   
+}
+
+.match-id, .team-id {
+    display: none;
+}
+.match-infos p {
+   margin-bottom: 2px !important;
+}
+
+.match-infos {
+    padding: 0 5px !important;
+    display: flex;
+    gap: 5px;
+    flex-wrap: nowrap;
+}
+
+
+.favorite-match, .options {
+    flex: 0 0 auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+}
+
+
+.status {
+    padding: 0 10px;
+}
+
+.match-time {
+    font-size: .65rem;
+}
+
+
+.versus {
+    flex: 1;
+    cursor: pointer;
+    text-align: center;
+}
+
+.dom, .ext {
+    font-size: 0.9rem;
+}
+
+.goal-number {
+    font-weight: bold;
+}
+
+.comments-match, .match-events {
+    cursor: pointer;
+}
+
+.number-comments, .number-events {
+    display: inline-block;
+    vertical-align: center;
+    color: var(--blood-red);
+    font-size: .55rem;
+    font-weight: 600;
+}
+
+
+/*
+    *Match detail
+*/
+
+#match-card {
+    max-width: 500px;
+    margin: 0 auto;
+}
+.match-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    padding: 10px;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  .team {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .team-logo {
+    width: 50px; /* Adjust as necessary */
+    height: 50px; /* Adjust as necessary */
+    border-radius: 50%;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  .team-name {
+    margin-top: 5px;
+    font-size: 14px;
+    color: #333;
+  }
+  
+  .match-info {
+    text-align: center;
+  }
+  
+  .match-date-time {
+    font-size: 14px;
+    color: #666;
+  }
+  
+  .scoreboard {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 10px 0;
+  }
+  
+  .score {
+    font-size: 36px;
+    color: var(--bleu-navy);
+    font-weight: bold;
+  }
+  
+  .dash {
+    margin: 0 5px;
+  }
+  
+  .match-status {
+    font-size: 14px;
+    color: #333;
+    background-color: #eee;
+    padding: 2px 8px;
+    border-radius: 5px;
+  }
+  

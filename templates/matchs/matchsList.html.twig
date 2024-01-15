@@ -1,0 +1,58 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Liste des Matchs{% endblock %}
+
+{% block body %}
+{# ----------------- Section Center Start ---------------  #}
+<section id="section-center">
+
+    {#  ------------------- file d'ariane ------------ #}
+    <div class="file-ariane mb-3">
+        <a class="home-ariane" href="{{ path('app_home') }}">
+            <iconify-icon class="icon" icon="ion:home-sharp" width="13" height="13"></iconify-icon>
+            <span>Match&amp;Chill <span class="slash">/</span></span>
+        </a>
+        <a class="second-ariane" href="">Matchs <span class="slash">/</span></a>
+        <p id="here-ariane" class="here-ariane m-0">Aujourd'hui</p>
+    </div>
+
+    {# ---------------------- Filter ----------------------------  #}
+    <div class="filter-select mb-3">
+        <div class="filter-block">
+            <div class="date-container">
+                <a href=""><iconify-icon icon="typcn:chevron-left" style="color: #161b35;" width="31" height="31"></iconify-icon></a>
+                <select id="filter-date" class="filter-date form-select form-select-sm" aria-label="Small select example">
+                
+                </select>
+                <a href=""><iconify-icon icon="typcn:chevron-right" style="color: #161b35;" width="31" height="31"></iconify-icon></a>
+            </div>
+        </div>
+    </div>
+    
+    {# ----------- TABLEAU DE COMPÉTITIONS ET MATCHS  -----------------------#}
+
+    <article class="championship-card">
+        <table class="championship-table table table-striped table-hover mb-0">
+            <thead>
+                <tr>
+                    <th class="p-0 championship-head" scope="col" colspan="2">
+                        <a href="#championship" class="championship">
+                            <iconify-icon icon="ic:round-flag" style="color: #c5c5c5;" width="25" height="25"></iconify-icon>
+                            <span class="championship-name">championship</span>
+                        </a>
+                        <a href="#classement">
+                            <iconify-icon icon="material-symbols-light:data-table" style="color: #f0f0f0;" width="25" height="25"></iconify-icon>
+                        </a>
+                    </th>
+                </tr>
+            </thead>
+            <!-- Container pour afficher les détails des matchs -->
+            <tbody id="matchs-container">
+                
+            </tbody>
+        </table>
+    </article>
+</section>
+{# ------------------ Section Center End ---------------  #}
+
+{% endblock %}

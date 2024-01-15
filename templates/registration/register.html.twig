@@ -1,0 +1,62 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Inscription{% endblock %}
+
+{% block body %}
+
+    {# ----------------- Section Center Start ---------------  #}
+<section id="section-center">
+    {% for flash_error in app.flashes('verify_email_error') %}
+        <div class="alert alert-danger" role="alert">{{ flash_error }}</div>
+    {% endfor %}
+
+    
+    {#  ------------------- file d'ariane START------------ #}
+    <div class="file-ariane mb-3">
+        <a class="home-ariane" href="{{ path('app_home') }}">
+            <iconify-icon class="icon" icon="ion:home-sharp" width="13" height="13"></iconify-icon>
+            <span>Match&amp;Chill <span class="slash">/</span></span>
+        </a>
+        <span>Inscription</span>
+    </div>
+    {#  ------------------- file d'ariane END ------------ #}
+
+
+    <div class="container mt-5 register-bg">
+        <div class="card p-4">
+            <h1 class="mb-4 text-center mx-auto heading">Inscription</h1>
+
+            {{ form_errors(registrationForm) }}
+
+            {{ form_start(registrationForm, {'attr': {'class': 'needs-validation my-2', 'novalidate': 'novalidate', 'lang': 'fr'}}) }}
+                <div class="form-group">
+                    {{ form_row(registrationForm.pseudo, {'attr': {'class': 'form-control my-2', 'placeholder': 'Pseudo'}}) }}
+                </div>
+                <div class="form-group">
+                    {{ form_row(registrationForm.email, {'attr': {'class': 'form-control my-2', 'placeholder': 'Adresse e-mail'}}) }}
+                </div>
+                <div class="form-group ">
+                    {{ form_row(registrationForm.plainPassword )}}
+                </div>
+                <div class="form-group ">
+                    {{ form_row(registrationForm.avatar )}}
+                </div>
+
+                <div class="form-check mb-3">
+                    {{ form_row(registrationForm.agreeTerms, {'attr': {'class': 'form-check-input my-2'} }) }}
+                </div>
+
+                <p class="mb-3">
+                    En cliquant sur S'inscrire, vous acceptez nos <a href="{{ path('app_conditions') }}" class="text-primary">conditions d'utilisation</a>.
+                </p>
+
+                <button type="submit" class="btn btn-danger btn-block">S'inscrire</button>
+            {{ form_end(registrationForm) }}
+        </div>
+    </div>
+
+
+</section>
+    
+
+{% endblock %}

@@ -1,0 +1,14 @@
+
+Hope you enjoy your new logo, here are the people that
+made your beautiful logo happen :)
+font name: kelson_md
+font link: http://www.fontfabric.com/kelson-sans/
+font author: Bruno Mello
+font author site: http://www.myfonts.com/person/Bruno_Mello/
+Slogan Font: Neuton-Extralight.ttf
+
+icon designer: Derek Britton
+icon designer link: /DTB9
+        
+{"bg":"#FEF2E5","icon-gradient-0":"#EB4C00","icon-gradient-1":"#F2A900","font":"#361C00","slogan":"#4a3014"}
+      

@@ -1,0 +1,18 @@
+{% extends 'forum/index.html.twig' %}
+
+
+    {% block title %}
+        {% if categoryForumId %}
+            Modifier la categorie du forum
+        {% else %}
+            Créer une nouvelle categorie du forum
+        {% endif %}
+    {% endblock %}
+
+{% block body %}
+    {% if categoryForumId %}
+        <h2 class="text-center">Modifier la categorie</h2>
+    {% else %}
+        <h2 class="text-center">Créer une nouvelle categorie</h2>
+    {% endif %}
+{% endblock %}
