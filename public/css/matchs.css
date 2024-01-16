@@ -241,7 +241,7 @@ body {
 
 
 /*
-    *Match detail
+    *Match detail--------------------------
 */
 
 #match-card {
@@ -284,7 +284,7 @@ body {
   
   .match-date-time {
     font-size: 14px;
-    color: #666;
+    color: var(--bleu-navy);
   }
   
   .scoreboard {
@@ -306,9 +306,40 @@ body {
   
   .match-status {
     font-size: 14px;
-    color: #333;
+    color: var(--bleu-navy);
     background-color: #eee;
     padding: 2px 8px;
     border-radius: 5px;
   }
   
+
+  /*
+    Card match detatis nav ---------------------------------*
+  */
+
+#match-nav {
+   padding: 20px 0; 
+}
+
+.match-nav-list {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding:0;
+    margin: 0;
+    gap: 10px;
+}
+
+
+.match-nav-item a {
+    color: var(--bleu-navy);
+    text-transform: uppercase;
+    padding: 5px 10px;
+    border: 1px solid rgba(245, 245, 220, 0);
+    transition: all .3s linear;
+}
+
+.match-nav-item:hover a {
+    background-color: #eee;
+    border: 1px solid rgb(180, 180, 180);
+}

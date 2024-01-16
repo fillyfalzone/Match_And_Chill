@@ -19,15 +19,34 @@ class MatchsController extends AbstractController
         ]);
     }
 
-
+    /*
+        * Recupérer un match par id  
+    */
     #[Route('/matchsList/match/{matchID}', name: 'app_match')]
         public function detailsMatch($matchID, OpenLigaDBClient $httpClient): Response
-    {
+    {   
+        // recupérer le match via httpClient 
         $match = $httpClient->getMatchById($matchID);
+
+        // déterminer le statut du match
+        $status = "";
+        $currentDateTime = new \DateTime();
+
+        // Comparer la date actuelle avec la date du match pour déterminer le statut
+        $matchDate = new \DateTime($match['matchDateTime']);
+
+        if ($match['matchIsFinished']) {
+            $status = "Terminé";
+        } elseif ($currentDateTime < $matchDate) {
+            $status = "Prévu";
+        } elseif ($currentDateTime >= $matchDate && !$match['matchIsFinished']) {
+            $status = "En cours";
+        }
         
         return $this->render('matchs/match.html.twig', [
             'matchID' => $matchID,
             'match' => $match,
+            'status' => $status,
         ]);
     }
 

@@ -31,17 +31,17 @@
                 <div class="match-info">
                   <p class="match-date-time">{{ match.matchDateTime |date("d-m-Y h:i") }}</p>
                   <div class="scoreboard">
-                    {% if match.matchResults[1].pointsTeam1 is not same as("") %}
+                    {% if match.matchResults is not same as ([]) %}
                         <span class="score">{{ match.matchResults[1].pointsTeam1 }} </span> 
                      {% endif %}
     
                     <span class="dash">-</span>
     
-                    {% if match.matchResults[1].pointsTeam1 is not same as("") %}
+                    {% if match.matchResults is not same as ([]) %}
                     <span class="score">{{ match.matchResults[1].pointsTeam2 }} </span> 
                     {% endif %}
                   </div>
-                  <p class="match-status">MI-TEMPS</p>
+                  <p class="match-status">{{status}}</p>
                 </div>
                 
                 <div class="team">
