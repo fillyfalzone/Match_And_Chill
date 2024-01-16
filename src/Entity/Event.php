@@ -68,6 +68,9 @@ class Event
     #[ORM\OneToMany(mappedBy: 'event', targetEntity: CommentEvent::class, orphanRemoval: true)]
     private Collection $commentEvents;
 
+    #[ORM\Column(length: 10)]
+    private ?string $matchID = null;
+
     public function __construct()
     {
         $this->usersFavorite = new ArrayCollection();
@@ -329,6 +332,18 @@ class Event
                 $commentEvent->setEvent(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getMatchID(): ?string
+    {
+        return $this->matchID;
+    }
+
+    public function setMatchID(string $matchID): static
+    {
+        $this->matchID = $matchID;
 
         return $this;
     }

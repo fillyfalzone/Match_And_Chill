@@ -245,13 +245,13 @@ body {
 */
 
 #match-card {
-    max-width: 500px;
+    max-width: 700px;
     margin: 0 auto;
 }
 .match-container {
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    justify-content: space-around;
     background-color: #fff;
     border: 1px solid #ddd;
     padding: 10px;
@@ -342,4 +342,178 @@ body {
 .match-nav-item:hover a {
     background-color: #eee;
     border: 1px solid rgb(180, 180, 180);
+}
+
+/*
+    * Discussion Match
+*/
+
+/* ------------------ pagination ----------------------------*/
+.pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: Arial, sans-serif;
+    margin: 10px 0;
+}
+
+.pagination a, .pagination span {
+    margin: 0 5px;
+    padding: 5px 10px;
+    text-decoration: none;
+    color: var(--bleu-navy);
+    font-size: 14px;
+}
+
+.pagination a {
+    background-color: #e0e0e0;
+    border: 1px solid #d0d0d0;
+    border-radius: 4px;
+}
+
+.pagination a:hover {
+    background-color: #c0c0c0;
+}
+
+.current-info {
+    background-color: #a7ccda48;
+    color: var(--bleu-navy);
+    border-radius: 5px;
+}
+
+
+/* messege textarea --------------------------------------*/
+.user-card {
+    display: flex;
+    flex-direction: column;
+
+}
+.post-message {
+    background-color: #f9f9f9;
+    padding: 20px;
+    border-bottom: 1px solid #ddd;
+}
+
+.post-form {
+    flex-grow: 1; /* prend tout l'espace disponible */
+    flex-shrink: 1; /* permet de rétrécir si nécessaire */
+    flex-basis: auto; /* commence sans largeur propre, grandit selon l'espace disponible */
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+textarea {
+    flex-grow: 1;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    resize: vertical;
+}
+
+button {
+    align-self: center;
+    width: fit-content;
+    padding: 10px 20px;
+    background-color: #569c56;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #4cae4c;
+}
+  
+.content button {
+    align-self: center;
+    width: fit-content;
+    padding: 10px 20px;
+    background-color: #d6d844;
+    color: var(--bleu-navy);
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    padding: 2px;
+}
+
+.content button:hover {
+    background-color: #e5e91a;
+}
+
+/*--------------------- Discution -------------------*/
+.discussion {
+    width: 100%;
+}
+
+.post-message {
+    display: flex;
+    gap: 10px;
+    flex-wrap: nowrap;
+}
+
+.user-card{
+    flex-shrink: 0;
+    flex-basis: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    align-items: center;
+}
+
+.message {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    border-bottom: 1px solid #ddd;
+    padding: 20px;
+}
+
+.avatar {
+    width: 50px; /* Taille de l'avatar */
+    height: 50px;
+    border-radius: 50%; /* Rend l'avatar circulaire */
+}
+
+.content {
+    flex-grow: 1;
+}
+
+.user-name {
+    font-weight: bold;
+    color: #333;
+}
+
+.text {
+    min-height:50px;
+    height: fit-content;
+    min-width: 200px;
+    width: 100%;
+    box-shadow: 0 0 5px -2px var(--bleu-navy);
+    color:var(--bleu-navy);
+    padding: 10px;
+}
+
+.time {
+    font-size: 0.8em;
+    color: #999;
+}
+
+.content-option {
+    padding: 10px 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.answer {
+    cursor: pointer;
+}
+
+.signal-form label{
+    color: var(--blood-red);
 }

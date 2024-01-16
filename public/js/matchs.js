@@ -242,6 +242,18 @@ document.addEventListener("DOMContentLoaded", function () {
     }
     
     
+    /*
+        * Macth detail card content  
+    */
+
+    const cardDiscussion = document.getElementById("card-discussion");
+    const cardEvent = document.getElementById("card-event");
+
+    
+
+
+
+
     const commentIcons = document.querySelectorAll(".comment-icon");
     const eventIcons = document.querySelectorAll(".event-icon");
     const numberEvents = document.querySelectorAll(".number-events");

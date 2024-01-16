@@ -399,18 +399,18 @@ footer ul li a img {
 }
 
 .add {
-    width: 20px;
-    height: 20px;
+    width: 30px;
+    height: 30px;
     background:url("../img/puces/add.png") center center / cover no-repeat;
 }
 .edit {
-    width: 20px;
-    height: 20px;
+    width: 30px;
+    height: 30px;
     background:url("../img/puces/edit.png") center center / cover no-repeat;
 }
 .delete {
-    width: 20px;
-    height: 20px;
+    width: 30px;
+    height: 30px;
     background:url("../img/puces/delete.png") center center / cover no-repeat;
 }
 .category-name::before {
