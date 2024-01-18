@@ -59,7 +59,7 @@
             <div class="card-body">
                 <div class="pagination">
                     <button class="prev-page">◀️ Précédent</button>
-                    <span class="current-info" id="pagination-info"></span>
+                    <span class="current-info" id="pagination-info" title="Nombre de page"></span>
                     <button class="next-page">Suivant ▶️</button>
                 </div>
                 <div class="post-message">
@@ -68,29 +68,14 @@
                         <a href="#user">UserName</a>
                     </div>
                     <div class="post-form">
-                      <textarea id="message" name="message" rows="3" placeholder="Écrire un message..."></textarea>
-                      <button type="submit">Publier</button>
-                    </div>
-                  </div>
-                <div class="discussion">
-                    <div class="message">
-                        <div class="user-card">
-                            <img class="avatar" src="{{ asset('images/icon/user.svg') }}" alt="avatar de userName">
-                            <a href="#user">UserName</a>
-                        </div>
-                        <div class="content">
-                            <div class="text" readonly="true"> electus qui. Atque eos eligendi laborum nihil earum!</div>
-                            <div class="content-option">
-                                <span class="time">Mer 10 janvier à 22:02</span>
-                                <a href="" class="edit"><iconify-icon title="éditer" icon="tabler:edit" style="color: rgb(197, 197, 0);" height="30" width="30"></iconify-icon></a>
-                                <a href="" class="delete"><iconify-icon title="supprimer" icon="material-symbols:delete" style="color:  #9c001a;" height="30" width="30"></iconify-icon></a>
-                                <span class="answer" title="répondre"><iconify-icon icon="ic:outline-question-answer" style="color: blue;" width="30" height="30"></iconify-icon></span>
-                                <form action="" method="post" id="signal-id" class="signal-form">
-                                    <input type="checkbox" name="report" id="report" value="1">
-                                    <label for="report">Signaler</label>
-                                </form>
-                            </div>
-                        </div>
+                        {{ form_start(form) }}
+                    
+                        {# Rendu manuel du champ 'text' #}
+                        {{ form_row(form.text) }}
+                        {# Bouton de soumission #}
+                        <button type="submit" class="btn btn-success d-block mx-auto my-2 ">Publier</button>
+                    
+                        {{ form_end(form) }}
                     </div>
                 </div>
                 <div class="discussion">
@@ -100,238 +85,7 @@
                             <a href="#user">UserName</a>
                         </div>
                         <div class="content">
-                            <div class="text" readonly="true"> electus qui. Atque eos eligendi laborum nihil earum!</div>
-                            <div class="content-option">
-                                <span class="time">Mer 10 janvier à 22:02</span>
-                                <a href="" class="edit"><iconify-icon title="éditer" icon="tabler:edit" style="color: rgb(197, 197, 0);" height="30" width="30"></iconify-icon></a>
-                                <a href="" class="delete"><iconify-icon title="supprimer" icon="material-symbols:delete" style="color:  #9c001a;" height="30" width="30"></iconify-icon></a>
-                                <span class="answer" title="répondre"><iconify-icon icon="ic:outline-question-answer" style="color: blue;" width="30" height="30"></iconify-icon></span>
-                                <form action="" method="post" id="signal-id" class="signal-form">
-                                    <input type="checkbox" name="report" id="report" value="1">
-                                    <label for="report">Signaler</label>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="discussion">
-                    <div class="message">
-                        <div class="user-card">
-                            <img class="avatar" src="{{ asset('images/icon/user.svg') }}" alt="avatar de userName">
-                            <a href="#user">UserName</a>
-                        </div>
-                        <div class="content">
-                            <div class="text" readonly="true"> electus qui. Atque eos eligendi laborum nihil earum!</div>
-                            <div class="content-option">
-                                <span class="time">Mer 10 janvier à 22:02</span>
-                                <a href="" class="edit"><iconify-icon title="éditer" icon="tabler:edit" style="color: rgb(197, 197, 0);" height="30" width="30"></iconify-icon></a>
-                                <a href="" class="delete"><iconify-icon title="supprimer" icon="material-symbols:delete" style="color:  #9c001a;" height="30" width="30"></iconify-icon></a>
-                                <span class="answer" title="répondre"><iconify-icon icon="ic:outline-question-answer" style="color: blue;" width="30" height="30"></iconify-icon></span>
-                                <form action="" method="post" id="signal-id" class="signal-form">
-                                    <input type="checkbox" name="report" id="report" value="1">
-                                    <label for="report">Signaler</label>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="discussion">
-                    <div class="message">
-                        <div class="user-card">
-                            <img class="avatar" src="{{ asset('images/icon/user.svg') }}" alt="avatar de userName">
-                            <a href="#user">UserName</a>
-                        </div>
-                        <div class="content">
-                            <div class="text" readonly="true"> electus qui. Atque eos eligendi laborum nihil earum!</div>
-                            <div class="content-option">
-                                <span class="time">Mer 10 janvier à 22:02</span>
-                                <a href="" class="edit"><iconify-icon title="éditer" icon="tabler:edit" style="color: rgb(197, 197, 0);" height="30" width="30"></iconify-icon></a>
-                                <a href="" class="delete"><iconify-icon title="supprimer" icon="material-symbols:delete" style="color:  #9c001a;" height="30" width="30"></iconify-icon></a>
-                                <span class="answer" title="répondre"><iconify-icon icon="ic:outline-question-answer" style="color: blue;" width="30" height="30"></iconify-icon></span>
-                                <form action="" method="post" id="signal-id" class="signal-form">
-                                    <input type="checkbox" name="report" id="report" value="1">
-                                    <label for="report">Signaler</label>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="discussion">
-                    <div class="message">
-                        <div class="user-card">
-                            <img class="avatar" src="{{ asset('images/icon/user.svg') }}" alt="avatar de userName">
-                            <a href="#user">UserName</a>
-                        </div>
-                        <div class="content">
-                            <div class="text" readonly="true"> electus qui. Atque eos eligendi laborum nihil earum!</div>
-                            <div class="content-option">
-                                <span class="time">Mer 10 janvier à 22:02</span>
-                                <a href="" class="edit"><iconify-icon title="éditer" icon="tabler:edit" style="color: rgb(197, 197, 0);" height="30" width="30"></iconify-icon></a>
-                                <a href="" class="delete"><iconify-icon title="supprimer" icon="material-symbols:delete" style="color:  #9c001a;" height="30" width="30"></iconify-icon></a>
-                                <span class="answer" title="répondre"><iconify-icon icon="ic:outline-question-answer" style="color: blue;" width="30" height="30"></iconify-icon></span>
-                                <form action="" method="post" id="signal-id" class="signal-form">
-                                    <input type="checkbox" name="report" id="report" value="1">
-                                    <label for="report">Signaler</label>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="discussion">
-                    <div class="message">
-                        <div class="user-card">
-                            <img class="avatar" src="{{ asset('images/icon/user.svg') }}" alt="avatar de userName">
-                            <a href="#user">UserName</a>
-                        </div>
-                        <div class="content">
-                            <div class="text" readonly="true"> electus qui. Atque eos eligendi laborum nihil earum!</div>
-                            <div class="content-option">
-                                <span class="time">Mer 10 janvier à 22:02</span>
-                                <a href="" class="edit"><iconify-icon title="éditer" icon="tabler:edit" style="color: rgb(197, 197, 0);" height="30" width="30"></iconify-icon></a>
-                                <a href="" class="delete"><iconify-icon title="supprimer" icon="material-symbols:delete" style="color:  #9c001a;" height="30" width="30"></iconify-icon></a>
-                                <span class="answer" title="répondre"><iconify-icon icon="ic:outline-question-answer" style="color: blue;" width="30" height="30"></iconify-icon></span>
-                                <form action="" method="post" id="signal-id" class="signal-form">
-                                    <input type="checkbox" name="report" id="report" value="1">
-                                    <label for="report">Signaler</label>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="discussion">
-                    <div class="message">
-                        <div class="user-card">
-                            <img class="avatar" src="{{ asset('images/icon/user.svg') }}" alt="avatar de userName">
-                            <a href="#user">UserName</a>
-                        </div>
-                        <div class="content">
-                            <div class="text" readonly="true"> electus qui. Atque eos eligendi laborum nihil earum!</div>
-                            <div class="content-option">
-                                <span class="time">Mer 10 janvier à 22:02</span>
-                                <a href="" class="edit"><iconify-icon title="éditer" icon="tabler:edit" style="color: rgb(197, 197, 0);" height="30" width="30"></iconify-icon></a>
-                                <a href="" class="delete"><iconify-icon title="supprimer" icon="material-symbols:delete" style="color:  #9c001a;" height="30" width="30"></iconify-icon></a>
-                                <span class="answer" title="répondre"><iconify-icon icon="ic:outline-question-answer" style="color: blue;" width="30" height="30"></iconify-icon></span>
-                                <form action="" method="post" id="signal-id" class="signal-form">
-                                    <input type="checkbox" name="report" id="report" value="1">
-                                    <label for="report">Signaler</label>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="discussion">
-                    <div class="message">
-                        <div class="user-card">
-                            <img class="avatar" src="{{ asset('images/icon/user.svg') }}" alt="avatar de userName">
-                            <a href="#user">UserName</a>
-                        </div>
-                        <div class="content">
-                            <div class="text" readonly="true"> electus qui. Atque eos eligendi laborum nihil earum!</div>
-                            <div class="content-option">
-                                <span class="time">Mer 10 janvier à 22:02</span>
-                                <a href="" class="edit"><iconify-icon title="éditer" icon="tabler:edit" style="color: rgb(197, 197, 0);" height="30" width="30"></iconify-icon></a>
-                                <a href="" class="delete"><iconify-icon title="supprimer" icon="material-symbols:delete" style="color:  #9c001a;" height="30" width="30"></iconify-icon></a>
-                                <span class="answer" title="répondre"><iconify-icon icon="ic:outline-question-answer" style="color: blue;" width="30" height="30"></iconify-icon></span>
-                                <form action="" method="post" id="signal-id" class="signal-form">
-                                    <input type="checkbox" name="report" id="report" value="1">
-                                    <label for="report">Signaler</label>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="discussion">
-                    <div class="message">
-                        <div class="user-card">
-                            <img class="avatar" src="{{ asset('images/icon/user.svg') }}" alt="avatar de userName">
-                            <a href="#user">UserName</a>
-                        </div>
-                        <div class="content">
-                            <div class="text" readonly="true"> electus qui. Atque eos eligendi laborum nihil earum!</div>
-                            <div class="content-option">
-                                <span class="time">Mer 10 janvier à 22:02</span>
-                                <a href="" class="edit"><iconify-icon title="éditer" icon="tabler:edit" style="color: rgb(197, 197, 0);" height="30" width="30"></iconify-icon></a>
-                                <a href="" class="delete"><iconify-icon title="supprimer" icon="material-symbols:delete" style="color:  #9c001a;" height="30" width="30"></iconify-icon></a>
-                                <span class="answer" title="répondre"><iconify-icon icon="ic:outline-question-answer" style="color: blue;" width="30" height="30"></iconify-icon></span>
-                                <form action="" method="post" id="signal-id" class="signal-form">
-                                    <input type="checkbox" name="report" id="report" value="1">
-                                    <label for="report">Signaler</label>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="discussion">
-                    <div class="message">
-                        <div class="user-card">
-                            <img class="avatar" src="{{ asset('images/icon/user.svg') }}" alt="avatar de userName">
-                            <a href="#user">UserName</a>
-                        </div>
-                        <div class="content">
-                            <div class="text" readonly="true"> electus qui. Atque eos eligendi laborum nihil earum!</div>
-                            <div class="content-option">
-                                <span class="time">Mer 10 janvier à 22:02</span>
-                                <a href="" class="edit"><iconify-icon title="éditer" icon="tabler:edit" style="color: rgb(197, 197, 0);" height="30" width="30"></iconify-icon></a>
-                                <a href="" class="delete"><iconify-icon title="supprimer" icon="material-symbols:delete" style="color:  #9c001a;" height="30" width="30"></iconify-icon></a>
-                                <span class="answer" title="répondre"><iconify-icon icon="ic:outline-question-answer" style="color: blue;" width="30" height="30"></iconify-icon></span>
-                                <form action="" method="post" id="signal-id" class="signal-form">
-                                    <input type="checkbox" name="report" id="report" value="1">
-                                    <label for="report">Signaler</label>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="discussion">
-                    <div class="message">
-                        <div class="user-card">
-                            <img class="avatar" src="{{ asset('images/icon/user.svg') }}" alt="avatar de userName">
-                            <a href="#user">UserName</a>
-                        </div>
-                        <div class="content">
-                            <div class="text" readonly="true"> electus qui. Atque eos eligendi laborum nihil earum!</div>
-                            <div class="content-option">
-                                <span class="time">Mer 10 janvier à 22:02</span>
-                                <a href="" class="edit"><iconify-icon title="éditer" icon="tabler:edit" style="color: rgb(197, 197, 0);" height="30" width="30"></iconify-icon></a>
-                                <a href="" class="delete"><iconify-icon title="supprimer" icon="material-symbols:delete" style="color:  #9c001a;" height="30" width="30"></iconify-icon></a>
-                                <span class="answer" title="répondre"><iconify-icon icon="ic:outline-question-answer" style="color: blue;" width="30" height="30"></iconify-icon></span>
-                                <form action="" method="post" id="signal-id" class="signal-form">
-                                    <input type="checkbox" name="report" id="report" value="1">
-                                    <label for="report">Signaler</label>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="discussion">
-                    <div class="message">
-                        <div class="user-card">
-                            <img class="avatar" src="{{ asset('images/icon/user.svg') }}" alt="avatar de userName">
-                            <a href="#user">UserName</a>
-                        </div>
-                        <div class="content">
-                            <div class="text" readonly="true"> electus qui. Atque eos eligendi laborum nihil earum!</div>
-                            <div class="content-option">
-                                <span class="time">Mer 10 janvier à 22:02</span>
-                                <a href="" class="edit"><iconify-icon title="éditer" icon="tabler:edit" style="color: rgb(197, 197, 0);" height="30" width="30"></iconify-icon></a>
-                                <a href="" class="delete"><iconify-icon title="supprimer" icon="material-symbols:delete" style="color:  #9c001a;" height="30" width="30"></iconify-icon></a>
-                                <span class="answer" title="répondre"><iconify-icon icon="ic:outline-question-answer" style="color: blue;" width="30" height="30"></iconify-icon></span>
-                                <form action="" method="post" id="signal-id" class="signal-form">
-                                    <input type="checkbox" name="report" id="report" value="1">
-                                    <label for="report">Signaler</label>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="discussion">
-                    <div class="message">
-                        <div class="user-card">
-                            <img class="avatar" src="{{ asset('images/icon/user.svg') }}" alt="avatar de userName">
-                            <a href="#user">UserName</a>
-                        </div>
-                        <div class="content">
-                            <div class="text" readonly="true"> electus qui. Atque eos eligendi laborum nihil earum!</div>
+                            <div class="text" readonly="true"> electus qui. Atque eos eligendi laborum nihil earu111111111111111111111111111111111111111111111111111m!</div>
                             <div class="content-option">
                                 <span class="time">Mer 10 janvier à 22:02</span>
                                 <a href="" class="edit"><iconify-icon title="éditer" icon="tabler:edit" style="color: rgb(197, 197, 0);" height="30" width="30"></iconify-icon></a>

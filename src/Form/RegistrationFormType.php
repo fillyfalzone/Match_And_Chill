@@ -37,11 +37,11 @@ class RegistrationFormType extends AbstractType
             'required' => true,
             'first_options'  => ['label' => 'Mot de passe'],
             'second_options' => ['label' => 'Confirmation du mot de passe'],
-            'constraints' => [
-                new Regex([
-                    'pattern' => '/^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[!@#$%^&*]).{8,}$/',
-                    'message' => 'Le mot de passe doit contenir au moins une lettre majuscule, une lettre minuscule, un chiffre et avoir une longueur d\'au moins 12 caractères.'])
-                ],
+            // 'constraints' => [
+            //     new Regex([
+            //         'pattern' => '/^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[!@#$%^&*]).{8,}$/',
+            //         'message' => 'Le mot de passe doit contenir au moins une lettre majuscule, une lettre minuscule, un chiffre et avoir une longueur d\'au moins 12 caractères.'])
+            //     ],
         ])
         
         ->add('avatar', FileType::class, [
@@ -63,8 +63,12 @@ class RegistrationFormType extends AbstractType
         ])
        
         ->add('agreeTerms', CheckboxType::class, [
+            'required' => true,
             'mapped' => false,
             'label' => 'J\'accepte les conditions et termes',
+            'attr' => [
+                'required' => true,
+            ],
             'constraints' => [
                 new IsTrue([
                     'message' => 'Acceptez les termes d\'utilisations.',

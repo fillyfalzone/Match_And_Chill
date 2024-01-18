@@ -14,7 +14,7 @@ class CommentMatch
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(length: 1000)]
+    #[ORM\Column(length: 2500)]
     private ?string $text = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
@@ -22,6 +22,9 @@ class CommentMatch
 
     #[ORM\Column(length: 10)]
     private ?string $matchID = null;
+
+    #[ORM\Column(length: 255)]
+    private ?string $userID = null;
 
     public function getId(): ?int
     {
@@ -60,6 +63,18 @@ class CommentMatch
     public function setMatchID(string $matchID): static
     {
         $this->matchID = $matchID;
+
+        return $this;
+    }
+
+    public function getUserID(): ?string
+    {
+        return $this->userID;
+    }
+
+    public function setUserID(string $userID): static
+    {
+        $this->userID = $userID;
 
         return $this;
     }

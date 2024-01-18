@@ -38,9 +38,13 @@
                     <span></span>
                 </button>
                 <div class="logs">
-                    <a href="{{ path('app_logout') }}" id="logout">se déconnecter</a>
+                    {% if app.user %}
+                        <span>Bienvenu {{ app.user.pseudo }} </span>
+                        <a href="{{ path('app_logout') }}" id="logout">se déconnecter</a>
+                    {% else %}
                     <a href="{{ path('app_login') }}" id="login">se connecter</a>
                     <a href="{{ path('app_register') }}" id="register" class="button">s'inscrire</a>
+                    {% endif %}
                 </div>
             </div>
         </div>

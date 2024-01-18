@@ -49,6 +49,7 @@ button:disabled {
     font-weight: 400 !important;
     cursor: not-allowed;
     transition: all .3s linear;
+    visibility: hidden;
 }
  
 .pagination button {

@@ -3,17 +3,18 @@
 namespace App\Controller;
 
 use App\Entity\User;
-use App\Form\RegistrationFormType;
 use App\Security\EmailVerifier;
+use App\Service\AvatarUploader;
+use App\Form\RegistrationFormType;
+use Symfony\Component\Mime\Address;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Mime\Address;
-use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Contracts\Translation\TranslatorInterface;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use SymfonyCasts\Bundle\VerifyEmail\Exception\VerifyEmailExceptionInterface;
 
 class RegistrationController extends AbstractController
@@ -26,12 +27,13 @@ class RegistrationController extends AbstractController
     }
 
     #[Route('/register', name: 'app_register')]
-    public function register(Request $request, UserPasswordHasherInterface $userPasswordHasher, EntityManagerInterface $entityManager): Response
+    public function register(Request $request, UserPasswordHasherInterface $userPasswordHasher, EntityManagerInterface $entityManager, AvatarUploader $avatarUploader): Response
     {
         
         $user = new User();
         $form = $this->createForm(RegistrationFormType::class, $user);
         $form->handleRequest($request);
+       
 
         if ($form->isSubmitted() && $form->isValid()) {
 
@@ -46,6 +48,25 @@ class RegistrationController extends AbstractController
                     )
                 );
 
+                 // Gérer l'upload de l'avatar
+                $avatarFile = $form->get('avatar')->getData();
+                if ($avatarFile) {
+                    try {
+                        $avatarFileName = $avatarUploader->upload($avatarFile);
+                        $user->setAvatar($avatarFileName);
+                    } catch (\Exception $e) {
+                        // Ajouter un message flash ou gérer l'erreur
+                        $this->addFlash('error', 'Erreur lors du téléchargement de l\'avatar: '.$e->getMessage());
+
+                        return $this->redirectToRoute('app_register');
+                    }
+                } else {
+                    // Utiliser l'avatar par défaut si aucun fichier n'est télécharger 
+                    $avatarFileName = 'user.svg';
+                }
+                // on set le nom du fichier de l'avatar 
+                $user->setAvatar($avatarFileName);
+
                 $entityManager->persist($user);
                 $entityManager->flush();
 
@@ -58,13 +79,14 @@ class RegistrationController extends AbstractController
                         ->htmlTemplate('registration/confirmation_email.html.twig')
                 );
                 // do anything else you need here, like send an email
+                $this->addFlash('success', 'Inscription réussi');
 
                 return $this->redirectToRoute('app_login');
                 
             } else {
                 $this->addFlash('danger', 'Are you a bot? ');
 
-                 return $this->redirectToRoute('app_register');
+                return $this->redirectToRoute('app_register');
             }   
         }
          
