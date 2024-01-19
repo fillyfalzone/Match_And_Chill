@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\UserRepository;
+use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
@@ -102,6 +103,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->paticipateEvents = new ArrayCollection();
         $this->commentEvents = new ArrayCollection();
         $this->likedCommentEvents = new ArrayCollection();
+        $this->registrationDate = new DateTime('now');
+        $this->isBanned = false;
     }
 
     public function getId(): ?int

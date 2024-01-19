@@ -146,7 +146,7 @@ document.addEventListener("DOMContentLoaded", function () {
             let team1Points = match.matchResults[1] ? match.matchResults[1].pointsTeam1 : "N/A";
             let team2Points = match.matchResults[1] ? match.matchResults[1].pointsTeam2 : "N/A";
 
-            
+            console.log(match.matchID)
             matchDetails.innerHTML = `
             <td class="match-infos">
                 <div class="match-id">${match.matchID}</div>
@@ -209,6 +209,7 @@ document.addEventListener("DOMContentLoaded", function () {
     // Fonction pour rediriger vers les details du match --------------------------------
     function redirectToMatchDetail(matchID) {
         // Naviguer vers les détails du match
+        console.log(matchID)
         window.location.href = 'matchsList/match/' + matchID;
     } 
 

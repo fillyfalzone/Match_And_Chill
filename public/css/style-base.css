@@ -212,12 +212,14 @@
     font-family: var(--roboto);
 }
 
-.block-img img {
+.img-user {
     display: block !important;
     margin: 10px auto !important;
     padding: 5px;
     border-radius: 50%;
     box-shadow: 0 0 10px -2px black;
+    width: 100px;
+    height: 100px;
 }
 
 

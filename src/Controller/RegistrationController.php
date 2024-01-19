@@ -36,10 +36,9 @@ class RegistrationController extends AbstractController
        
 
         if ($form->isSubmitted() && $form->isValid()) {
-
+          
             //Vérification honeyPot
-            if (empty($form['honeyPot'])) {
-
+            if (empty($request->get('honeyPot'))) {
                 // encode the plain password
                 $user->setPassword(
                     $userPasswordHasher->hashPassword(

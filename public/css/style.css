@@ -61,6 +61,9 @@ body {
     display: flex;
     gap: 10px;
 }
+.logs span {
+    color: var(--light);
+}
 #logout, #login, #register, .button {
     font-family: var(--fira-sans);
     font-size: 0.700rem;
