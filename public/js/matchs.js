@@ -118,7 +118,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 console.error('Erreur de requête :', error);
             });
     }
-    
+
     function displayMatchs(matches) {
         // Récupérer le conteneur des matchs
         let matchContainer = document.getElementById("matchs-container"); 
@@ -146,14 +146,11 @@ document.addEventListener("DOMContentLoaded", function () {
             let team1Points = match.matchResults[1] ? match.matchResults[1].pointsTeam1 : "N/A";
             let team2Points = match.matchResults[1] ? match.matchResults[1].pointsTeam2 : "N/A";
 
-            console.log(match.matchID)
+           
             matchDetails.innerHTML = `
             <td class="match-infos">
                 <div class="match-id">${match.matchID}</div>
                 <div class="favorite-match">
-                    <div id="favoriteContainer_${match.matchID}" role="checkbox" aria-checked="false" tabindex="0" onclick="toggleFavorite(${match.matchID})">
-                        <input type="hidden" id="checkbox_${match.matchID}" name="favorite_matches[]" value="${match.matchID}">
-                    </div>
                     <div class="status">${status}</div>
                 </div>
                 <div id="versus-${match.matchID}" class="versus">
@@ -184,16 +181,9 @@ document.addEventListener("DOMContentLoaded", function () {
             </td>
             `;                                      
 
-
             // Ajouter le contenu HTML au conteneur
             matchContainer.appendChild(matchDetails);
 
-           // Ajouter le gestionnaire d'événements au conteneur de favoris
-            const favoriteContainer = document.getElementById(`favoriteContainer_${match.matchID}`);
-            favoriteContainer.addEventListener('click', function(event) {
-                event.preventDefault();
-                toggleFavorite(match.matchID);
-            });
 
             // Ajouter un gestionnaire d'événements clic à la ligne
             let versus = document.getElementById(`versus-${match.matchID}`)
@@ -201,18 +191,16 @@ document.addEventListener("DOMContentLoaded", function () {
             versus.addEventListener('click', function() {
                 redirectToMatchDetail(match.matchID);
             });
-
-       
         })
     }
 
     // Fonction pour rediriger vers les details du match --------------------------------
     function redirectToMatchDetail(matchID) {
         // Naviguer vers les détails du match
-        console.log(matchID)
         window.location.href = 'matchsList/match/' + matchID;
     } 
 
+  
     // Modifier le status du match 
     function isMatchInFuture(matchDateTime) {
         // Comparer la date actuelle avec la date du match pour déterminer s'il est prévu pour le futur

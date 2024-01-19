@@ -3,10 +3,16 @@
 namespace App\Controller;
 
 use App\Entity\CommentMatch;
+use App\Entity\FavoriteMatch;
+use App\Entity\User;
 use App\HttpClient\OpenLigaDBClient;
+use App\Repository\FavoriteMatchRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class MatchsController extends AbstractController
@@ -53,13 +59,40 @@ class MatchsController extends AbstractController
         ]);
     }
     
+    /*
+        *  Gestion des matchs favoris 
+    */
+    #[Route('/matchList/favorite/{matchID}', name: 'handle_favorite_match')]
+    public function favoriteMatch($matchID, Request $request, EntityManagerInterface $entityManager, FavoriteMatch $favoriteMatch, FavoriteMatchRepository $favoriteManager)
+    {
+        $favorite = $request->request->get('favorite-match');
 
-    // /*
-    //     * CRUD commentaire de match
-    // */
+
+
+        if ( $favorite === true) {
+
+            $favoriteMatch = new FavoriteMatch();
+            $favoriteMatch->setMatchID($matchID);
+            // $favoriteMatch->setUserID($user->getId());
+
+            $entityManager->persist($favoriteMatch);
+          
+            $entityManager->flush(); // Un seul flush après toutes les insertions
+        } else if ($favorite === false) {
+            $favoriteMatch = $favoriteManager->findOneBy(['matchID' => $matchID]);
+
+            $favoriteManager->remove($favoriteMatch);
+            $favoriteManager->flush();
+        }
+        return new JsonResponse(['status' => 'success']);
+    }
+
+    /*
+        * CRUD commentaire de match
+    */
 
     // Delete comment
-    #[Route('/matchsList/match/{matchID}/delete/comment/{id}/', name: 'app_match_delete_comment')]
+    #[Route('/matchsList/match/{matchID}/delete/comment/{id}', name: 'app_match_delete_comment')]
     public function deleteComment(CommentMatch $comment, EntityManagerInterface $entityManager): Response
     {
         $entityManager->remove($comment);
