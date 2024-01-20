@@ -1,12 +1,16 @@
 document.addEventListener("DOMContentLoaded", function () {
+    // On recupère le bouton logout
+    const logOut = document.getElementById("logout");
+    // Sélectionnez l'élément de liste déroulante par son ID
+    const select = document.getElementById("filter-date");
+
     /*
         * ------------------ Filtre des match (On recupère les match en fonction de la date) ---------------------- 
     */
 
     // -------------------------- Filter date ----------- 
 
-    // Sélectionnez l'élément de liste déroulante par son ID
-    const select = document.getElementById("filter-date");
+    
 
     // Fonction pour obtenir la date actuelle au format "YYYY-MM-DD" en utilisant la bibliothèque dayjs
     function getCurrentDate() {
@@ -106,20 +110,42 @@ document.addEventListener("DOMContentLoaded", function () {
             .then(response => response.json()) // Analyser la réponse JSON
             .then(data => {
                 // Filtrer les matchs pour ceux dont la date correspond à la date sélectionnée
-                const matchesForDate = data.filter(match => {
+                const matchsForDate = data.filter(match => {
                     const matchDate = match.matchDateTime.split('T')[0];
                     return matchDate === selectedDate;
                 });
     
                 // Appeler la fonction pour afficher les détails des matchs
-                displayMatchs(matchesForDate);
+                displayMatchs(matchsForDate);
             })
             .catch(error => {
                 console.error('Erreur de requête :', error);
             });
     }
 
-    function displayMatchs(matches) {
+    function getFavoritesFromSession() {
+        let favoritesRaw = sessionStorage.getItem('favorites');
+    
+        if (favoritesRaw) {
+            try {
+                return JSON.parse(favoritesRaw);
+            } catch (e) {
+                console.error('Erreur lors du parsing des favoris:', e);
+            }
+        }
+        return [];
+    }
+
+    function displayMatchs(matchs) {
+
+        let favorites = getFavoritesFromSession();
+
+        // Si les favoris ne sont pas en session, les charger depuis le serveur
+        if (!favorites) {
+            loadFavorites();
+            return;
+        }
+
         // Récupérer le conteneur des matchs
         let matchContainer = document.getElementById("matchs-container"); 
     
@@ -127,31 +153,30 @@ document.addEventListener("DOMContentLoaded", function () {
         matchContainer.innerHTML = "";
     
         // Itérer sur les matchs et afficher les détails
-        matches.forEach(match => {
+        matchs.forEach(match => {
             // Construire le contenu HTML pour afficher les détails du match
             let matchDetails = document.createElement('tr');
             matchDetails.classList.add('match-details');
 
-            // Déterminer le statut du match 
+            
             // Déterminer le statut en fonction des conditions
-            let status = "";
-            if (match.matchIsFinished) {
-                status = "Terminé";
-            } else if (!match.matchIsFinished && isMatchInFuture(match.matchDateTime)) {
-                status = "Prévu";
-            } else if (!match.matchIsFinished && isMatchInProgress(match.matchDateTime)) {
-                status = "En cours";
-            }
+            let status = getStatus(match);
+           
              // Vérifier si match.matchResults[1] est défini avant d'accéder à ses propriétés
             let team1Points = match.matchResults[1] ? match.matchResults[1].pointsTeam1 : "N/A";
             let team2Points = match.matchResults[1] ? match.matchResults[1].pointsTeam2 : "N/A";
 
-           
+            // Ajouter la logique pour définir l'icône de favori en fonction de l'état stocké
+            let isFavorite = favorites.includes(match.matchID);
+            let starIcon = isFavorite ? 'material-symbols-light:star' : 'material-symbols-light:star-outline';
+            let starColor = isFavorite ? '#9c001a' : '#161B35';
+
             matchDetails.innerHTML = `
             <td class="match-infos">
                 <div class="match-id">${match.matchID}</div>
-                <div class="favorite-match">
+                <div class="block-left">
                     <div class="status">${status}</div>
+                    <iconify-icon icon="${starIcon}" style="color: ${starColor};" width="25" height="25" class="star" id="star-${match.matchID}"></iconify-icon>
                 </div>
                 <div id="versus-${match.matchID}" class="versus">
                     <p class="match-time">${match.matchDateTime.split('T')[1]}</p>
@@ -179,42 +204,59 @@ document.addEventListener("DOMContentLoaded", function () {
                     </div>
                 </div>
             </td>
-            `;                                      
-
+            `;            
+    
             // Ajouter le contenu HTML au conteneur
             matchContainer.appendChild(matchDetails);
 
 
-            // Ajouter un gestionnaire d'événements clic à la ligne
-            let versus = document.getElementById(`versus-${match.matchID}`)
-
-            versus.addEventListener('click', function() {
-                redirectToMatchDetail(match.matchID);
-            });
+             // Ajouter un gestionnaire d'événements pour le clic sur le match
+            addMatchClickHandler(match);
         })
+
+        // Ajouter des gestionnaires d'événements pour les étoiles après la mise à jour du DOM
+        addStarClickHandlers(matchs); 
     }
 
-    // Fonction pour rediriger vers les details du match --------------------------------
-    function redirectToMatchDetail(matchID) {
+    // ----------------------------------------------------------------------------------------------------------------
+    /*
+        * Gestion du click sur les étoiles des matchs favoris
+    */
+
+    // Fonction pour ajouter des gestionnaires d'événements pour les étoiles
+    function addStarClickHandlers(matchs) {
+        matchs.forEach(match => {
+            let star = document.getElementById(`star-${match.matchID}`);
+            star.addEventListener('click', function() {
+                favoriteMatch(this, match.matchID);
+            });
+        });
+    }
+
+    // Fonction pour ajouter un gestionnaire d'événements pour le clic sur le match
+    function addMatchClickHandler(match) {
+        let versus = document.getElementById(`versus-${match.matchID}`);
+        versus.addEventListener('click', function() {
+            redirectToMatchDetail(match.matchID);
+        });
+    }
+    // Fonction pour obtenir le statut du match
+    function getStatus(match) {
+        if (match.matchIsFinished) {
+            return "Terminé";
+        } else if (!match.matchIsFinished && isMatchInFuture(match.matchDateTime)) {
+            return "Prévu";
+        } else if (!match.matchIsFinished && isMatchInProgress(match.matchDateTime)) {
+            return "En cours";
+        }
+        return "Non démarré";
+    }
+
+     // Fonction pour rediriger vers les details du match --------------------------------
+     function redirectToMatchDetail(matchID) {
         // Naviguer vers les détails du match
         window.location.href = 'matchsList/match/' + matchID;
     } 
-
-  
-    // Modifier le status du match 
-    function isMatchInFuture(matchDateTime) {
-        // Comparer la date actuelle avec la date du match pour déterminer s'il est prévu pour le futur
-        const currentDateTime = new Date();
-        const matchDate = new Date(matchDateTime);
-        return currentDateTime < matchDate;
-    }
-    
-    function isMatchInProgress(matchDateTime) {
-        // Comparer l'heure actuelle avec l'heure du match pour déterminer s'il est en cours
-        const currentDateTime = new Date();
-        const matchDate = new Date(matchDateTime);
-        return currentDateTime >= matchDate;
-    }
 
     if (select) {
         // Avoir les matchs du jours au chargement de la page
@@ -229,8 +271,124 @@ document.addEventListener("DOMContentLoaded", function () {
             getMatchsByDate(selectedDate);
         });
     }
+
+     // Modifier le status du match 
+     function isMatchInFuture(matchDateTime) {
+        // Comparer la date actuelle avec la date du match pour déterminer s'il est prévu pour le futur
+        const currentDateTime = new Date();
+        const matchDate = new Date(matchDateTime);
+        return currentDateTime < matchDate;
+    }
     
+    function isMatchInProgress(matchDateTime) {
+        // Comparer l'heure actuelle avec l'heure du match pour déterminer s'il est en cours
+        const currentDateTime = new Date();
+        const matchDate = new Date(matchDateTime);
+        return currentDateTime >= matchDate;
+    }
+
+
+    // Fonction appelée lorsqu'un utilisateur clique sur une étoile pour ajouter/supprimer un favori
+    function favoriteMatch(starElement, idValue) {
+        // verifier si le user est connect grace au drapeau
+        if (!isUserLoggedIn()) {
+            alert("Veuillez vous connecter ou vous inscrire pour ajouter des matchs à vos favoris.");
+            return;
+        }
+
+        const isFavorite = starElement.getAttribute('icon') === 'material-symbols-light:star-outline';
+
+        // Mise à jour de l'icône
+        starElement.setAttribute('icon', isFavorite ? 'material-symbols-light:star' : 'material-symbols-light:star-outline');
+        starElement.style.color = isFavorite ? '#9c001a' : '#161B35';
+
+        // Préparer les données à envoyer
+        const data = {
+            status: isFavorite,
+            id: idValue
+        };
+
+        // Envoyer les données au back-end
+        fetch('/matchList/favorite', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(data)
+        })
+        .then(response => {
+            if (!response.ok && response.status === 401) {
+                // Gérer le cas où l'utilisateur n'est pas connecté
+                alert("Veuillez vous connecter ou vous inscrire pour effectuer cette action.");
+                return;
+            }
+            return response.json();
+        })
+        .then(data => {
+            // Mettre à jour le stockage local/session
+            updateLocalFavorites(idValue, isFavorite);
+            // console.log('Success:', data);
+        })
+        .catch((error) => console.error('Error:', error));
+    }
+
+    function updateLocalFavorites(matchId, isFavorite) {
+        let favorites = JSON.parse(sessionStorage.getItem('favorites')) || [];
+        
+        if (isFavorite) {
+            if (!favorites.includes(matchId)) {
+                favorites.push(matchId);
+            }
+        } else {
+            favorites = favorites.filter(id => id !== matchId);
+        }
     
+        sessionStorage.setItem('favorites', JSON.stringify(favorites)); // Mettre à jour le stockage de session
+    }
+
+    function loadFavorites() {
+        fetch('/matchList/favorite/getmatchs')
+            .then(response => response.json())
+            .then(data => {
+                sessionStorage.setItem('favorites', JSON.stringify(data.favoriteMatchIds));
+                let selectedDate = select.value;
+                getMatchsByDate(selectedDate);
+            })
+            .catch(error => console.error('Erreur lors du chargement des favoris:', error));
+    }
+    
+
+    // ---------------------------------------------------------------------------------------------------------------- 
+
+    /**
+        * Déconnection et suppression de la session
+    */
+    if (logOut) {
+        logOut.addEventListener('click', function() {
+            logoutUser();
+        });
+    }
+
+    function logoutUser() {
+        // Effacer les favoris de la session
+        sessionStorage.removeItem('favorites');
+        
+        // Supprimer le drapeau de connexion
+        localStorage.removeItem('isLoggedIn');
+    }
+
+    // Verifier l'état de la connection 
+    function isUserLoggedIn() {
+        // Vérifier si le drapeau de connexion est défini et égal à 'true'
+        return localStorage.getItem('isLoggedIn') === 'true';
+    }
+
+    // Definir le Drapeau lors de la connection, pour verifier si un utilisateur est connecté ou non
+    function handleLoginSuccess() {
+        // Définir un drapeau indiquant que l'utilisateur est connecté
+        localStorage.setItem('isLoggedIn', 'true');
+    }
+
     /*
         * Macth detail card content  
     */

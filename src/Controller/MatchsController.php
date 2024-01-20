@@ -4,20 +4,22 @@ namespace App\Controller;
 
 use App\Entity\CommentMatch;
 use App\Entity\FavoriteMatch;
-use App\Entity\User;
 use App\HttpClient\OpenLigaDBClient;
-use App\Repository\FavoriteMatchRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\Security\Core\User\UserInterface;
+use App\Repository\FavoriteMatchRepository;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
+
+
 class MatchsController extends AbstractController
 
 {
+
     #[Route('/matchsList', name: 'app_matchsList')]
         public function index(): Response
     {
@@ -62,30 +64,81 @@ class MatchsController extends AbstractController
     /*
         *  Gestion des matchs favoris 
     */
-    #[Route('/matchList/favorite/{matchID}', name: 'handle_favorite_match')]
-    public function favoriteMatch($matchID, Request $request, EntityManagerInterface $entityManager, FavoriteMatch $favoriteMatch, FavoriteMatchRepository $favoriteManager)
+    #[Route('/matchList/favorite', name: 'update_favorite_match', methods: ['POST'])]
+    public function favoriteMatch(Request $request, TokenStorageInterface $tokenStorage, EntityManagerInterface $entityManager, FavoriteMatchRepository $favoriteManager): Response
     {
-        $favorite = $request->request->get('favorite-match');
+        // Récupération de l'utilisateur connecté à partir du token de sécurité
+        $user = $tokenStorage->getToken()?->getUser();
 
-
-
-        if ( $favorite === true) {
-
-            $favoriteMatch = new FavoriteMatch();
-            $favoriteMatch->setMatchID($matchID);
-            // $favoriteMatch->setUserID($user->getId());
-
-            $entityManager->persist($favoriteMatch);
-          
-            $entityManager->flush(); // Un seul flush après toutes les insertions
-        } else if ($favorite === false) {
-            $favoriteMatch = $favoriteManager->findOneBy(['matchID' => $matchID]);
-
-            $favoriteManager->remove($favoriteMatch);
-            $favoriteManager->flush();
+        // Vérifier si un utilisateur est connecté
+        if (!$user) {
+            // Si aucun utilisateur n'est pas connecté, renvoyer une réponse JSON avec un message d'erreur
+            return new JsonResponse(['status' => 'error', 'message' => 'Utilisateur non connecté'], Response::HTTP_UNAUTHORIZED);
         }
+
+        // Récupération de l'ID de l'utilisateur
+        $userId = $user->getId();
+
+        // Décodage des données JSON envoyées dans la requête
+        $data = json_decode($request->getContent(), true);
+        $matchId = $data['id']; // ID du match à mettre en favori ou à retirer des favoris
+        $status = $data['status']; // Statut indiquant si le match doit être ajouté ou retiré des favoris
+
+        try {
+            // Traitement si le match doit être ajouté aux favoris
+            if ($status) {
+                // Vérification de l'existence de l'entrée pour éviter les doublons
+                $existingFavorite = $favoriteManager->findOneBy(['matchID' => $matchId, 'userID' => $userId]);
+                if (!$existingFavorite) {
+                    // Création d'une nouvelle entrée FavoriteMatch si elle n'existe pas déjà
+                    $favoriteMatch = new FavoriteMatch();
+                    $favoriteMatch->setMatchID($matchId);
+                    $favoriteMatch->setUserID($userId);
+
+                    // Persister la nouvelle entrée dans la base de données
+                    $entityManager->persist($favoriteMatch);
+                }
+            } else {
+                // Traitement si le match doit être retiré des favoris
+                $favoriteMatch = $favoriteManager->findOneBy(['matchID' => $matchId, 'userID' => $userId]);
+                if ($favoriteMatch) {
+                    // Suppression de l'entrée existante si elle existe
+                    $entityManager->remove($favoriteMatch);
+                }
+            }
+            // Appliquer les changements dans la base de données
+            $entityManager->flush();
+        } catch (\Exception $e) {
+            // Gestion des exceptions, par exemple, enregistrer un message d'erreur
+            return new JsonResponse(['status' => 'error', 'message' => 'Erreur du serveur'], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+
+        // Renvoyer une réponse JSON indiquant que l'action a été exécutée avec succès
         return new JsonResponse(['status' => 'success']);
     }
+
+    // Recupérer les matchs favoris pour les envoyer au chargement de la page
+
+    #[Route('/matchList/favorite/getmatchs', name: 'get_favorite_matchs')]
+    public function getFavoriteMatchs (TokenStorageInterface $tokenStorage, FavoriteMatchRepository $favoriteMatchRepository, EntityManagerInterface $entityManager): Response 
+    {
+        // Récupération de l'utilisateur connecté à partir du token de sécurité
+        $user = $tokenStorage->getToken()?->getUser();
+
+        if (!$user) {
+            return new JsonResponse(['status' => 'error', 'message' => 'Utilisateur non connecté'], Response::HTTP_UNAUTHORIZED);
+        }
+
+        $userId = $user->getId();
+
+        $favorites = $favoriteMatchRepository->findBy(['userID' => $userId]);
+
+        $favoriteMatchIds = array_map(fn($fav) => $fav->getMatchID(), $favorites);
+
+        return new JsonResponse(['favoriteMatchIds' => $favoriteMatchIds]);
+    }
+
+
 
     /*
         * CRUD commentaire de match
