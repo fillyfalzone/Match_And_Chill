@@ -7,6 +7,7 @@ use App\Entity\FavoriteMatch;
 use App\HttpClient\OpenLigaDBClient;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Repository\FavoriteMatchRepository;
+use Exception;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\HttpFoundation\Response;
@@ -73,7 +74,8 @@ class MatchsController extends AbstractController
         // Vérifier si un utilisateur est connecté
         if (!$user) {
             // Si aucun utilisateur n'est pas connecté, renvoyer une réponse JSON avec un message d'erreur
-            return new JsonResponse(['status' => 'error', 'message' => 'Utilisateur non connecté'], Response::HTTP_UNAUTHORIZED);
+            // return new JsonResponse(['status' => 'error', 'message' => 'Utilisateur non connecté'], Response::HTTP_UNAUTHORIZED);
+            throw new Exception("user pas connecté");
         }
 
         // Récupération de l'ID de l'utilisateur
@@ -81,8 +83,8 @@ class MatchsController extends AbstractController
 
         // Décodage des données JSON envoyées dans la requête
         $data = json_decode($request->getContent(), true);
-        $matchId = $data['id']; // ID du match à mettre en favori ou à retirer des favoris
-        $status = $data['status']; // Statut indiquant si le match doit être ajouté ou retiré des favoris
+        $matchId = filter_var($data['id'], FILTER_SANITIZE_NUMBER_INT); // ID du match à mettre en favori ou à retirer des favoris
+        $status = filter_var($data['status'], FILTER_SANITIZE_NUMBER_INT); // Statut indiquant si le match doit être ajouté ou retiré des favoris
 
         try {
             // Traitement si le match doit être ajouté aux favoris
@@ -126,7 +128,8 @@ class MatchsController extends AbstractController
         $user = $tokenStorage->getToken()?->getUser();
 
         if (!$user) {
-            return new JsonResponse(['status' => 'error', 'message' => 'Utilisateur non connecté'], Response::HTTP_UNAUTHORIZED);
+            // return new JsonResponse(['status' => 'error', 'message' => 'Utilisateur non connecté'], Response::HTTP_UNAUTHORIZED);
+            throw new Exception("Utilisateur non connecté");
         }
 
         $userId = $user->getId();

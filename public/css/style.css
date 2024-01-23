@@ -1,6 +1,4 @@
 /* GLOBAL */
-
-
 /* ---------- ROOT ----------------------*/
 
 :root {
@@ -30,7 +28,6 @@ li {
     list-style: none;
 }
 
-
 .wrapper {
     max-width: 1000px;
     margin: 0 auto;
@@ -56,7 +53,7 @@ body {
     z-index: 1000;
 }
 
-/* Log buttons*/
+/* ---------------------Log buttons -------------------------------*/
 .logs {
     display: flex;
     gap: 10px;
@@ -369,7 +366,8 @@ section {
     background: url('../images/about_us.jpg') center center / cover no-repeat;
 }
 
-/* ---------- MOBILE FIRST ----------------------*/
+/* ---------- MOBILE ----------------------*/
+/* ---------------- Largeur maximal de l'écran 800px -----------------------*/
 @media (max-height: 800px) {
 
     body, html {
@@ -392,6 +390,7 @@ section {
 
 }
 
+/* ---------------- Largeur maximal de l'écran 1030px -----------------------*/
 @media (max-width: 1030px) {
 
     body, html {

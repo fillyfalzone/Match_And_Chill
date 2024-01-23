@@ -10,8 +10,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // -------------------------- Filter date ----------- 
 
-    
-
     // Fonction pour obtenir la date actuelle au format "YYYY-MM-DD" en utilisant la bibliothèque dayjs
     function getCurrentDate() {
         return dayjs().format('YYYY-MM-DD');
@@ -102,25 +100,31 @@ document.addEventListener("DOMContentLoaded", function () {
         secondAriane.innerHTML = selectedDate;
 
 
-        // Construire l'URL de l'API en utilisant la date
+        // Construire l'URL de l'API en utilisant l'année de la saison
         const leagueSeason = "2023";
-        const leagueShortcut = "bl1"; // bundesliga 1
+        const leagueShortcut = "bl1"; // le nom de la league bundesliga 1
     
+        // Début de la requête fetch à l'API pour obtenir les données des matchs
         fetch(`https://api.openligadb.de/getmatchdata/${leagueShortcut}/${leagueSeason}`)
-            .then(response => response.json()) // Analyser la réponse JSON
-            .then(data => {
-                // Filtrer les matchs pour ceux dont la date correspond à la date sélectionnée
-                const matchsForDate = data.filter(match => {
-                    const matchDate = match.matchDateTime.split('T')[0];
-                    return matchDate === selectedDate;
-                });
-    
-                // Appeler la fonction pour afficher les détails des matchs
-                displayMatchs(matchsForDate);
-            })
-            .catch(error => {
-                console.error('Erreur de requête :', error);
+        .then(response => response.json()) // Étape 1 : Réception de la réponse et conversion de la réponse JSON en objet JavaScript
+        .then(data => {
+            // Étape 2 : Traitement des données
+            // Filtrer les matchs pour ceux dont la date correspond à la date sélectionnée
+            const matchsForDate = data.filter(match => {
+                const matchDate = match.matchDateTime.split('T')[0]; // Extraction de la date du match
+                return matchDate === selectedDate; // Comparaison avec la date sélectionnée
             });
+
+            // Étape 3 : Utilisation des données filtrées
+            // Appeler la fonction pour afficher les détails des matchs filtrés
+            displayMatchs(matchsForDate);
+        })
+        .catch(error => {
+            // Étape 4 : Gestion des erreurs
+            // Affichage d'une erreur en cas de problème avec la requête fetch
+            console.error('Erreur de requête :', error);
+        });
+
     }
 
     function getFavoritesFromSession() {
@@ -143,7 +147,7 @@ document.addEventListener("DOMContentLoaded", function () {
         // Si les favoris ne sont pas en session, les charger depuis le serveur
         if (!favorites) {
             loadFavorites();
-            return;
+            // return;
         }
 
         // Récupérer le conteneur des matchs
@@ -195,7 +199,6 @@ document.addEventListener("DOMContentLoaded", function () {
                         <iconify-icon title="évènement" class="event-icon" icon="streamline:party-popper" style="color: #161b35;" width="15" height="15"></iconify-icon>
                         <sup class="number-events">25</sup>
                     </div>
-
                     <div class="comments-match">
                         <span>
                             <iconify-icon title="commentaires" class="comment-icon" icon="bx:comment" style="color: #161b35;" width="15" height="15" onclick="window.location.href='#match-detail'"></iconify-icon>
@@ -290,17 +293,10 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Fonction appelée lorsqu'un utilisateur clique sur une étoile pour ajouter/supprimer un favori
     function favoriteMatch(starElement, idValue) {
-        // verifier si le user est connect grace au drapeau
-        if (!isUserLoggedIn()) {
-            alert("Veuillez vous connecter ou vous inscrire pour ajouter des matchs à vos favoris.");
-            return;
-        }
-
-        const isFavorite = starElement.getAttribute('icon') === 'material-symbols-light:star-outline';
-
-        // Mise à jour de l'icône
-        starElement.setAttribute('icon', isFavorite ? 'material-symbols-light:star' : 'material-symbols-light:star-outline');
-        starElement.style.color = isFavorite ? '#9c001a' : '#161B35';
+    
+       
+        let favorites = JSON.parse(sessionStorage.getItem('favorites'));
+        const isFavorite = favorites ? favorites.includes(idValue) : false;
 
         // Préparer les données à envoyer
         const data = {
@@ -308,31 +304,46 @@ document.addEventListener("DOMContentLoaded", function () {
             id: idValue
         };
 
-        // Envoyer les données au back-end
+        // Début de la requête fetch pour envoyer des données au back-end
         fetch('/matchList/favorite', {
-            method: 'POST',
+            method: 'POST', // Spécifier la méthode HTTP comme POST pour l'envoi des données
             headers: {
-                'Content-Type': 'application/json',
+                'Content-Type': 'application/json', // Définir le type de contenu pour indiquer que le corps de la requête est au format JSON
             },
-            body: JSON.stringify(data)
+            body: JSON.stringify(data) // Convertir les données en chaîne JSON et les placer dans le corps de la requête
         })
         .then(response => {
+            // Vérifier la réponse du serveur
             if (!response.ok && response.status === 401) {
-                // Gérer le cas où l'utilisateur n'est pas connecté
+                // Gérer le cas spécifique où l'utilisateur n'est pas connecté
                 alert("Veuillez vous connecter ou vous inscrire pour effectuer cette action.");
                 return;
             }
+            // Convertir la réponse en JSON si la requête a réussi
             return response.json();
         })
         .then(data => {
-            // Mettre à jour le stockage local/session
+            // Traitement des données reçues du serveur
+            // Mettre à jour les données locales ou de session en fonction de la réponse
             updateLocalFavorites(idValue, isFavorite);
-            // console.log('Success:', data);
+             // Mise à jour de l'icône
+             starElement.setAttribute('icon', isFavorite ? 'material-symbols-light:star' : 'material-symbols-light:star-outline');
+             starElement.style.color = isFavorite ? '#9c001a' : '#161B35';
+            // Debug : Affichage des données reçues pour vérification
+            console.log('Success:', data);
         })
-        .catch((error) => console.error('Error:', error));
+        .catch((error) => {
+            // Gestion des erreurs lors de la requête fetch
+            console.error('Error:', error);
+
+            alert("Veuillez vous connecter ou vous inscrire pour ajouter des matchs à vos favoris.");
+        });
+
     }
 
+    // Mettre à jours les matchs favorit de l'utilisateut stocké dans le localStorage
     function updateLocalFavorites(matchId, isFavorite) {
+        // recupérer dans le local storage les favoris ou un tableau vite si l'utilisateur n'est pas connecté 
         let favorites = JSON.parse(sessionStorage.getItem('favorites')) || [];
         
         if (isFavorite) {
@@ -346,6 +357,7 @@ document.addEventListener("DOMContentLoaded", function () {
         sessionStorage.setItem('favorites', JSON.stringify(favorites)); // Mettre à jour le stockage de session
     }
 
+    // Recevoir les favoris du serveur uniquement si l'utilisateur est connecté 
     function loadFavorites() {
         fetch('/matchList/favorite/getmatchs')
             .then(response => response.json())
@@ -377,12 +389,6 @@ document.addEventListener("DOMContentLoaded", function () {
         localStorage.removeItem('isLoggedIn');
     }
 
-    // Verifier l'état de la connection 
-    function isUserLoggedIn() {
-        // Vérifier si le drapeau de connexion est défini et égal à 'true'
-        return localStorage.getItem('isLoggedIn') === 'true';
-    }
-
     // Definir le Drapeau lors de la connection, pour verifier si un utilisateur est connecté ou non
     function handleLoginSuccess() {
         // Définir un drapeau indiquant que l'utilisateur est connecté
@@ -393,50 +399,51 @@ document.addEventListener("DOMContentLoaded", function () {
         * Macth detail card content  
     */
 
+    // Recupération des card de discussions et évènement du DOM
     const cardDiscussion = document.getElementById("card-discussion");
     const cardEvent = document.getElementById("card-event");
 
-    
+    // // Recupération des icons des commentaires et évènements 
+    // const commentIcons = document.querySelectorAll(".comment-icon");
+    // const eventIcons = document.querySelectorAll(".event-icon");
 
 
+    // const numberEvents = document.querySelectorAll(".number-events");
+    // const numberComments = document.querySelectorAll(".number-comments");
 
 
-    const commentIcons = document.querySelectorAll(".comment-icon");
-    const eventIcons = document.querySelectorAll(".event-icon");
-    const numberEvents = document.querySelectorAll(".number-events");
-    const numberComments = document.querySelectorAll(".number-comments");
+    // // Modification de l'état des icônes de commentaires
+    // commentIcons.forEach(commentIcon => {
+    //     commentIcon.addEventListener('click', () => {
+    //         const isCommentFilled = commentIcon.getAttribute('icon') === 'bxs:comment';
 
-    // Modification de l'état des icônes de commentaires
-    commentIcons.forEach(commentIcon => {
-        commentIcon.addEventListener('click', () => {
-            const isCommentFilled = commentIcon.getAttribute('icon') === 'bxs:comment';
+    //         // Bascule entre l'état initial et l'état modifié
+    //         if (isCommentFilled) {
+    //             commentIcon.setAttribute('icon', 'bx:comment');
+    //             commentIcon.style.color = '#161b35';
+    //         } else {
+    //             commentIcon.setAttribute('icon', 'bxs:comment');
+    //             commentIcon.style.color = '#9c001a';
+    //         }
+    //     });
+    // });
 
-            // Bascule entre l'état initial et l'état modifié
-            if (isCommentFilled) {
-                commentIcon.setAttribute('icon', 'bx:comment');
-                commentIcon.style.color = '#161b35';
-            } else {
-                commentIcon.setAttribute('icon', 'bxs:comment');
-                commentIcon.style.color = '#9c001a';
-            }
-        });
-    });
+    // // Modification de l'état des icônes d'événements
+    // eventIcons.forEach(eventIcon => {
+    //     eventIcon.addEventListener('click', () => {
+    //         // Recupérer l'attrbut 'icon' de l'élément 
+    //         const isEventFilled = eventIcon.getAttribute('icon') === 'streamline:party-popper-solid';
 
-    // Modification de l'état des icônes d'événements
-    eventIcons.forEach(eventIcon => {
-        eventIcon.addEventListener('click', () => {
-            const isEventFilled = eventIcon.getAttribute('icon') === 'streamline:party-popper-solid';
-
-            // Bascule entre l'état initial et l'état modifié
-            if (isEventFilled) {
-                eventIcon.setAttribute('icon', 'streamline:party-popper');
-                eventIcon.style.color = '#161b35';
-            } else {
-                eventIcon.setAttribute('icon', 'streamline:party-popper-solid');
-                eventIcon.style.color = '#9c001a';
-            }
-        });
-    });
+    //         // Bascule entre l'état initial et l'état modifié lorsque l'utilisateur selectionne ou non un évènement 
+    //         if (isEventFilled) {
+    //             eventIcon.setAttribute('icon', 'streamline:party-popper');
+    //             eventIcon.style.color = '#161b35';
+    //         } else {
+    //             eventIcon.setAttribute('icon', 'streamline:party-popper-solid');
+    //             eventIcon.style.color = '#9c001a';
+    //         }
+    //     });
+    // });
 
 
 });
