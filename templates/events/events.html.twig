@@ -5,7 +5,7 @@
 {% block body %}
 {# ----------------- Section Center Start ---------------  #}
 
-<section class="section-center">
+<div id="section-center" class="section-center">
     {#  ------------------- file d'ariane ------------ #}
     <div class="file-ariane mb-3">
         <a class="home-ariane" href="{{ path('app_home') }}">
@@ -15,20 +15,49 @@
         <a class="second-ariane" href="">évènéments <span class="slash">/</span></a>
     </div>
 
+    <h1 id="single-title">liste des évènements</h1>
     
     {# ---------------------- Filter ----------------------------  #}
     <div class="filter-select mb-3">
         <div class="filter-block">
             <div class="date-container">
                 <a href=""><iconify-icon icon="typcn:chevron-left" style="color: #161b35;" width="31" height="31"></iconify-icon></a>
-                <select id="filter-date" class="filter-date form-select form-select-sm" aria-label="Small select example">
-                
+                <select id="filter-team" class="filter-team form-select form-select-sm" aria-label="Small select example">
+                    <option value="">par equipe</option>
                 </select>
                 <a href=""><iconify-icon icon="typcn:chevron-right" style="color: #161b35;" width="31" height="31"></iconify-icon></a>
             </div>
         </div>
     </div>
 
-</section>
+    {# -------------- List of event ------------------------- #}
+
+    <div class="">
+        <a href="" class="col-4 btn btn-primary d-block mx-auto my-3">Créer un évènement</a>
+        <div id="event-id" class="event-item">
+            <h2 class="event-name"><a href="">EventName</a></h2>
+            <div class="event-body">
+                <div class="fav-status">
+                    <iconify-icon icon="material-symbols-light:star-outline" style="color: #161B35;" width="25" height="25" class="star" id="star-${match.matchID}"></iconify-icon>
+                    <span>status</span>
+                </div>
+                <div class="number-places">
+                    <span> Disponibilité</span>
+                    <span>2/10</span>
+                </div>
+                <div class="date-time">
+                    <span>date</span>
+                    <span>time</span>
+                </div>
+                <div class="match-event">
+                    <span>team1</span>
+                    <span>team2</span>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</div>
 
 {% endblock %}

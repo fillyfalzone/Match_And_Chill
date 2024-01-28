@@ -19,5 +19,14 @@ class OpenLigaDBClient
         
         return $response->toArray();
     }
+    
+    public function getTable()
+    {
+        $response = $this->client->request('GET', 'https://api.openligadb.de/getbltable/bl1/2023', [
+            'verify_peer' => false,
+        ]);
+        
+        return $response->toArray();
+    }
 }
 ?>

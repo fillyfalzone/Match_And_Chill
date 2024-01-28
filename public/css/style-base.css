@@ -102,11 +102,10 @@
     * Aside left
 */
 .aside-left{
-    flex: 1;
-    padding-right: 5px;
-    min-height: 500px;
-    max-width:200px;
+    max-width: 20%;
     min-width: 150px;
+    padding-right: 10px;
+    min-height: 500px;
     box-shadow: 5px -5px 5px -5px rgba(0, 0, 0, 0.5);
 }  
 
@@ -114,9 +113,13 @@
     * Aside center
 */
 #section-center {
-    flex: 4;
     min-height: 500px;
+    flex-grow: 1;
 }
+
+/* aside[style*="display: none"] ~ section {
+    max-width: 100%;
+  } */
 
 
 /*

@@ -186,12 +186,12 @@ document.addEventListener("DOMContentLoaded", function () {
                     <p class="match-time">${match.matchDateTime.split('T')[1]}</p>
                     <div class="dom">
                         <div class="team-id">${match.team1.teamID}</div>
-                        <p class="team-name1">${match.team1.teamName}  <span class="goal-number">${team1Points}</span></p>
+                        <p class="team-name1">${match.team1.shortName}  <span class="goal-number">${team1Points}</span></p>
                     </div>
                     
                     <div class="ext">
                         <div class="team-id">${match.team2.teamID}</div>
-                        <p class="team-name2">${match.team2.teamName}  <span class="goal-number">${team2Points}</span></p>
+                        <p class="team-name2">${match.team2.shortName}  <span class="goal-number">${team2Points}</span></p>
                     </div>
                 </div>
                 <div class="options">

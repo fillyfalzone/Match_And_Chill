@@ -15,17 +15,18 @@
                 Matchs 
                 <span class="slash">/</span>
             </a>
-            <span>{{ match.team1.teamName }} vs {{ match.team2.teamName }}</span>
+            <span>{{ match.team1.shortName }} vs {{ match.team2.shortName }}</span>
         </div>
         {# --------------------- file d'ariane END -----------  #}
         
         {# ---------------  Match details card -----------------------#}
 
-        <div id="match-card">
+        <div id="match-card" class="match-card">
+            {# ------------------  match container  ------------#}
             <div class="match-container">
                 <div class="team">
-                    <img src="{{ asset('images/emblemes/' ~ match.team1.teamId ~ '.png') }}" alt="emblème de l'équipe {{ match.team1.teamName }}" class="team-logo">
-                    <p class="team-name">{{ match.team1.teamName }}</p>
+                    <img src="{{ asset('images/emblemes/' ~ match.team1.teamId ~ '.png') }}" alt="emblème de l'équipe {{ match.team1.shortName }}" class="team-logo">
+                    <p class="team-name">{{ match.team1.shortName }}</p>
                   </div>
                 
                 <div class="match-info">
@@ -45,76 +46,110 @@
                 </div>
                 
                 <div class="team">
-                  <img src="{{ asset('images/emblemes/' ~ match.team2.teamId ~ '.png') }}" alt="emblème de l'équipe {{ match.team2.teamName }}" class="team-logo">
-                  <p class="team-name">{{ match.team2.teamName }}</p>
+                  <img src="{{ asset('images/emblemes/' ~ match.team2.teamId ~ '.png') }}" alt="emblème de l'équipe {{ match.team2.shortName }}" class="team-logo">
+                  <p class="team-name">{{ match.team2.shortName }}</p>
                 </div>
             </div>
+            {# ---------------- match-nav ----------------------- #}
             <nav id="match-nav">
                 <ul class="match-nav-list">
-                    <li class="match-nav-item"><a id="card-discussion" href="">discussions</a></li>
-                    <li class="match-nav-item"><a id="card-event" href="">évènements</a></li>
+                    <li class="match-nav-item"><span id="btn-discussion" href="">discussions</span></li>
+                    <li class="match-nav-item"><span id="btn-classement" href="">classement</span></li>
+                    <li class="match-nav-item"><span id="btn-events" href="">évènements</span></li>
                 </ul>
             </nav>
-            
+            {# ----------- card-body ------------------------------ #}
             <div class="card-body">
-                <div class="pagination">
-                    <button class="prev-page">◀️ Précédent</button>
-                    <span class="current-info" id="pagination-info" title="Nombre de page"></span>
-                    <button class="next-page">Suivant ▶️</button>
-                </div>
-                <div class="post-message">
-                    <div class="user-card">
-                        <img class="avatar" src="{{ asset('images/icon/user.svg') }}" alt="avatar de userName">
-                        <a href="#user">UserName</a>
+                {# ------- card-discussion ------------------------- #}
+                <div id="card-discussion" class="match-card">
+                    <div class="pagination">
+                        <button class="prev-page">◀️ Précédent</button>
+                        <span class="current-info" id="pagination-info" title="Nombre de page"></span>
+                        <button class="next-page">Suivant ▶️</button>
                     </div>
-                    <div class="post-form">
-                        
-                    </div>
-                </div>
-                <div class="discussion">
-                    <div class="message">
-                        <div class="user-card">
-                            <img class="avatar" src="{{ asset('images/icon/user.svg') }}" alt="avatar de userName">
-                            <a href="#user">UserName</a>
+                    {% if app.user %}
+                        <div class="post-message">
+                            <form action="" method="post" id="post-form">
+                                <textarea name="" id="" cols="30" rows="2" class="form-control"></textarea>
+                                <input type="submit" value="submit" class="comment-sumbit button">
+                            </form>
                         </div>
-                        <div class="content">
-                            <div class="text" readonly="true"> electus qui. Atque eos eligendi laborum nihil earu111111111111111111111111111111111111111111111111111m!</div>
-                            <div class="content-option">
-                                <span class="time">Mer 10 janvier à 22:02</span>
-                                <a href="" class="edit"><iconify-icon title="éditer" icon="tabler:edit" style="color: rgb(197, 197, 0);" height="30" width="30"></iconify-icon></a>
-                                <a href="" class="delete"><iconify-icon title="supprimer" icon="material-symbols:delete" style="color:  #9c001a;" height="30" width="30"></iconify-icon></a>
-                                <span class="answer" title="répondre"><iconify-icon icon="ic:outline-question-answer" style="color: blue;" width="30" height="30"></iconify-icon></span>
-                                <form action="" method="post" id="signal-id" class="signal-form">
-                                    <input type="checkbox" name="report" id="report" value="1">
-                                    <label for="report">Signaler</label>
-                                </form>
+                    {% else %}
+                        <div>
+                            <p class="text text-center">Vous devez être connecté pour poster un message</p>
+                            <p class="d-flex justify-content-center gap-3 fw-bold">
+                                <a href="{{ path('app_login') }}" class="text text-primary">se connecter</a>
+                                <a href="{{ path('app_register') }}" class="text text-danger">s'inscrire</a>
+                            </p>
+                        </div>
+                    {% endif %}
+                   
+                    <div class="discussion">
+                        <div class="message">
+                            <div class="user-card">
+                                <img class="avatar" src="{{ asset('images/icon/user.svg') }}" alt="avatar de userName">
+                                <a href="#user">UserName</a>
+                            </div>
+                            <div class="content">
+                                <div class="comment"  readonly="true"> electus qui. Atque eos eligendi laborum nihil earu111111111111111111111111111111111111111111111111111m!</div>
+                                <div class="content-option">
+                                    <span class="time">Mer 10 janvier à 22:02</span>
+                                    <a href="" class="edit"><iconify-icon title="éditer" icon="tabler:edit" style="color: rgb(197, 197, 0);" height="30" width="30"></iconify-icon></a>
+                                    <a href="" class="delete"><iconify-icon title="supprimer" icon="material-symbols:delete" style="color:  #9c001a;" height="30" width="30"></iconify-icon></a>
+                                    <span class="answer" title="répondre"><iconify-icon icon="ic:outline-question-answer" style="color: blue;" width="30" height="30"></iconify-icon></span>
+                                    <form action="" method="post" id="signal-id" class="signal-form">
+                                        <input type="checkbox" name="report" id="report" value="1">
+                                        <label for="report">Signaler</label>
+                                    </form>
+                                </div>
                             </div>
                         </div>
                     </div>
+                  
                 </div>
-                <div class="discussion">
-                    <div class="message">
-                        <div class="user-card">
-                            <img class="avatar" src="{{ asset('images/icon/user.svg') }}" alt="avatar de userName">
-                            <a href="#user">UserName</a>
-                        </div>
-                        <div class="content">
-                            <div class="text" readonly="true"> electus qui. Atque eos eligendi laborum nihil earum!</div>
-                            <div class="content-option">
-                                <span class="time">Mer 10 janvier à 22:02</span>
-                                <a href="" class="edit"><iconify-icon title="éditer" icon="tabler:edit" style="color: rgb(197, 197, 0);" height="30" width="30"></iconify-icon></a>
-                                <a href="" class="delete"><iconify-icon title="supprimer" icon="material-symbols:delete" style="color:  #9c001a;" height="30" width="30"></iconify-icon></a>
-                                <span class="answer" title="répondre"><iconify-icon icon="ic:outline-question-answer" style="color: blue;" width="30" height="30"></iconify-icon></span>
-                                <form action="" method="post" id="signal-id" class="signal-form">
-                                    <input type="checkbox" name="report" id="report" value="1">
-                                    <label for="report">Signaler</label>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
+                {#  ---------- card-table--------------------------- #}
+                <div id="card-classement" class="match-card display-none">
+                    <table class="league-table table table-hover">
+                        <thead>
+                            <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">équipes</th>
+                            <th scope="col">matchs</th>
+                            <th scope="col">victoirs</th>
+                            <th scope="col">défaites</th>
+                            <th scope="col">nul</th>
+                            <th scope="col">but +</th>
+                            <th scope="col">but -</th>
+                            <th scope="col">diff</th>
+                            <th scope="col">points</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <th scope="row">1</th>
+                                <th>mar</th>
+                                <th>Mark</th>
+                                <th>Mark</th>
+                                <th>Mark</th>
+                                <th>Mark</th>
+                                <th>Mark</th>
+                                <th>Mark</th>
+                                <th>Mark</th>
+                                <th>Mark</th>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                {# ------------------- card-event ---------------------- #}
+                <div id="card-events" class="match-card display-none">
+        
                 </div>
             </div>
+            
         </div>
+
+       
+   
     </section>
 
 {% endblock %}

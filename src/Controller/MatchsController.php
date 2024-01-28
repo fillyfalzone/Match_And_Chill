@@ -7,6 +7,7 @@ use App\Entity\FavoriteMatch;
 use App\HttpClient\OpenLigaDBClient;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Repository\FavoriteMatchRepository;
+use App\Repository\UserRepository;
 use Exception;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
@@ -61,6 +62,8 @@ class MatchsController extends AbstractController
             'status' => $status,
         ]);
     }
+
+    
     
     /*
         *  Gestion des matchs favoris 
@@ -146,6 +149,15 @@ class MatchsController extends AbstractController
     /*
         * CRUD commentaire de match
     */
+
+    // Add comment 
+    #[Route('/commentMatch/add', name: 'comment_match_add')]
+    public function addCommentMatch(CommentMatch $comment, EntityManagerInterface $entityManager): Response
+    {
+        
+        return $this->redirectToRoute('app_match');
+    }
+
 
     // Delete comment
     #[Route('/matchsList/match/{matchID}/delete/comment/{id}', name: 'app_match_delete_comment')]
