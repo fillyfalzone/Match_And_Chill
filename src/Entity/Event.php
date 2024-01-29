@@ -69,7 +69,10 @@ class Event
     private Collection $commentEvents;
 
     #[ORM\Column(length: 10)]
-    private ?string $matchID = null;
+    private ?string $matchId = null;
+
+    #[ORM\Column(length: 255)]
+    private ?string $country = null;
 
     public function __construct()
     {
@@ -336,14 +339,26 @@ class Event
         return $this;
     }
 
-    public function getMatchID(): ?string
+    public function getMatchId(): ?string
     {
-        return $this->matchID;
+        return $this->matchId;
     }
 
-    public function setMatchID(string $matchID): static
+    public function setMatchId(string $matchId): static
     {
-        $this->matchID = $matchID;
+        $this->matchId = $matchId;
+
+        return $this;
+    }
+
+    public function getCountry(): ?string
+    {
+        return $this->country;
+    }
+
+    public function setCountry(string $country): static
+    {
+        $this->country = $country;
 
         return $this;
     }

@@ -20,21 +20,21 @@
     
     <div class="container mt-5">
         <h1 class="mb-4 fs-2 text-center title-event">Créer un Événement</h1>
-        <form>
+        <form action="{{ path("app_events_new") }}" method="POST">
             <div class="mb-3">
                 <label for="title" class="form-label">Intitulé</label>
-                <input type="text" class="form-control" id="title" placeholder="Nom de l'événement">
+                <input type="text" class="form-control" id="name" placeholder="Nom de l'événement" name="name" required>
             </div>
             <div class="mb-3">
                 <label for="category" class="form-label">Catégorie</label>
-                <select class="form-select" id="form-category">
+                <select class="form-select" id="form-category" name="catgory" required>
                     <option selected>Selectionnez une catégorie</option>
                     <!-- Options de catégorie ici -->
                 </select>
             </div>
             <div class="mb-3">
                 <label for="match" class="form-label">Match</label>
-                <select class="form-select" id="match">
+                <select class="form-select" id="matchId" name="matchId" required>
                     <option selected>Selectionnez un match</option>
                     <!-- Options de match ici -->
                 </select>
@@ -42,44 +42,49 @@
             <div class="row g-3">
                 <div class="col-md-6">
                     <label for="startDate" class="form-label">Date de début</label>
-                    <input type="date" class="form-control" id="startDate">
+                    <input type="date" class="form-control" id="startDate" name="starDate" required>
                 </div>
                 <div class="col-md-6">
                     <label for="startTime" class="form-label">Heure</label>
-                    <input type="time" class="form-control" id="startTime">
+                    <input type="time" class="form-control" id="startTime" name="startTime" required>
                 </div>
             </div>
             <div class="row g-3 mt-3">
                 <div class="col-md-6">
                     <label for="endDate" class="form-label">Date de fin</label>
-                    <input type="date" class="form-control" id="endDate">
+                    <input type="date" class="form-control" id="endDate" name="endDate" required>
                 </div>
                 <div class="col-md-6">
                     <label for="endTime" class="form-label">Heure</label>
-                    <input type="time" class="form-control" id="endTime">
+                    <input type="time" class="form-control" id="endTime" name="endTime" required>
                 </div>
             </div>
             <div class="mb-3">
                 <label for="participants" class="form-label">Nombre de participants</label>
-                <input type="number" class="form-control" id="participants">
+                <input type="number" class="form-control" id="participants" name="numberOfPlaces" required>
             </div>
             <div class="mb-3">
                 <label for="description" class="form-label">Description</label>
-                <textarea class="form-control" id="description" rows="3"></textarea>
+                <textarea class="form-control" id="description" rows="3" name="description" required></textarea>
             </div>
             <div class="mb-3">
-                <label for="address" class="form-label">Adresse</label>
-                <input type="text" class="form-control" id="address">
+                <label for="adress" class="form-label">Adresse</label>
+                <input type="text" class="form-control" id="adress" name="adress" required>
             </div>
             <div class="row g-3 mb-3">
-                <div class="col-md-6">
-                    <label for="city" class="form-label">Ville</label>
-                    <input type="text" class="form-control" id="city">
-                </div>
-                <div class="col-md-6">
+                <div class="col-md-4">
                     <label for="postalCode" class="form-label">Code postal</label>
-                    <input type="text" class="form-control" id="postalCode">
+                    <input type="text" class="form-control" id="zipCode" name="zipCode" required>
                 </div>
+                <div class="col-md-4">
+                    <label for="city" class="form-label">Ville</label>
+                    <input type="text" class="form-control" id="city" name="city" required>
+                </div>
+                <div class="col-md-4">
+                    <label for="city" class="form-label">Pays</label>
+                    <input type="text" class="form-control" id="country" name="country" required>
+                </div>
+                
             </div>
             <button type="submit" class="btn btn-primary mb-5 d-block mx-auto px-5">Créer</button>
             <div class="mb-3">
@@ -88,6 +93,7 @@
                 <textarea class="form-control" id="map" rows="3"></textarea>
             </div>
             
+            <input type="hidden" name="honeyPot" id="honeyPot">
         </form>
     </div>
 </div>
