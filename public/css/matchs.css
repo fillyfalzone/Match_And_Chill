@@ -402,6 +402,7 @@ body {
 .user-card {
     display: flex;
     flex-direction: column;
+    justify-content: space-between;
 
 }
 .post-message {
@@ -444,20 +445,11 @@ body {
 }
   
 .content button {
-    align-self: center;
-    width: fit-content;
-    padding: 10px 20px;
-    background-color: #d6d844;
-    color: var(--bleu-navy);
     border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    padding: 2px;
+    background-color: transparent;
 }
 
-.content button:hover {
-    background-color: #e5e91a;
-}
+
 
 /*--------------------- Discution -------------------*/
 .discussion {
@@ -534,12 +526,24 @@ body {
     color: var(--blood-red);
 }
 
+
+/*----------- Edit comment ---------------------*/
+.edit {
+    cursor: pointer;
+}
+
 /* ------------------------Card Table ----------------------*/
 /*Table*/
 
 .league-table thead tr th {
     background-color: var(--bleu-navy) !important;
     color: var(--light) !important;
+}
+
+
+#league-table {
+    font-size: 0.7rem !important;
+    font-family: var(--roboto) !important;
 }
 
 

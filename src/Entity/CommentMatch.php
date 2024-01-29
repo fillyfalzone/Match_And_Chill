@@ -21,10 +21,13 @@ class CommentMatch
     private ?\DateTimeInterface $creationDate = null;
 
     #[ORM\Column(length: 10)]
-    private ?string $matchID = null;
+    private ?string $matchId= null;
 
-    #[ORM\Column(length: 255)]
-    private ?string $userID = null;
+    #[ORM\ManyToOne(inversedBy: 'commentMatches')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?User $user = null;
+
+  
 
     public function getId(): ?int
     {
@@ -55,27 +58,28 @@ class CommentMatch
         return $this;
     }
 
-    public function getMatchID(): ?string
+    public function getmatchId(): ?string
     {
-        return $this->matchID;
+        return $this->matchId;
     }
 
-    public function setMatchID(string $matchID): static
+    public function setmatchId(string $matchId): static
     {
-        $this->matchID = $matchID;
+        $this->matchId = $matchId;
 
         return $this;
     }
 
-    public function getUserID(): ?string
+    public function getUser(): ?User
     {
-        return $this->userID;
+        return $this->user;
     }
 
-    public function setUserID(string $userID): static
+    public function setUser(?User $user): static
     {
-        $this->userID = $userID;
+        $this->user = $user;
 
         return $this;
     }
+
 }

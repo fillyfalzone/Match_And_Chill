@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\CommentMatch;
 use App\Entity\FavoriteMatch;
 use App\HttpClient\OpenLigaDBClient;
+use App\Repository\CommentMatchRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Repository\FavoriteMatchRepository;
 use App\Repository\UserRepository;
@@ -35,11 +36,14 @@ class MatchsController extends AbstractController
     /*
         * Recupérer un match par id  
     */
-    #[Route('/matchsList/match/{matchID}', name: 'app_match')]
-    public function detailsMatch($matchID, OpenLigaDBClient $httpClient): Response
+    #[Route('/matchsList/match/{matchId}', name: 'app_match')]
+    public function detailsMatch($matchId, OpenLigaDBClient $httpClient, CommentMatchRepository $commentMatch): Response
     {   
         // recupérer le match via httpClient 
-        $match = $httpClient->getMatchById($matchID);
+        $match = $httpClient->getMatchById($matchId);
+
+        //recupérer le classement de la ligue
+        $table = $httpClient->getTable();
 
         // déterminer le statut du match
         $status = "";
@@ -56,14 +60,22 @@ class MatchsController extends AbstractController
             $status = "En cours";
         }
 
+        /**
+            * Charger les commentaires du match 
+        */
+         // recupère les commentaires du match
+         $comments = $commentMatch->findBy(['matchId' => $matchId], ['creationDate' => 'ASC']);
+         
         return $this->render('matchs/match.html.twig', [
-            'matchID' => $matchID,
+            'comments' => $comments,
+            'matchId' => $matchId,
             'match' => $match,
             'status' => $status,
+            'table' => $table,
         ]);
     }
 
-    
+
     
     /*
         *  Gestion des matchs favoris 
@@ -93,7 +105,7 @@ class MatchsController extends AbstractController
             // Traitement si le match doit être ajouté aux favoris
             if ($status) {
                 // Vérification de l'existence de l'entrée pour éviter les doublons
-                $existingFavorite = $favoriteManager->findOneBy(['matchID' => $matchId, 'userID' => $userId]);
+                $existingFavorite = $favoriteManager->findOneBy(['matchId' => $matchId, 'userID' => $userId]);
                 if (!$existingFavorite) {
                     // Création d'une nouvelle entrée FavoriteMatch si elle n'existe pas déjà
                     $favoriteMatch = new FavoriteMatch();
@@ -105,7 +117,7 @@ class MatchsController extends AbstractController
                 }
             } else {
                 // Traitement si le match doit être retiré des favoris
-                $favoriteMatch = $favoriteManager->findOneBy(['matchID' => $matchId, 'userID' => $userId]);
+                $favoriteMatch = $favoriteManager->findOneBy(['matchId' => $matchId, 'userID' => $userId]);
                 if ($favoriteMatch) {
                     // Suppression de l'entrée existante si elle existe
                     $entityManager->remove($favoriteMatch);
@@ -160,7 +172,7 @@ class MatchsController extends AbstractController
 
 
     // Delete comment
-    #[Route('/matchsList/match/{matchID}/delete/comment/{id}', name: 'app_match_delete_comment')]
+    #[Route('/matchsList/match/{matchId}/delete/comment/{id}', name: 'app_match_delete_comment')]
     public function deleteComment(CommentMatch $comment, EntityManagerInterface $entityManager): Response
     {
         $entityManager->remove($comment);

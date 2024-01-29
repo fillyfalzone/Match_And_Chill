@@ -89,6 +89,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\JoinTable(name:'likeCommentEvent',)]
     private Collection $likedCommentEvents;
 
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: CommentMatch::class, orphanRemoval: true)]
+    private Collection $commentMatches;
+
    
     public function __construct()
     {
@@ -105,6 +108,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->likedCommentEvents = new ArrayCollection();
         $this->registrationDate = new DateTime('now');
         $this->isBanned = false;
+        $this->commentMatches = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -545,6 +549,36 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         if ($this->likedCommentEvents->removeElement($likedCommentEvent)) {
             $likedCommentEvent->removeLikeCommentEvent($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, CommentMatch>
+     */
+    public function getCommentMatches(): Collection
+    {
+        return $this->commentMatches;
+    }
+
+    public function addCommentMatch(CommentMatch $commentMatch): static
+    {
+        if (!$this->commentMatches->contains($commentMatch)) {
+            $this->commentMatches->add($commentMatch);
+            $commentMatch->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCommentMatch(CommentMatch $commentMatch): static
+    {
+        if ($this->commentMatches->removeElement($commentMatch)) {
+            // set the owning side to null (unless already changed)
+            if ($commentMatch->getUser() === $this) {
+                $commentMatch->setUser(null);
+            }
         }
 
         return $this;

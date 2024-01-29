@@ -403,6 +403,69 @@ document.addEventListener("DOMContentLoaded", function () {
     const cardDiscussion = document.getElementById("card-discussion");
     const cardEvent = document.getElementById("card-event");
 
+    /*
+        * Modal édition des commentaires
+    */
+    // Ouvrir le modal d'édition des commentaires
+    let editButtons = document.querySelectorAll('.edit');
+
+    editButtons.forEach(function(button) {
+        button.addEventListener('click', function() {
+
+            let commentId = this.getAttribute('data-comment-id');
+            let commentText = this.getAttribute('data-comment-text');
+
+            document.getElementById('commentId').value = commentId;
+            document.getElementById('commentText').value = commentText;
+
+            let modal = new bootstrap.Modal(document.getElementById('editCommentModal'));
+            modal.show();
+        });
+    });
+
+    // Soumettre le formulaire d'édition des commentaires et requête fetch pour envoyer les données au back-end
+
+    document.getElementById('editCommentForm').addEventListener('submit', function() {
+        
+        let commentId = document.getElementById('commentId').value;
+        let commentText = document.getElementById('commentText').value;
+        const matchId = window.location.pathname.split("/")[3];
+
+        
+        // Préparer les données à envoyer
+        const data = {
+            commentText: commentText
+        };
+
+        // Envoyer la requête AJAX
+        fetch(`/matchsList/match/${matchId}/edit/${commentId}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(data),
+        })
+        .then(response => response.json())
+        .then(data => {
+            // Traiter la réponse...
+            console.log(data);
+        })
+        .catch(error => {
+            // Gérer les erreurs...
+            console.error(error);
+        });
+    
+        // Fermer la modal
+        let modal = bootstrap.Modal.getInstance(document.getElementById('editCommentModal'));
+        modal.hide();
+        // recharger la page
+        window.location.reload();
+    });
+
+
+
+
+
     // // Recupération des icons des commentaires et évènements 
     // const commentIcons = document.querySelectorAll(".comment-icon");
     // const eventIcons = document.querySelectorAll(".event-icon");

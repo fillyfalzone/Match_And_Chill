@@ -67,10 +67,11 @@
                         <span class="current-info" id="pagination-info" title="Nombre de page"></span>
                         <button class="next-page">Suivant ▶️</button>
                     </div>
+                    {# on affiche le formulaire si le user est connecté #}
                     {% if app.user %}
                         <div class="post-message">
-                            <form action="" method="post" id="post-form">
-                                <textarea name="" id="" cols="30" rows="2" class="form-control"></textarea>
+                            <form action="{{ path('commentMatch_add', {'matchId': matchId}) }}" method="post" id="post-form">
+                                            <textarea name="comment-match" cols="30" rows="2" class="form-control" placeholder="écrire un commentaire ..." required></textarea>
                                 <input type="submit" value="submit" class="comment-sumbit button">
                             </form>
                         </div>
@@ -83,33 +84,48 @@
                             </p>
                         </div>
                     {% endif %}
-                   
-                    <div class="discussion">
-                        <div class="message">
-                            <div class="user-card">
-                                <img class="avatar" src="{{ asset('images/icon/user.svg') }}" alt="avatar de userName">
-                                <a href="#user">UserName</a>
-                            </div>
-                            <div class="content">
-                                <div class="comment"  readonly="true"> electus qui. Atque eos eligendi laborum nihil earu111111111111111111111111111111111111111111111111111m!</div>
-                                <div class="content-option">
-                                    <span class="time">Mer 10 janvier à 22:02</span>
-                                    <a href="" class="edit"><iconify-icon title="éditer" icon="tabler:edit" style="color: rgb(197, 197, 0);" height="30" width="30"></iconify-icon></a>
-                                    <a href="" class="delete"><iconify-icon title="supprimer" icon="material-symbols:delete" style="color:  #9c001a;" height="30" width="30"></iconify-icon></a>
-                                    <span class="answer" title="répondre"><iconify-icon icon="ic:outline-question-answer" style="color: blue;" width="30" height="30"></iconify-icon></span>
-                                    <form action="" method="post" id="signal-id" class="signal-form">
-                                        <input type="checkbox" name="report" id="report" value="1">
-                                        <label for="report">Signaler</label>
-                                    </form>
+                   {# ------- Liste des commentaires du match --------------------  #}
+                    <div class="comment-list">
+                        {% if comments is defined and comments is not empty %}
+                            {% for comment in comments %}
+                                <div class="message">
+                                    <div class="user-card">
+                                        <img class="avatar" src="{{ asset('uploads/avatars/'~ comment.user.avatar) }}" alt="avatar de {{comment.user.pseudo}}">
+                                        <a href="#user">{{ comment.user.pseudo }}</a>
+                                    </div>
+                                    <div class="content">
+                                        <div class="comment"  readonly="true"> {{comment.text}} </div>
+                                        <div class="content-option">
+                                            <span class="time"> {{ comment.creationDate|date('d-m-Y H:i') }} </span>
+
+                                            {# Edit comment #}
+                                            <span class="edit" data-comment-id="{{ comment.id }}" data-comment-text="{{ comment.text|e('html_attr') }}" ><iconify-icon title="éditer" icon="tabler:edit" style="color: rgb(197, 197, 0);" height="30" width="30"></iconify-icon></span>
+                                            {# Deleted comment #}
+
+                                            <form action="{{ path('commentMatch_delete', {'matchId': matchId, 'id': comment.id}) }}" method="post" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer ce commentaire ?');">
+                                                <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ comment.id) }}">
+                                                <button type="submit" class="delete">
+                                                    <iconify-icon title="supprimer" icon="material-symbols:delete" style="color:  #9c001a;" height="30" width="30"></iconify-icon>
+                                                </button>
+                                            </form>
+                                            {# Commentaire Signaler #}
+                                            <form action="" method="post" id="signal-id" class="signal-form">
+                                                <input type="checkbox" name="userSignaled" id="report" value=" {{comment.id}} ">
+                                                <label for="report">Signaler</label>
+                                            </form>
+                                        </div>
+                                    </div>
                                 </div>
-                            </div>
-                        </div>
+                            {% endfor %}
+                        {% else %}
+                            <p class="text text-center">Aucun commentaire disponible pour ce match.</p>
+                        {% endif %}
                     </div>
                   
                 </div>
                 {#  ---------- card-table--------------------------- #}
                 <div id="card-classement" class="match-card display-none">
-                    <table class="league-table table table-hover">
+                    <table id="league-table" class="league-table table table-hover">
                         <thead>
                             <tr>
                             <th scope="col">#</th>
@@ -125,18 +141,24 @@
                             </tr>
                         </thead>
                         <tbody>
+                            {% set counter = 1 %}
+                            {% for position in table %}
+                                
                             <tr>
-                                <th scope="row">1</th>
-                                <th>mar</th>
-                                <th>Mark</th>
-                                <th>Mark</th>
-                                <th>Mark</th>
-                                <th>Mark</th>
-                                <th>Mark</th>
-                                <th>Mark</th>
-                                <th>Mark</th>
-                                <th>Mark</th>
+                                <td scope="row">{{counter}}</td>
+                                <td class="fw-bold"> {{position.teamName}} </dh>
+                                <td> {{position.matches}} </td>
+                                <td> {{position.won}} </td>
+                                <td> {{position.lost}} </td>
+                                <td> {{position.draw}} </td>
+                                <td> {{position.goals}} </td>
+                                <td> {{position.opponentGoals}} </td>
+                                <td> {{position.goalDiff}} </td>
+                                <td> {{position.points}} </td>
+                                {% set counter = counter + 1 %}
                             </tr>
+                            {% endfor %}
+                            
                         </tbody>
                     </table>
                 </div>
@@ -145,11 +167,33 @@
         
                 </div>
             </div>
-            
         </div>
 
-       
-   
+        <!-- Modal -->
+        <div class="modal fade" id="editCommentModal" tabindex="-1" aria-labelledby="editCommentModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                <h5 class="modal-title" id="editCommentModalLabel">Modifier le Commentaire</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                <form id="editCommentForm">
+                    <input type="hidden" id="commentId" name="commentId">
+                    <div class="mb-3">
+                    <label for="commentText" class="col-form-label">Commentaire:</label>
+                    <textarea class="form-control" id="commentText" name="commentText" required></textarea>
+                    </div>
+                    <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
+                    <button type="submit" class="btn btn-primary">Enregistrer les Changements</button>
+                    </div>
+                </form>
+                </div>
+            </div>
+            </div>
+        </div>
+        
     </section>
 
 {% endblock %}
