@@ -2,11 +2,12 @@
 
 namespace App\Entity;
 
-use App\Repository\EventRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\EventRepository;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 #[ORM\Entity(repositoryClass: EventRepository::class)]
 class Event
@@ -362,4 +363,22 @@ class Event
 
         return $this;
     }
+
+    
+    // On ajout la logique pour la validation de la date de fin
+    public static function validateEndDate($endDate, ExecutionContextInterface $context, $payload)
+{
+    $startDate = $context->getObject()->getStartDate();
+    // Création d'une copie de startDate pour ne pas modifier l'original
+    $minEndDate = clone $startDate;
+    $minEndDate->modify('+2 hours 30 minutes');
+
+    if ($endDate <= $minEndDate) {
+        $context->buildViolation('La date de fin doit être au moins 2 heures et 30 minutes après la date de début.')
+            ->atPath('endDate')
+            ->addViolation();
+    }
+}
+
+
 }

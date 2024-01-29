@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Créer un évènement{% endblock %}
+{% block title %}Modifier un évènement{% endblock %}
 
 {% block body %}
 {# ----------------- Section Center Start ---------------  #}
@@ -13,15 +13,15 @@
             <span>Match&amp;Chill <span class="slash">/</span></span>
         </a>
         <a class="second-ariane" href="">évènéments <span class="slash">/</span></a>
-        <span class="second-ariane">créer un évènement <span class="slash">/</span></span>
+        <span class="second-ariane">modifier un évènement <span class="slash">/</span></span>
     </div>
 
     {# ----------- formulaire création d'évènements --------------------------------- #}
     
     <div class="container mt-5">
-        <h1 class="mb-4 fs-2 text-center title-event">Créer un Événement</h1>
+        <h1 class="mb-4 fs-2 text-center title-event">Modifier un Événement</h1>
        
-        {{ form_start(form, {'action': path('app_events_new'), 'method': 'POST'}) }}
+        {{ form_start(form, {'action': path('app_events_edit', {'id': id}), 'method': 'POST'}) }}
 
             {{ form_row(form.category) }}
             <div class="row">
@@ -68,7 +68,7 @@
 
             {{ form_row(form.honeyPot) }}
 
-            <button type="submit" class="btn btn-primary mb-5 d-block mx-auto px-5">Créer</button>
+            <button type="submit" class="btn btn-primary mb-5 d-block mx-auto px-5">Modifier</button>
 
         {{ form_end(form) }}
 
