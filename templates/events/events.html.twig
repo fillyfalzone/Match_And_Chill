@@ -14,50 +14,78 @@
         </a>
         <a class="second-ariane" href="">évènéments <span class="slash">/</span></a>
     </div>
-
-    <h1 id="single-title">liste des évènements</h1>
     
-    {# ---------------------- Filter ----------------------------  #}
-    <div class="filter-select mb-3">
-        <div class="filter-block">
-            <div class="date-container">
-                <a href=""><iconify-icon icon="typcn:chevron-left" style="color: #161b35;" width="31" height="31"></iconify-icon></a>
-                <select id="filter-team" class="filter-team form-select form-select-sm" aria-label="Small select example">
-                    <option value="">par equipe</option>
-                </select>
-                <a href=""><iconify-icon icon="typcn:chevron-right" style="color: #161b35;" width="31" height="31"></iconify-icon></a>
-            </div>
-        </div>
-    </div>
 
     {# -------------- List of event ------------------------- #}
 
-    <div class="">
-        <a href="" class="col-4 btn btn-primary d-block mx-auto my-3">Créer un évènement</a>
-        <div id="event-id" class="event-item">
-            <h2 class="event-name"><a href="">EventName</a></h2>
-            <div class="event-body">
-                <div class="fav-status">
-                    <iconify-icon icon="material-symbols-light:star-outline" style="color: #161B35;" width="25" height="25" class="star" id="star-${match.matchID}"></iconify-icon>
-                    <span>status</span>
-                </div>
-                <div class="number-places">
-                    <span> Disponibilité</span>
-                    <span>2/10</span>
-                </div>
-                <div class="date-time">
-                    <span>date</span>
-                    <span>time</span>
-                </div>
-                <div class="match-event">
-                    <span>team1</span>
-                    <span>team2</span>
+    <div class="container py-5">
+        <h1 class="title-event text-center mb-4">LISTE DES ÉVÉNEMENTS</h1>
+        {# ---------------------Créer un evenement ---------------  #}
+        <div class="col">
+            <a href=" {{path("app_events_new")}} " class="add-event">Créer un évènement</a>
+        </div>
+        <div class="d-flex justify-content-between gap-2 flex-wrap mb-4">
+            <select class="form-select" style="width: 32%;">
+                <option selected>Trier par date</option>
+                <!-- Options -->
+            </select>
+            <select class="form-select" style="width: 32%;">
+                <option selected>Trier par statut</option>
+                <!-- Options -->
+            </select>
+            <select class="form-select" style="width: 32%;">
+                <option selected>Trier par équipe</option>
+                <!-- Options -->
+            </select>
+        </div>
+    
+        <!-- Début d'un événement -->
+        <div class="card-event mb-4">
+            <div class="card-body">
+                <div class="row align-items-center">
+                    <div class="col-auto">
+                        <!-- Placeholder pour l'avatar -->
+                        <img src="https://via.placeholder.com/50" alt="avatar" class="rounded-circle mb-2">
+                        <p class="text-center mb-0">userName</p>
+                    </div>
+                    <div class="card-detail col">
+                        <h5 class="card-title fs-6">EventName</h5>
+                        <p class="card-text small mb-1">Ajouté le 11-02-2024 à 12:23</p>
+                        <p class="card-text small mb-1">Statut : ouvert</p>
+                        <p class="card-text small mb-1">Disponibilité : 12/25 places</p>
+                      
+                    </div>
                 </div>
             </div>
         </div>
+        <div class="card-event mb-4">
+            <div class="card-body">
+                <div class="row align-items-center">
+                    <div class="col-auto">
+                        <!-- Placeholder pour l'avatar -->
+                        <img src="https://via.placeholder.com/50" alt="avatar" class="rounded-circle mb-2">
+                        <p class="text-center mb-0">userName</p>
+                    </div>
+                    <div class="col">
+                        <h5 class="card-title fs-6">EventName</h5>
+                        <p class="card-text small mb-1">Ajouté le 11-02-2024 à 12:23</p>
+                        <p class="card-text small mb-1">Statut : ouvert</p>
+                        <p class="card-text small mb-1">Disponibilité : 12/25 places</p>
+                      
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Fin d'un événement -->
 
+        {# ---------------------Créer un evenement ---------------  #}
+        <div class="col">
+            <a href=" {{path("app_events_new")}} " class="add-event">Créer un évènement</a>
+        </div>
+    
+        <!-- Répétez le bloc ci-dessus pour chaque événement... -->
+    
     </div>
-
 </div>
 
 {% endblock %}

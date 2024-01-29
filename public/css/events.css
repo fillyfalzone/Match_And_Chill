@@ -58,39 +58,53 @@ body {
 
 /* -------------- List of event ------------------------- */
 
-#single-title {
-    color: var(--bleu-navy);
-    font-weight: bold;
-    font-size: 1.8rem;
+.title-event {
+    font-size: 1.3rem;
     font-family: var(--roboto);
+    color: var(--light) !important;
     text-transform: uppercase;
-    text-align: center;
-    padding: 12px;
-}
-
-.event-name {
     background-color: var(--bleu-navy);
-    font-size: 1rem;
-    font-family: var(--roboto);
-    font-weight: bold;
-    color: var(--light);
+    font-weight: 500;
+    color: var(--bleu-navy);
+    padding: 10px;
+    border-radius: 5px;
+}
+
+
+
+
+
+/* -------- créer une evènement -----------*/
+.add-event {
+    display: block;
+    width: fit-content;
+    margin: 15px auto;
     padding: 5px 10px;
+    border-radius: 5px;
+    background-color: var(--pal-red);
+    color: var(--light);
+    font-family: var(--roboto);
+    transition: all 0.25s ease-in-out;
 }
 
-.event-body {
-    display: flex;
-    gap: 10px;
+.add-event:hover {
+    background-color: var(--blood-red);
 }
 
-.fav-status, .number-places, .date-time, .match-event{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 5px;
+/* ----------  cARD EVENT   ---------*/
+
+
+.card-event {
+    padding: 10px;
+    border-radius: 5px;
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.178);
+    transition: all 0.25s ease-in-out;
 }
 
-.match-event {
-    flex-grow: 1;
-
+.card-event:hover {
+    background-color: rgba(190, 188, 188, 0.082);
 }
 
+.card-detail {
+    cursor: pointer;
+}

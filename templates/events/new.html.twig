@@ -1,0 +1,95 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Créer un évènement{% endblock %}
+
+{% block body %}
+{# ----------------- Section Center Start ---------------  #}
+
+<div id="section-center" class="section-center">
+    {#  ------------------- file d'ariane ------------ #}
+    <div class="file-ariane mb-3">
+        <a class="home-ariane" href="{{ path('app_home') }}">
+            <iconify-icon class="icon" icon="ion:home-sharp" width="13" height="13"></iconify-icon>
+            <span>Match&amp;Chill <span class="slash">/</span></span>
+        </a>
+        <a class="second-ariane" href="">évènéments <span class="slash">/</span></a>
+        <span class="second-ariane">créer une évènement <span class="slash">/</span></span>
+    </div>
+
+    {# ----------- formulaire création d'évènements --------------------------------- #}
+    
+    <div class="container mt-5">
+        <h1 class="mb-4 fs-2 text-center title-event">Créer un Événement</h1>
+        <form>
+            <div class="mb-3">
+                <label for="title" class="form-label">Intitulé</label>
+                <input type="text" class="form-control" id="title" placeholder="Nom de l'événement">
+            </div>
+            <div class="mb-3">
+                <label for="category" class="form-label">Catégorie</label>
+                <select class="form-select" id="form-category">
+                    <option selected>Selectionnez une catégorie</option>
+                    <!-- Options de catégorie ici -->
+                </select>
+            </div>
+            <div class="mb-3">
+                <label for="match" class="form-label">Match</label>
+                <select class="form-select" id="match">
+                    <option selected>Selectionnez un match</option>
+                    <!-- Options de match ici -->
+                </select>
+            </div>
+            <div class="row g-3">
+                <div class="col-md-6">
+                    <label for="startDate" class="form-label">Date de début</label>
+                    <input type="date" class="form-control" id="startDate">
+                </div>
+                <div class="col-md-6">
+                    <label for="startTime" class="form-label">Heure</label>
+                    <input type="time" class="form-control" id="startTime">
+                </div>
+            </div>
+            <div class="row g-3 mt-3">
+                <div class="col-md-6">
+                    <label for="endDate" class="form-label">Date de fin</label>
+                    <input type="date" class="form-control" id="endDate">
+                </div>
+                <div class="col-md-6">
+                    <label for="endTime" class="form-label">Heure</label>
+                    <input type="time" class="form-control" id="endTime">
+                </div>
+            </div>
+            <div class="mb-3">
+                <label for="participants" class="form-label">Nombre de participants</label>
+                <input type="number" class="form-control" id="participants">
+            </div>
+            <div class="mb-3">
+                <label for="description" class="form-label">Description</label>
+                <textarea class="form-control" id="description" rows="3"></textarea>
+            </div>
+            <div class="mb-3">
+                <label for="address" class="form-label">Adresse</label>
+                <input type="text" class="form-control" id="address">
+            </div>
+            <div class="row g-3 mb-3">
+                <div class="col-md-6">
+                    <label for="city" class="form-label">Ville</label>
+                    <input type="text" class="form-control" id="city">
+                </div>
+                <div class="col-md-6">
+                    <label for="postalCode" class="form-label">Code postal</label>
+                    <input type="text" class="form-control" id="postalCode">
+                </div>
+            </div>
+            <button type="submit" class="btn btn-primary mb-5 d-block mx-auto px-5">Créer</button>
+            <div class="mb-3">
+                <label for="map" class="form-label">Map</label>
+                <!-- Ici, intégrez une carte ou un espace réservé pour celle-ci -->
+                <textarea class="form-control" id="map" rows="3"></textarea>
+            </div>
+            
+        </form>
+    </div>
+</div>
+
+{% endblock %}

@@ -51,7 +51,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(type: 'boolean')]
     private $isVerified = false;
 
-    #[ORM\OneToMany(mappedBy: 'creator', targetEntity: Topic::class)]
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Topic::class)]
     private Collection $topics;
 
     #[ORM\ManyToMany(targetEntity: Topic::class, inversedBy: 'usersFavorite')]
@@ -71,7 +71,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(mappedBy: 'receiver', targetEntity: Message::class)]
     private Collection $receiveMessages;
 
-    #[ORM\OneToMany(mappedBy: 'creator', targetEntity: Event::class)]
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Event::class)]
     private Collection $events;
 
     #[ORM\ManyToMany(targetEntity: Event::class, mappedBy: 'userFavorite')]
@@ -254,7 +254,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         if (!$this->topics->contains($topic)) {
             $this->topics->add($topic);
-            $topic->setCreator($this);
+            $topic->setUser($this);
         }
 
         return $this;
@@ -264,8 +264,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         if ($this->topics->removeElement($topic)) {
             // set the owning side to null (unless already changed)
-            if ($topic->getCreator() === $this) {
-                $topic->setCreator(null);
+            if ($topic->getUser() === $this) {
+                $topic->setUser(null);
             }
         }
 
@@ -425,7 +425,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         if (!$this->events->contains($event)) {
             $this->events->add($event);
-            $event->setCreator($this);
+            $event->setUser($this);
         }
 
         return $this;
@@ -435,8 +435,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         if ($this->events->removeElement($event)) {
             // set the owning side to null (unless already changed)
-            if ($event->getCreator() === $this) {
-                $event->setCreator(null);
+            if ($event->getUser() === $this) {
+                $event->setUser(null);
             }
         }
 

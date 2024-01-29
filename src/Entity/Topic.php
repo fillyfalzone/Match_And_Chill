@@ -31,7 +31,7 @@ class Topic
 
     #[ORM\ManyToOne(inversedBy: 'topics')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?User $creator = null;
+    private ?User $user = null;
 
     #[ORM\ManyToMany(targetEntity: User::class, mappedBy: 'favoriteTopic')]
     #[ORM\JoinTable(name:'favoriteTopic')]
@@ -99,14 +99,14 @@ class Topic
         return $this;
     }
 
-    public function getCreator(): ?User
+    public function getUser(): ?User
     {
-        return $this->creator;
+        return $this->user;
     }
 
-    public function setCreator(?User $creator): static
+    public function setUser(?User $user): static
     {
-        $this->creator = $creator;
+        $this->user = $user;
 
         return $this;
     }
