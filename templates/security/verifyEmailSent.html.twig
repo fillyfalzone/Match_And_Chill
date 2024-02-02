@@ -1,0 +1,35 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Mail de validation envoyer{% endblock %}
+{% block meta_description %}
+    page de validation de mail
+{% endblock %}
+
+{% block body %}
+
+{# ----------------- Section Center Start ---------------  #}
+<section id="section-center">
+    {#  ------------------- file d'ariane START ------------ #}
+<div class="file-ariane mb-3">
+    <a class="home-ariane" href="{{ path('app_home') }}">
+        <iconify-icon class="icon" icon="ion:home-sharp" width="13" height="13"></iconify-icon>
+        <span>Match&amp;Chill <span class="slash">/</span></span>
+    </a>
+    <span>Mail de validation envoyer</span>
+   
+</div>
+{#  ------------------- file d'ariane END ------------ #}
+
+<div id="login-body">
+    <div id="form-container">
+        <h1 class="h3 mb-3 text-center mx-auto">Mail de validation envoyer</h1>
+        <p class="text-center">Un mail de validation vous a été envoyer avec succès, vous avez 3h pour réinitialiser votre mot de passe</p>
+        <a href="{{ path('app_login') }}" class="text-success my-3">se connecter</a>
+    
+    </div>
+</div>
+</section>
+
+
+
+{% endblock %}

@@ -4,8 +4,14 @@
     {% block title %}
         {% if categoryForumId %}
             Modifier la categorie du forum
+            {% block <meta_description %}
+            Modifier la categorie du forum
+            {% endblock %}
         {% else %}
             Créer une nouvelle categorie du forum
+                {% block <meta_description %}
+                Créer une nouvelle categorie du forum
+                {% endblock %}
         {% endif %}
     {% endblock %}
 

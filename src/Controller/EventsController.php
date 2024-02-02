@@ -5,7 +5,6 @@ namespace App\Controller;
 use App\Entity\Event;
 use App\Form\EventFormType;
 use Doctrine\ORM\EntityManagerInterface;
-use App\Repository\CategoryEventRepository;
 use App\Repository\EventRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -15,6 +14,9 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInt
 
 class EventsController extends AbstractController
 {
+    // attribut privé qui contient le repository de l'entité Event
+    private $eventRepository;
+
     #[Route('/events', name: 'app_events')]
     public function index(): Response
     {   
@@ -22,10 +24,9 @@ class EventsController extends AbstractController
             'controller_name' => 'EventsController',
         ]);
     }
-
     // New event
     #[Route('/events/new', name: 'app_events_new')]
-    public function new(Event $event = null, CategoryEventRepository $categoryEvent, EntityManagerInterface $entityManager, TokenStorageInterface $tokenStorage, Request $request ): Response
+    public function new(Event $event = null, EntityManagerInterface $entityManager, TokenStorageInterface $tokenStorage, Request $request ): Response
     {   
         // Création d'un nouvel objet Event
         $event = new Event();
@@ -60,9 +61,6 @@ class EventsController extends AbstractController
             'form' => $form->createView(),
         ]);
     }
-
-
-    
 
     // Edit event
     #[Route('/events/edit/{id}', name: 'app_events_edit')]

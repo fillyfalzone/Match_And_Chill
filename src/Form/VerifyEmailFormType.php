@@ -2,34 +2,36 @@
 
 namespace App\Form;
 
-use App\Entity\CategoryForum;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Validator\Constraints\Email;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\EmailType;
 
-class CategoryForumType extends AbstractType
+class VerifyEmailFormType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('name', TextType::class, [
-                'attr' => ['class' => 'form-control']
-            ])
-            ->add('description', TextType::class, [
-                'attr' => ['class' => 'form-control']
-            ])
-            ->add('Submit', SubmitType::class, [
-                'attr' => [ 'class' => 'submit-btn']
-            ])
-        ;
+            ->add('email', EmailType::class, [
+                'label' => 'Email address',
+                'constraints' => [
+                    new Email([
+                        'message' => 'Please enter a valid email address.',
+                    ]),
+                ],
+                'attr' => [
+                    'autofocus' => true,
+                    'placeholder' => 'Enter your email address',
+                    'required' => 'required',
+                    'class' => 'form-control mt-2',
+                ],
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'data_class' => CategoryForum::class,
             // Activation de la protection CSRF
             'csrf_protection' => true,
             'csrf_field_name' => '_token',

@@ -10,6 +10,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use App\Repository\FavoriteMatchRepository;
 use App\Repository\UserRepository;
 use Exception;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\HttpFoundation\Response;
@@ -25,9 +26,7 @@ class MatchsController extends AbstractController
 
     #[Route('/matchsList', name: 'app_matchsList')]
         public function index(): Response
-    {
-        
-        
+    {   
         return $this->render('matchs/matchsList.html.twig', [
             'controller_name' => 'MatchsController',
         ]);
@@ -74,12 +73,13 @@ class MatchsController extends AbstractController
             'table' => $table,
         ]);
     }
-
-
-    
+  
     /*
         *  Gestion des matchs favoris 
     */
+    // Ajouter ou supprimer un match des favoris
+    // access control 
+    // #[IsGranted('ROLE_USER', message: 'Vous devez être connecté pour ajouter un match à vos favoris')]
     #[Route('/matchList/favorite', name: 'update_favorite_match', methods: ['POST'])]
     public function favoriteMatch(Request $request, TokenStorageInterface $tokenStorage, EntityManagerInterface $entityManager, FavoriteMatchRepository $favoriteManager): Response
     {
@@ -88,16 +88,16 @@ class MatchsController extends AbstractController
 
         // Vérifier si un utilisateur est connecté
         if (!$user) {
-            // Si aucun utilisateur n'est pas connecté, renvoyer une réponse JSON avec un message d'erreur
+            // Si aucun utilisateur n'est connecté, renvoyer une réponse JSON avec un message d'erreur
             // return new JsonResponse(['status' => 'error', 'message' => 'Utilisateur non connecté'], Response::HTTP_UNAUTHORIZED);
-            throw new Exception("user pas connecté");
+            throw new Exception("Utilisateur non connecté");
         }
-
         // Récupération de l'ID de l'utilisateur
         $userId = $user->getId();
 
         // Décodage des données JSON envoyées dans la requête
         $data = json_decode($request->getContent(), true);
+        // néttoyage des données.
         $matchId = filter_var($data['id'], FILTER_SANITIZE_NUMBER_INT); // ID du match à mettre en favori ou à retirer des favoris
         $status = filter_var($data['status'], FILTER_SANITIZE_NUMBER_INT); // Statut indiquant si le match doit être ajouté ou retiré des favoris
 
@@ -135,7 +135,7 @@ class MatchsController extends AbstractController
     }
 
     // Recupérer les matchs favoris pour les envoyer au chargement de la page
-
+    // #[IsGranted('ROLE_USER', message: 'Vous devez être connecté pour ajouter un match à vos favoris')]
     #[Route('/matchList/favorite/getmatchs', name: 'get_favorite_matchs')]
     public function getFavoriteMatchs (TokenStorageInterface $tokenStorage, FavoriteMatchRepository $favoriteMatchRepository, EntityManagerInterface $entityManager): Response 
     {
@@ -163,6 +163,7 @@ class MatchsController extends AbstractController
     */
 
     // Add comment 
+    // #[IsGranted('ROLE_USER', message: 'Vous devez être connecté pour ajouter un match à vos favoris')]
     #[Route('/commentMatch/add', name: 'comment_match_add')]
     public function addCommentMatch(CommentMatch $comment, EntityManagerInterface $entityManager): Response
     {
@@ -172,6 +173,7 @@ class MatchsController extends AbstractController
 
 
     // Delete comment
+    // #[IsGranted('ROLE_USER', message: 'Vous devez être connecté pour ajouter un match à vos favoris')]
     #[Route('/matchsList/match/{matchId}/delete/comment/{id}', name: 'app_match_delete_comment')]
     public function deleteComment(CommentMatch $comment, EntityManagerInterface $entityManager): Response
     {

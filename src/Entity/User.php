@@ -92,6 +92,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: CommentMatch::class, orphanRemoval: true)]
     private Collection $commentMatches;
 
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: PasswordResetToken::class)]
+    private Collection $passwordResetTokens;
+
    
     public function __construct()
     {
@@ -109,6 +112,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->registrationDate = new DateTime('now');
         $this->isBanned = false;
         $this->commentMatches = new ArrayCollection();
+        $this->passwordResetTokens = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -578,6 +582,36 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
             // set the owning side to null (unless already changed)
             if ($commentMatch->getUser() === $this) {
                 $commentMatch->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, PasswordResetToken>
+     */
+    public function getPasswordResetTokens(): Collection
+    {
+        return $this->passwordResetTokens;
+    }
+
+    public function addPasswordResetToken(PasswordResetToken $passwordResetToken): static
+    {
+        if (!$this->passwordResetTokens->contains($passwordResetToken)) {
+            $this->passwordResetTokens->add($passwordResetToken);
+            $passwordResetToken->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removePasswordResetToken(PasswordResetToken $passwordResetToken): static
+    {
+        if ($this->passwordResetTokens->removeElement($passwordResetToken)) {
+            // set the owning side to null (unless already changed)
+            if ($passwordResetToken->getUser() === $this) {
+                $passwordResetToken->setUser(null);
             }
         }
 

@@ -1,6 +1,9 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}Log in!{% endblock %}
+{% block meta_description %}
+    Ceci est la description de ma page spécifique.
+{% endblock %}
 
 {% block body %}
 
@@ -43,6 +46,8 @@
             <button class="btn btn-lg btn-primary d-block mx-auto my-4" type="submit">
                 Se connecter
             </button>
+
+            <a href="{{ path('app_verify_email') }}" class="text-primary d-block text-right" >mot de passe oublié</a>
         </form>
     </div>
 </div>

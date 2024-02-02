@@ -1,6 +1,9 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}Hello FootDataController!{% endblock %}
+{% block meta_description %}
+    page de détails d'un match
+{% endblock %}
 
 {% block body %}
 
@@ -70,12 +73,14 @@
                     {# on affiche le formulaire si le user est connecté #}
                     {% if app.user %}
                         <div class="post-message">
+                            {# foulaire contenant une textarea pour rediger un commentaire #}
                             <form action="{{ path('commentMatch_add', {'matchId': matchId}) }}" method="post" id="post-form">
                                             <textarea name="comment-match" cols="30" rows="2" class="form-control" placeholder="écrire un commentaire ..." required></textarea>
                                 <input type="submit" value="submit" class="comment-sumbit button">
                             </form>
                         </div>
                     {% else %}
+                    {# si le user n'est pas connecté on affiche un message et des liens pour se connecter ou s'inscrire #}
                         <div>
                             <p class="text text-center">Vous devez être connecté pour poster un message</p>
                             <p class="d-flex justify-content-center gap-3 fw-bold">
@@ -193,6 +198,12 @@
             </div>
             </div>
         </div>
+
+        {# liste des utilisateurs #}
+        {% if isGranted('ROLE_ADMIN') %}
+        {# si l'utilisateur est admin le bouton sera affiché #}
+            <li><a href=" {{ path('app_userLisi') }} " class="nav-item">Liste des utilisateurs</a></li>
+        {% endif %}
         
     </section>
 

@@ -29,14 +29,15 @@ class RegistrationController extends AbstractController
     #[Route('/register', name: 'app_register')]
     public function register(Request $request, UserPasswordHasherInterface $userPasswordHasher, EntityManagerInterface $entityManager, AvatarUploader $avatarUploader): Response
     {
-        
+        // On crée un nouvel utilisateur
         $user = new User();
+        // On crée le formulaire d'inscription
         $form = $this->createForm(RegistrationFormType::class, $user);
+        // On traite la requête
         $form->handleRequest($request);
        
-
+        // Si le formulaire est soumis et valide
         if ($form->isSubmitted() && $form->isValid()) {
-          
             //Vérification honeyPot
             if (empty($request->get('honeyPot'))) {
                 // encode the plain password
@@ -46,7 +47,6 @@ class RegistrationController extends AbstractController
                         $form->get('plainPassword')->getData()
                     )
                 );
-
                  // Gérer l'upload de l'avatar
                 $avatarFile = $form->get('avatar')->getData();
                 if ($avatarFile) {
@@ -65,7 +65,7 @@ class RegistrationController extends AbstractController
                 }
                 // on set le nom du fichier de l'avatar 
                 $user->setAvatar($avatarFileName);
-
+                // on enregistre l'utilisateur en base de données
                 $entityManager->persist($user);
                 $entityManager->flush();
 
@@ -78,7 +78,7 @@ class RegistrationController extends AbstractController
                         ->htmlTemplate('registration/confirmation_email.html.twig')
                 );
                 // do anything else you need here, like send an email
-                $this->addFlash('success', 'Inscription réussi');
+                $success = $this->addFlash('success', 'Inscription réussi');
 
                 return $this->redirectToRoute('app_login');
                 
@@ -88,10 +88,10 @@ class RegistrationController extends AbstractController
                 return $this->redirectToRoute('app_register');
             }   
         }
-         
-
+        // Affichage du formulaire
         return $this->render('registration/register.html.twig', [
             'registrationForm' => $form->createView(),
+            'success' => $success ?? null,
         ]);
     }
 

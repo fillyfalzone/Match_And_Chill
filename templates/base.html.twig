@@ -4,6 +4,7 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>{% block title %}Welcome!{% endblock %}</title>
+        <meta name="description" content="{{ block('meta_description') }}">
         <link rel="icon" href="{{ asset('images/icon/icon-bleu.png') }}" type="image/png">
      
         {# Google fonts #}
@@ -28,10 +29,13 @@
                 <div class="container py-2">
                     <a href="{{ path('app_home') }}"><img src="{{ asset('images/logo/logo-bleu.svg') }}" alt="logo match and chill" class="logo"></a>
                     <div class="logs">
+                        {# controle de l'accès au bouton deconnecté uniquement si l'utilisateur est connecté #}
                         {% if app.user %}
+                        {# si l'utilisateut est connecté propose lui de se déconnecté #}
                             <span>Bienvenu {{app.user.pseudo}} </span>
                             <a href="{{ path('app_logout') }}" id="logout">se déconnecter</a>
                         {% else %}
+                        {# sinon propose lui de s'inscrire ou de se connter #}
                         <a href="{{ path('app_login') }}" id="login">se connecter</a>
                         <a href="{{ path('app_register') }}" id="register" class="button">s'inscrire</a>
                         {% endif %}

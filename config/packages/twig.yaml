@@ -1,5 +1,7 @@
 twig:
     default_path: '%kernel.project_dir%/templates'
+    # Automatically escape all variables in templates
+    # autoescape: true 
 
 when@test:
     twig:

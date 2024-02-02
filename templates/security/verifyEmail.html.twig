@@ -1,0 +1,39 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Vérification email{% endblock %}
+{% block meta_description %}
+    page de demande de réinitialisation de mot de passe
+{% endblock %}
+
+{% block body %}
+
+{# ----------------- Section Center Start ---------------  #}
+<section id="section-center">
+    {#  ------------------- file d'ariane START ------------ #}
+<div class="file-ariane mb-3">
+    <a class="home-ariane" href="{{ path('app_home') }}">
+        <iconify-icon class="icon" icon="ion:home-sharp" width="13" height="13"></iconify-icon>
+        <span>Match&amp;Chill <span class="slash">/</span></span>
+    </a>
+    <span>Vérification Email</span>
+   
+</div>
+{#  ------------------- file d'ariane END ------------ #}
+
+<div id="login-body">
+    <div id="form-container">
+        {{ form_start(verifyEmailForm) }}
+        <h1 class="h3 mb-3 text-center mx-auto">Vérification Email</h1>
+          
+            {{ form_row(verifyEmailForm.email) }}
+            <button class="btn btn-lg btn-primary d-block mx-auto my-4" type="submit">
+                Demander la réinitialisation
+            </button>
+        {{ form_end(verifyEmailForm)}}
+    </div>
+</div>
+</section>
+
+
+
+{% endblock %}

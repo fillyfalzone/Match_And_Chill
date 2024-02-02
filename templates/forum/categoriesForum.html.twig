@@ -30,6 +30,10 @@
 {% extends 'forum/index.html.twig' %}
 {% block title %}La liste des catégories du forum{% endblock %}
 
+{% block <meta_description %}
+    Liste des catégories du forum
+{% endblock %}
+
 {% block body %}
     <div id="section-category">
         {% for category in categories %}

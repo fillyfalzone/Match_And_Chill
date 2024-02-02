@@ -139,6 +139,11 @@ class EventFormType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => Event::class,
+            // Activation de la protection CSRF
+            'csrf_protection' => true,
+            'csrf_field_name' => '_token',
+            // Génération d'un identifiant unique pour le token lié à un type de formulire spécifique
+            'csrf_token_id' => 'registration_item',
         ]);
     }
 }
