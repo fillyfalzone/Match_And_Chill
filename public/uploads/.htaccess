@@ -1,0 +1,6 @@
+# Protège le fichier .htaccess
+<Files .htaccess>
+    # Empêche l'accès direct aux fichiers
+    Order allow,deny
+    Deny from all
+</Files>

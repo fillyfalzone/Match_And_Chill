@@ -1,31 +1,3 @@
-{# {% extends 'forum/index.html.twig' %}
-
-{% block title %}La liste des catégories du forum{% endblock %}
-
-{% block body %}
-
-    <div id="section-category">
-        {% for category in categories %}
-            <article class="category">
-                <div class="left">
-                    <a href=""><h2 class="category-name">{{ category.name }}</h2></a>
-                    <small class="category-description"><strong>description:</strong> {{ category.description }}</small>
-                </div>
-                <div class="right">
-                    <a class="add" href=""></a>
-                    <a class="edit" href=""></a>
-                    <a class="delete" href=""></a>
-                    <a class="category-topic" href="">
-                        <span class="icon-topic"></span>
-                        <span class="nb-topic">15</span>
-                    </a>
-                </div>
-            </article>
-        {% endfor %}
-    </div> 
-
-{% endblock %} #}
-
 
 {% extends 'forum/index.html.twig' %}
 {% block title %}La liste des catégories du forum{% endblock %}

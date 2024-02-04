@@ -39,6 +39,27 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
         $this->getEntityManager()->flush();
     }
 
+    public function participate($userId, $eventId)
+{
+    // Crée une instance de QueryBuilder pour construire la requête DQL
+    $qb = $this->createQueryBuilder('u');
+
+    // Sélectionne l'entité User, optimisant la requête en chargeant uniquement les données nécessaires
+    $qb->select('u')
+    ->join('u.paticipateEvents', 'p') // Correction ici: utilise 'paticipateEvents' au lieu de 'participations'
+    ->join('p.usersParticipate', 'e') // Cette ligne semble incorrecte basée sur votre modèle. Vous devriez avoir besoin d'une approche différente pour accéder à l'événement.
+    ->where('u.id = :userId') // Condition pour filtrer sur l'ID de l'utilisateur
+    ->andWhere('e.id = :eventId') // Condition supplémentaire pour filtrer sur l'ID de l'événement
+    ->setParameters([
+        'userId' => $userId, // Définit le paramètre userId pour la requête
+        'eventId' => $eventId, // Définit le paramètre eventId pour la requête
+    ]);
+
+    // Exécute la requête pour obtenir le résultat et le retourne
+    return $qb->getQuery()->getOneOrNullResult(); // Manque un point-virgule ici dans votre code original
+}
+
+  
 //    /**
 //     * @return User[] Returns an array of User objects
 //     */

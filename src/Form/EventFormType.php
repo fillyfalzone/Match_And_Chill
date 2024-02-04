@@ -2,13 +2,8 @@
 
 namespace App\Form;
 
-use DateTime;
-use App\Entity\User;
 use App\Entity\Event;
 use App\Entity\CategoryEvent;
-use Symfony\Component\Form\FormError;
-use Symfony\Component\Form\FormEvent;
-use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
@@ -17,7 +12,6 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 
@@ -59,25 +53,29 @@ class EventFormType extends AbstractType
             'label' => 'Nombre de places',
             'attr' => [
                 'class' => 'form-control mb-3',
-                'id' => 'numberOfPlaces',
-                'min' => '0',
+                'min' => '1',
+                'max' => '10000',
                 'step' => '1',
             ],
             'required' => true,
         ])
         ->add('startDate', DateTimeType::class, [
             'label' => 'Date de début',
+            'widget' => 'single_text',
             'attr' => [
                 'class' => 'form-control mb-3',
-                'id' => 'startDate',
+                'max' => '2024-12-31T23:59',
+                'min' => '2024-02-01T10:00',
             ],
             'required' => true,
         ])
         ->add('endDate', DateTimeType::class, [
             'label' => 'Date de fin',
+            'widget' => 'single_text',
             'attr' => [
                 'class' => 'form-control mb-3',
-                'id' => 'endDate',
+                'max' => '2024-12-31T23:59',
+                'min' => '2024-02-01T10:00',
             ],
             'required' => true,
         ])
@@ -105,19 +103,6 @@ class EventFormType extends AbstractType
             ],
             'required' => true,
         ])
-        // Ajoutez la logique pour les options des matchs
-        ->add('matchId', ChoiceType::class, [
-            'label' => 'Match',
-            'attr' => [
-                'class' => 'form-select',
-                'id' => 'matchId',
-            ],
-            'choices' => [
-                 'match1' => '25365',
-                 'match2' => '20005',
-            ],
-            'required' => true,
-        ])
         ->add('country', TextType::class, [
             'label' => 'Pays',
             'attr' => [
@@ -132,7 +117,9 @@ class EventFormType extends AbstractType
             ],
            'mapped' => false,
         ])
-        ;
+        // Ajoutez la logique pour les options des équipes et des matchs
+        ->add('matchId', HiddenType::class);
+        
     }
 
     public function configureOptions(OptionsResolver $resolver): void

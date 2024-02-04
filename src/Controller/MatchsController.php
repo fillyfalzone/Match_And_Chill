@@ -79,7 +79,7 @@ class MatchsController extends AbstractController
     */
     // Ajouter ou supprimer un match des favoris
     // access control 
-    // #[IsGranted('ROLE_USER', message: 'Vous devez être connecté pour ajouter un match à vos favoris')]
+    #[IsGranted('ROLE_USER', message: 'Vous devez être connecté pour ajouter un match à vos favoris')]
     #[Route('/matchList/favorite', name: 'update_favorite_match', methods: ['POST'])]
     public function favoriteMatch(Request $request, TokenStorageInterface $tokenStorage, EntityManagerInterface $entityManager, FavoriteMatchRepository $favoriteManager): Response
     {

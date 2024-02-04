@@ -1,8 +1,20 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Créer un évènement{% endblock %}
+
+{% block title %}
+    {% if id %}
+        Modier un évènement
+    {% else %}
+        Créer un évènement 
+    {% endif %}
+{% endblock %}
+
 {% block meta_description %}
-    créer un évènement
+    {% if condition %}
+        Modifier un évènement
+    {% else %}
+        créer un évènement
+    {% endif %}
 {% endblock %}
 
 {% block body %}
@@ -15,14 +27,39 @@
             <iconify-icon class="icon" icon="ion:home-sharp" width="13" height="13"></iconify-icon>
             <span>Match&amp;Chill <span class="slash">/</span></span>
         </a>
-        <a class="second-ariane" href="">évènéments <span class="slash">/</span></a>
+        <a class="second-ariane" href=" {{path("app_events")}} ">évènéments <span class="slash">/</span></a>
+        {% if id %}
+        <span class="second-ariane">Modifier un évènement <span class="slash">/</span></span>
+        {% else %}
         <span class="second-ariane">créer un évènement <span class="slash">/</span></span>
+        {% endif %}
     </div>
+    
+        {# ---------------------Créer un evenement ---------------  #}
+        {% if id %}
+            <h1 class="mb-4 fs-2 text-center title-event">Modifier un Événement</h1> 
+        {% else %}
+        <h1 class="mb-4 fs-2 text-center title-event">Créer un Événement</h1>    
+        {% endif %}
 
-    {# ----------- formulaire création d'évènements --------------------------------- #}
+
+    {#  Filtre selection d'équipe et match #}
+
+    <div class="d-flex justify-content-between gap-2 flex-wrap mb-4">
+        {# ------ Select équipe ----------- #}
+        <select id="select-teamId" name="select-teamId" class="form-select" style="width: 32%;">
+           <option value="0" disabled selected>Choisir une équipe</option>
+        </select>
+         {# ------ Select match ----------- #}
+        <select id="select-matchId" name="select-matchId" class="form-select" style="width: 32%;">
+            <option value="0" disabled selected>Choisir un match</option>
+        </select>
+    </div>
+    <p id="text-atl" class="text-danger text-center">Veuillez sélectionner une équipe et un match!</p>
+
+    {# ----------- formulaire création d'évènements --------------------------- #}
     
     <div class="container mt-5">
-        <h1 class="mb-4 fs-2 text-center title-event">Créer un Événement</h1>
        
         {{ form_start(form, {'action': path('app_events_new'), 'method': 'POST'}) }}
 
@@ -35,12 +72,9 @@
                     {{ form_row(form.description) }}
                 </div>
             </div>
-         
+
             <div class="row">
-                <div class="col-sm-6">
-                    {{ form_row(form.matchId) }}
-                </div>
-                <div class="col-sm-6">
+                <div class="col-6">
                     {{ form_row(form.numberOfPlaces) }}
                 </div>
             </div>
@@ -70,10 +104,12 @@
             </div>
 
             {{ form_row(form.honeyPot) }}
-
-            <button type="submit" class="btn btn-primary mb-5 d-block mx-auto px-5">Créer</button>
-
+            <div class="col-4 my-3 mx-auto text-center" id="submit-container">
+             
+            </div>
         {{ form_end(form) }}
+        
+        <p id="text-atl" class="text-danger text-center">Veuillez sélectionner une équipe et un match!</p>
 
     </div>
 </div>
