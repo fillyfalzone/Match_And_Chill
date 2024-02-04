@@ -39,25 +39,29 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
         $this->getEntityManager()->flush();
     }
 
+    // Méthode pour récupérer l'enreigistrement ou un utlisateur et un événement auquel il participe 
     public function participate($userId, $eventId)
-{
-    // Crée une instance de QueryBuilder pour construire la requête DQL
-    $qb = $this->createQueryBuilder('u');
+    {
+        // Crée une instance de QueryBuilder pour construire la requête DQL
+        $qb = $this->createQueryBuilder('u');
 
-    // Sélectionne l'entité User, optimisant la requête en chargeant uniquement les données nécessaires
-    $qb->select('u')
-    ->join('u.paticipateEvents', 'p') // Correction ici: utilise 'paticipateEvents' au lieu de 'participations'
-    ->join('p.usersParticipate', 'e') // Cette ligne semble incorrecte basée sur votre modèle. Vous devriez avoir besoin d'une approche différente pour accéder à l'événement.
-    ->where('u.id = :userId') // Condition pour filtrer sur l'ID de l'utilisateur
-    ->andWhere('e.id = :eventId') // Condition supplémentaire pour filtrer sur l'ID de l'événement
-    ->setParameters([
-        'userId' => $userId, // Définit le paramètre userId pour la requête
-        'eventId' => $eventId, // Définit le paramètre eventId pour la requête
-    ]);
-
-    // Exécute la requête pour obtenir le résultat et le retourne
-    return $qb->getQuery()->getOneOrNullResult(); // Manque un point-virgule ici dans votre code original
-}
+        // Sélectionne l'entité User
+        $qb->select('u')
+        // Jointure avec l'entité Event
+        ->join('u.paticipateEvents', 'p') 
+        ->join('p.usersParticipate', 'e') 
+        // Conditions sur les jointures
+        ->where('u.id = :userId') 
+        // Conditions sur les jointures
+        ->andWhere('e.id = :eventId') 
+        // Définit les paramètres de la requête
+        ->setParameters([
+            'userId' => $userId, 
+            'eventId' => $eventId, 
+        ]);
+        // Exécute la requête et retourne un seul résultat
+        return $qb->getQuery()->getOneOrNullResult(); 
+    }
 
   
 //    /**

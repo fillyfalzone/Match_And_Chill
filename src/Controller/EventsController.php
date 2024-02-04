@@ -103,7 +103,7 @@ class EventsController extends AbstractController
 
     // Delete event
     #[Route('/events/delete/{id}', name: 'app_events_delete')]
-    public function delete($id, EntityManagerInterface $entityManager, EventRepository $eventRepository): Response
+    public function delete(EntityManagerInterface $entityManager, EventRepository $eventRepository, int $id): Response
     {
         // Récupérer l'événement
         $event = $eventRepository->find($id);
@@ -114,8 +114,9 @@ class EventsController extends AbstractController
 
         return $this->redirectToRoute('app_events');
     }
+
     // Show event
-    #[IsGranted('ROLE_USER', message: 'Vous devez être connecté pour ajouter un match à vos favoris')]
+    #[IsGranted('ROLE_USER', message: 'Vous devez être connecté pour afficher les détails d\'un événement')]
     #[Route('/events/show/{id}', name: 'app_events_show')]
     public function show(OpenLigaDBClient $httpClient, EventRepository $eventRepository,UserRepository $userRepository, TokenStorageInterface $tokenStorage, int $id ): Response
     {   
@@ -125,20 +126,23 @@ class EventsController extends AbstractController
         $user = $tokenStorage->getToken()->getUser();
         $userId = $user->getId();
 
-        //participate à l'événement
+        // Vérifier si l'utilisateur participe à l'événement
         $participate = $userRepository->participate($id, $userId);
 
-        //
-       
+        // On recupère le nombre de places disponibles
+        $availablePlaces = $event->getNumberOfPlaces() - count($event->getUsersParticipate());
 
         // On recupère l'id du match
         $matchId = $event->getMatchId(); 
+        // On recupère les informations du match
         $match = $httpClient->getMatchById($matchId);
 
+        // Affichage de la page de l'événement
         return $this->render('events/show.html.twig', [
             'event' => $event,
             'match' => $match,
             'participate' => $participate,
+            'availablePlaces' => $availablePlaces,
         ]);
     }
 

@@ -13,7 +13,7 @@ window.document.addEventListener('DOMContentLoaded', function() {
     fetch('https://api.openligadb.de/getbltable/bl1/2023')
     .then(response => response.json())
     .then(data => {
-    
+
         data.forEach(team => {
             const option = document.createElement('option');
             option.value = team.teamInfoId;
@@ -29,7 +29,7 @@ window.document.addEventListener('DOMContentLoaded', function() {
         return date.toLocaleDateString() + ' ' + date.toLocaleTimeString();
     }
    
-   // Afficher la liste des en fonction de l'équipe
+   // Afficher la liste des matchs en fonction de l'équipe
     teamsList.addEventListener('change', function() {
         const teamId = this.value;
 
@@ -70,13 +70,13 @@ window.document.addEventListener('DOMContentLoaded', function() {
    
     // Mettre à jour les champs de date et d'heure en fonction du match sélectionné
     matchsList.addEventListener('change', function() {
+        // Obtenez la date et l'heure du match sélectionné
         let selectedMatchDateTime = this.options[this.selectedIndex].getAttribute('data-match-start-date');
         
-   
         // Supprimez les millisecondes et le 'Z' pour utiliser le format local
         selectedMatchDateTime = selectedMatchDateTime.substring(0, selectedMatchDateTime.lastIndexOf("."));
 
-        // Définissez la date de début maximale pour la date de début de l'événement
+        // Définissez la date de début maximale pour la date de début de l'événement qui est la date de début du match
         startDateTimeInput.setAttribute('max', selectedMatchDateTime);
 
         // Définir la date minimale à aujourd'hui pour le champ startDateTimeInput

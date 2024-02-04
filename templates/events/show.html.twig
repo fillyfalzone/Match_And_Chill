@@ -55,16 +55,25 @@
                 
                 {# -------------Bouton Participer Annuler ---------  #}
 
-                {% if participate %}
-                    
+                {# ----- S'il reste des places disponible et si user n'est pas inscrit #}
+                {% if availablePlaces and not participate %}
                     <div class="col text-center">
-                        <a href="" class="btn btn-danger d-inline-block mx-auto btn-lg">Annuler</a>
+                        <a href="" class="btn btn-success d-inline-block mx-auto btn-lg">Participer à l'évènement</a>
                     </div>
-                    {% else %}
+                {% elseif participate %}
                     <div class="col text-center">
-                        <a href="" class="btn btn-success d-inline-block mx-auto btn-lg">Participer</a>
+                        <a href="" class="btn btn-danger d-inline-block mx-auto btn-lg">Se désinscrire de l'évènement</a>
+                    </div>
+                {% else %}
+                    <div class="col text-center">
+                        <p class="text-danger fw-bold">
+                            Peut-être afficher un message indiquant qu'il n'y a pas de places disponibles ou que l'événement est complet
+                        </p>
                     </div>
                 {% endif %}
+
+
+
           
                
             </div>

@@ -9,7 +9,6 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
@@ -20,7 +19,8 @@ class EventFormType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-        ->add('name', TextType::class, [
+        // Ajute de l'input pour le nom de l'événement
+        ->add('name', TextType::class, [ // Utilisation de la classe TextType pour créer un champ de type texte
                 'label' => 'Intitulé',
                 'attr' => [
                     'class' => 'form-control mb-3',
@@ -29,14 +29,14 @@ class EventFormType extends AbstractType
                 ],
                 'required' => true,
         ])
-        // Ajoutez la logique pour les options des catégories
-        ->add('category', EntityType::class, [
+        // Ajoutez de l'input pour la catégorie de l'événement
+        ->add('category', EntityType::class, [ // Utilisation de la classe EntityType pour créer un champ de type liste déroulante
             'label' => 'Catégorie',
             'attr' => [
                 'class' => 'form-select mb-3',
                 'id' => 'category',
             ],
-            'class' => CategoryEvent::class,
+            'class' => CategoryEvent::class, // Utilisation de la classe CategoryEvent pour créer un champ de type liste déroulante
             'choice_label' => 'name',
             'required' => true,
         ])
