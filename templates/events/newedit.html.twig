@@ -105,7 +105,11 @@
 
             {{ form_row(form.honeyPot) }}
             <div class="col-4 my-3 mx-auto text-center" id="submit-container">
-             
+                {% if id %}
+                    <a href="app_events_edit" class="btn btn-primary" id="btn-submit" >Modifier un évènement</a>
+                {% else %}
+                    <a href="{{ path('app_events_new') }}" class="btn btn-success" id="btn-submit" id="btn-submit" >Creer un évènement</a>
+                {% endif %}
             </div>
         {{ form_end(form) }}
         

@@ -399,7 +399,7 @@ document.addEventListener("DOMContentLoaded", function () {
         * Macth detail card content  
     */
 
-    // Recupération des card de discussions et évènement du DOM
+    // Recupération des cards de discussions et évènement du DOM
     const cardDiscussion = document.getElementById("card-discussion");
     const cardEvent = document.getElementById("card-event");
 
@@ -445,13 +445,14 @@ document.addEventListener("DOMContentLoaded", function () {
             },
             body: JSON.stringify(data),
         })
+        // la réponse
         .then(response => response.json())
         .then(data => {
-            // Traiter la réponse...
+            // Traiter la réponse
             console.log(data);
         })
         .catch(error => {
-            // Gérer les erreurs...
+            // Gérer les erreurs.
             console.error(error);
         });
     

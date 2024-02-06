@@ -105,30 +105,22 @@ window.document.addEventListener('DOMContentLoaded', function() {
     // Input caché pour stocker l'ID du match sélectionné
     const matchIdInput = document.getElementById('event_form_matchId');
 
-    // Afficher le bouton de soumission si l'équipe et le match sont sélectionnés
-    matchsList.addEventListener('change', function() {
-        if (this.value != '0' && matchsList.value != '0') {
+    //On bloque le bouton de soumission si aucun match n'est sélectionné
+    const submitBtn = document.getElementById('btn-submit');
+    
+    submitBtn.addEventListener('click', function(e) {
 
-            btnContainer.innerHTML = ''; // Effacez les boutons précédents
-            //On crée un bouton de soumission
-            const submitButton = document.createElement('button');
-            submitButton.type = 'submit';
-            submitButton.classList.add('btn', 'btn-primary');
-            submitButton.textContent = `
-                {% if id %}
-                    Modifier un évènement
-                {% else %}
-                    Creer un évènement
-                {% endif %}`;
-            btnContainer.appendChild(submitButton);
-       
-            //on ajoute la valeur de l'ID du match sélectionné à l'input caché
-            matchIdInput.value = this.value;
-
-            console.log(matchIdInput.value);
-          
+        if (matchsList.value === '0') {
+            e.preventDefault();
+            alert('Veuillez sélectionner un match');
         }
-    });
+        //on ajoute la valeur de l'ID du match sélectionné à l'input caché
+        matchIdInput.value = this.value;
+        console.log(matchIdInput.value);
+    })
+          
+        
+    
 
 
 

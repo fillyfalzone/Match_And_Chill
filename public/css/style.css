@@ -267,13 +267,11 @@ section {
 #smooth-scroll:hover {
     right: 0;
 }
-
 .scroll-list {
     padding: 10px;
     display: flex;
     flex-direction: column;
     gap: 30px;
-
 }
 .nav-link {
     color: var(--gray);
@@ -367,27 +365,21 @@ section {
 }
 
 /* ---------- MOBILE ----------------------*/
-/* ---------------- Largeur maximal de l'écran 800px -----------------------*/
+/* ------ Largeur maximal de l'écran 800px ------------*/
 @media (max-height: 800px) {
-
     body, html {
         overflow: auto;
     }
-    
     #main {
         display: block;
-        flex-direction: column;
         height: 400%;
         overflow-y: auto;
     }
-    
     section {
         height: 100%;
         display: block;
         overflow: auto;
-        
     }
-
 }
 
 /* ---------------- Largeur maximal de l'écran 1030px -----------------------*/
@@ -399,11 +391,9 @@ section {
     
     #main {
         display: block;
-        flex-direction: column;
         height: 400%;
         overflow-y: auto;
     }
-    
     section {
         height: 100%;
         display: block;
@@ -414,11 +404,11 @@ section {
     /* HEADER */
     /* Burger menu*/
     .burger {
+        display: flex;
+        flex-direction: column;
         background-color: #ffffff00;
         border: none;
         width: 30px;
-        display: flex;
-        flex-direction: column;
         gap: 5px;
         cursor: pointer;
     }
