@@ -5,6 +5,8 @@ document.addEventListener("DOMContentLoaded", function () {
     let currentPage = 0;
 
     const pageNumbersContainer = document.querySelector(".current-info");
+    if (!pageNumbersContainer) return; // Quitte si .current-info n'existe pas
+
     let pageNumbers = []; // Variable pour stocker les éléments des numéros de page
 
     function showPage(pageNumber) {
@@ -68,27 +70,27 @@ document.addEventListener("DOMContentLoaded", function () {
     const prevButton = document.querySelector(".prev-page");
     const nextButton = document.querySelector(".next-page");
 
-    if (prevButton || nextButton){
+    if (!prevButton || !nextButton) return; // Quitte si les boutons ne sont pas trouvés
         
-        prevButton.addEventListener("click", function () {
-            if (currentPage > 0) {
-                currentPage--;
-                showPage(currentPage);
-                updateButtons();
-                setActive();
-            }
-        });
-    
-        nextButton.addEventListener("click", function () {
-            if (currentPage < totalPages - 1) {
-                currentPage++;
-                showPage(currentPage);
-                updateButtons();
-                setActive();
-            }
-        });
+    prevButton.addEventListener("click", function () {
+        if (currentPage > 0) {
+            currentPage--;
+            showPage(currentPage);
+            updateButtons();
+            setActive();
+        }
+
+    });
+    nextButton.addEventListener("click", function () {
+        if (currentPage < totalPages - 1) {
+            currentPage++;
+            showPage(currentPage);
+            updateButtons();
+            setActive();
+        }
+    });
         
-    }
+
 
     
 

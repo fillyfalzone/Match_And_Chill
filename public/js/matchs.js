@@ -424,44 +424,48 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
     // Soumettre le formulaire d'édition des commentaires et requête fetch pour envoyer les données au back-end
+    const editCommentForm = document.getElementById('editCommentForm');
 
-    document.getElementById('editCommentForm').addEventListener('submit', function() {
+    if (editCommentForm) {
         
-        let commentId = document.getElementById('commentId').value;
-        let commentText = document.getElementById('commentText').value;
-        const matchId = window.location.pathname.split("/")[3];
-
-        
-        // Préparer les données à envoyer
-        const data = {
-            commentText: commentText
-        };
-
-        // Envoyer la requête AJAX
-        fetch(`/matchsList/match/${matchId}/edit/${commentId}`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(data),
-        })
-        // la réponse
-        .then(response => response.json())
-        .then(data => {
-            // Traiter la réponse
-            console.log(data);
-        })
-        .catch(error => {
-            // Gérer les erreurs.
-            console.error(error);
-        });
+        editCommentForm.addEventListener('submit', function() {
+            
+            let commentId = document.getElementById('commentId').value;
+            let commentText = document.getElementById('commentText').value;
+            const matchId = window.location.pathname.split("/")[3];
     
-        // Fermer la modal
-        let modal = bootstrap.Modal.getInstance(document.getElementById('editCommentModal'));
-        modal.hide();
-        // recharger la page
-        window.location.reload();
-    });
+            
+            // Préparer les données à envoyer
+            const data = {
+                commentText: commentText
+            };
+    
+            // Envoyer la requête AJAX
+            fetch(`/matchsList/match/${matchId}/edit/${commentId}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data),
+            })
+            // la réponse
+            .then(response => response.json())
+            .then(data => {
+                // Traiter la réponse
+                console.log(data);
+            })
+            .catch(error => {
+                // Gérer les erreurs.
+                console.error(error);
+            });
+        
+            // Fermer la modal
+            let modal = bootstrap.Modal.getInstance(document.getElementById('editCommentModal'));
+            modal.hide();
+            // recharger la page
+            window.location.reload();
+        });
+    }
 
 
 
