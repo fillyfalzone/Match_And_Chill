@@ -198,13 +198,6 @@
             </div>
             </div>
         </div>
-
-        {# liste des utilisateurs #}
-        {% if is_granted('ROLE_ADMIN') %}
-        {# si l'utilisateur est admin le bouton sera affiché #}
-            <li><a href=" {{ path('app_userLisi') }} " class="nav-item">Liste des utilisateurs</a></li>
-        {% endif %}
-        
     </section>
 
 {% endblock %}

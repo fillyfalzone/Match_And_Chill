@@ -1,6 +1,6 @@
 document.addEventListener("DOMContentLoaded", function () {
     const allDiscussions = document.querySelectorAll(".discussion");
-    const itemsPerPage = 3; // Définir le nombre d'items par page
+    const itemsPerPage = 10; // Définir le nombre d'items par page
     const totalPages = Math.ceil(allDiscussions.length / itemsPerPage);
     let currentPage = 0;
 
@@ -22,7 +22,11 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
-    function updateButtons() {
+    function updateButtons(item) {
+        
+        if (item - 1) {
+            nextButton.style.display = "none";
+        }
         prevButton.disabled = currentPage === 0;
         nextButton.disabled = currentPage === totalPages - 1;
     }
@@ -99,5 +103,5 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Afficher la catégorie de la page actuelle au chargement initial
     showPage(currentPage);
-    updateButtons();
+    updateButtons(itemsPerPage);
 });
