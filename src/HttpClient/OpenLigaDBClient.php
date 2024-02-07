@@ -2,7 +2,6 @@
 namespace App\HttpClient;
 
 use DateTimeZone;
-use Symfony\Component\Validator\Constraints\DateTime;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 class OpenLigaDBClient
@@ -57,6 +56,8 @@ class OpenLigaDBClient
         return $filteredMatches;
 
     }
+
+    
 
 }
 ?>

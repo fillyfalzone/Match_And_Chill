@@ -6,11 +6,8 @@ use App\Entity\Event;
 use App\Entity\CategoryEvent;
 use App\HttpClient\OpenLigaDBClient;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -94,6 +91,7 @@ class EventFormType extends AbstractType
         ])
         // Ajoutez de l'input pour la catégorie de l'événement
         ->add('category', EntityType::class, [ // Utilisation de la classe EntityType pour créer un champ de type liste déroulante
+            'label' => false,
             'placeholder' => 'Choisissez une catégorie',
             'attr' => [
                 'class' => 'form-select mb-3',
@@ -182,14 +180,14 @@ class EventFormType extends AbstractType
         ])
         // Ajoutez la logique pour les options des équipes et des matchs
         ->add('matchId', ChoiceType::class, [
-            'label' => 'Match ',
-            
+            'label' => false,
             'attr' => [
                 'class' => 'form-select mb-3',
             ],
             'required' => true,
         ])
         ->add('teamId', ChoiceType::class, [
+            'label' => false,
             'placeholder' => 'Choisissez une équipe',
             'attr' => [
                 'class' => 'form-select mb-3',

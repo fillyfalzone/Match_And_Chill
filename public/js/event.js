@@ -1,7 +1,7 @@
 window.document.addEventListener('DOMContentLoaded', function() { 
    
    /**
-        * Créer un écvènement
+        * Créer un évènement
     */
    const teamsList = document.getElementById('event_form_teamId');
    const matchsList = document.getElementById('event_form_matchId'); 
@@ -59,18 +59,14 @@ window.document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
-    // Écouteur d'événements pour la sélection d'une équipe
-    teamsList.addEventListener('change', function() {
-        loadMatchesForTeam(this.value);
-    });
+    if (teamsList || matchsList) {
+        // Écouteur d'événements pour la sélection d'une équipe
+        teamsList.addEventListener('change', function() {
+            loadMatchesForTeam(this.value);
+        }); 
 
-
-   
-
-   
-    
-    // Adapter le calendrier en fonction de la date du match sélectionné
-    matchsList.addEventListener('change', function() {
+        // Adapter le calendrier en fonction de la date du match sélectionné
+        matchsList.addEventListener('change', function() {
         // Obtenez la date et l'heure du match sélectionné
         let selectedMatchDateTime = this.options[this.selectedIndex].dataset.matchStartDate;
 
@@ -99,91 +95,37 @@ window.document.addEventListener('DOMContentLoaded', function() {
 
         // Formattez le maxEndDate pour le définir comme valeur max pour endDateTimeInput
         endDateTimeInput.max = maxEndDate.toISOString().substring(0, maxEndDate.toISOString().lastIndexOf(":"));
-    });
-    
+        });  
+    }
 
-    // const btnContainer = document.getElementById('submit-container');
-    // // Input caché pour stocker l'ID du match sélectionné
-    // const matchIdInput = document.getElementById('event_form_matchId');
+ 
 
-    // //On bloque le bouton de soumission si aucun match n'est sélectionné
-    // const submitBtn = document.getElementById('btn-submit');
-    
-    // submitBtn.addEventListener('click', function(e) {
+    /** 
+         * Trie des événements 
+    */
+    // Sélecteurs pour trier les événements
+    const eventsContainer = document.getElementById('events-container');
+    const sortByTeam = document.getElementById('sort-by-team');
+    const sortByStatus = document.getElementById('sort-by-status'); // Correction du camelCase
 
-    //     if (matchsList.value === '0') {
-    //         e.preventDefault();
-    //         alert('Veuillez sélectionner un match');
-    //     }
-    //     //on ajoute la valeur de l'ID du match sélectionné à l'input caché
-    //     matchIdInput.value = this.value;
-    //     console.log(matchIdInput.value);
-    // })
-          
-        
-    
+    // Fonction pour trier et récupérer les événements
+    function fetchSortedEvents() {
+        const teamId = sortByTeam.value;
+        const status = sortByStatus.value;
 
+        fetch(`/events?teamId=${teamId}&status=${status}`)
+            .then(response => response.text())
+            .then(html => {
+                eventsContainer.innerHTML = html;
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+    }
 
+    // Attacher l'événement de changement aux sélecteurs
+    sortByTeam.addEventListener('change', fetchSortedEvents);
+    sortByStatus.addEventListener('change', fetchSortedEvents);
 
-    
-
-   
-    // // on cible les balises select
-    // const sortByTeam = document.getElementById('sort-by-team');
-    // const sortByStatus = document.getElementById('sort-by-status');
-
-    // sortByTeam.addEventListener('change', function() {
-
-    //     const data = {'teamId': this.value};
-        
-    //     fetch('/events/sorted', { 
-    //         method: 'POST',
-    //         headers: {
-    //             'Content-Type': 'application/json',
-    //         },
-    //         body: JSON.stringify(data)
-    //         })
-    //     .then(response => response.json())
-    //     .then(data => {
-    //         console.log(data);
-    //     })
-    //     .catch(error => console.error(error));
-        
-    // })
-
-    // sortByStatus.addEventListener('change', function() {
-    //     const cardEvents = document.querySelectorAll('.card-event');
-    //     const date = new Date();
-
-    //     if(this.value ==='open') {
-            
-    //     }
-    // })
-
-
-    // function loadEvents(value) {
-    //     const eventsContainer = document.getElementById('events-container');
-    //     eventsContainer.innerHTML = '';
-        
-    //     eventsContainer.innerHTML = `
-    //     <div class="card-event mb-4">
-    //         <div class="card-body">
-    //             <div class="row align-items-center">
-    //                 <div class="col-auto">
-    //                     <!-- Placeholder pour l'avatar -->
-    //                     <img src="https://via.placeholder.com/50" alt="avatar" class="rounded-circle mb-2">
-    //                     <p class="text-center mb-0">userName</p>
-    //                 </div>
-    //                 <div class="card-detail col">
-    //                     <h5 class="card-title fs-6">EventName</h5>
-    //                     <p class="card-text small mb-1">Ajouté le 11-02-2024 à 12:23</p>
-    //                     <p class="card-text small mb-1">Statut : ouvert</p>
-    //                     <p class="card-text small mb-1">Disponibilité : 12/25 places</p>
-                    
-    //                 </div>
-    //             </div>
-    //         </div>
-    //     </div>`
-    // }
 
 })

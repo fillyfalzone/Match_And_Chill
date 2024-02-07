@@ -68,23 +68,29 @@ document.addEventListener("DOMContentLoaded", function () {
     const prevButton = document.querySelector(".prev-page");
     const nextButton = document.querySelector(".next-page");
 
-    prevButton.addEventListener("click", function () {
-        if (currentPage > 0) {
-            currentPage--;
-            showPage(currentPage);
-            updateButtons();
-            setActive();
-        }
-    });
+    if (prevButton || nextButton){
+        
+        prevButton.addEventListener("click", function () {
+            if (currentPage > 0) {
+                currentPage--;
+                showPage(currentPage);
+                updateButtons();
+                setActive();
+            }
+        });
+    
+        nextButton.addEventListener("click", function () {
+            if (currentPage < totalPages - 1) {
+                currentPage++;
+                showPage(currentPage);
+                updateButtons();
+                setActive();
+            }
+        });
+        
+    }
 
-    nextButton.addEventListener("click", function () {
-        if (currentPage < totalPages - 1) {
-            currentPage++;
-            showPage(currentPage);
-            updateButtons();
-            setActive();
-        }
-    });
+    
 
     // Générer les numéros de page initiaux
     generatePageNumbers();

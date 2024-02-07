@@ -28,22 +28,24 @@
             <a href=" {{path("app_events_new")}} " class="add-event">Créer un évènement</a>
         </div>
         {# ----------- les filtres -------------------- #}
+      
         <div class="d-flex justify-content-between gap-2 flex-wrap mb-4">
             <select id="sort-by-team" class="form-select" style="width: 32%;">
                 <option selected>Trier par équipe</option>
-                {# on boucle sur le table des #}
+                {# on boucle sur le classement #}
                 {% for team in table %}
-                <option value="{{team.teamInfoId}}">{{ team.shortName }}</option>
+                    <option value="{{ team.teamInfoId }}">{{ team.shortName }}</option>
                 {% endfor %}
             </select>
             <select id="sort-by-status" class="form-select" style="width: 32%;">
-                <option selected>Trier par statut</option>
-                <option selected>Terminé</option>
-                <option selected>Ouvert</option>
+                <option selected disabled>Trier par statut</option>
+                <option value="1">Terminé</option>
+                <option value="0">Ouvert</option> 
             </select>
         </div>
+     
         <div id="events-container">
-            {% for event in events %}
+            {% for event in eventsSort %}
                 <!-- Début d'un événement -->
                 <div class="card-event mb-4">
                     <div class="card-body">
@@ -56,8 +58,19 @@
                             <div class="card-detail col">
                                 <h5 class="card-title fs-6"><a href="{{ path('app_events_show', {"id": event.id}) }}">{{ event.name }}</a></h5>
                                 <p class="card-text small mb-1">Débute le {{ event.startDate |date("m/d/Y" ) }}</p>
-                                <p class="card-text small mb-1">Statut : ouvert</p>
-                                <p class="card-text small mb-1">Disponibilité : 12/ {{ event.usersParticipate |length }} places</p>
+
+                                {% if event.usersParticipate |length == event.numberOfPlaces %}
+                                    <p class="card-text small mb-1">Statut : <span class="bg-danger fw-bold py-1 px-2 text-light rounded">complet</span></p>
+                                {% else %}
+                                    <p class="card-text small mb-1">
+                                        Statut : <span class="bg-success fw-bold py-1 px-2 text-light rounded">ouvert</span>
+                                    </p>
+                                    <p class="card-text small mb-1">
+                                        Disponibilité : {{ event.usersParticipate |length }} / {{ event.numberOfPlaces }} 
+                                    </p>
+                                {% endif %}
+
+
                             </div>
                         </div>
                     </div>

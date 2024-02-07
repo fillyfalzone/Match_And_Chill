@@ -15,8 +15,8 @@
             <iconify-icon class="icon" icon="ion:home-sharp" width="13" height="13"></iconify-icon>
             <span>Match&amp;Chill <span class="slash">/</span></span>
         </a>
-        <a class="second-ariane" href="">évènéments <span class="slash">/</span></a>
-        <a class="second-ariane" href="">Détails d'un évènement <span class="slash">/</span></a>
+        <a class="second-ariane" href="{{path("app_events")}}">évènéments <span class="slash">/</span></a>
+        <span>Détails d'un évènement</span>
     </div>
 
     {# ----------- Afficher un évènement --------------------------------- #}
@@ -32,9 +32,22 @@
                 </div>
                 <h1 class="card-title text-center  mb-3"> {{event.name}}</h1>
                 <div class="row text-center">
-                    <p class="card-text"><strong>Date de création :</strong> {{event.creationDate |date("m/d/Y H:i:")}} </p>
-                    <p class="card-text"><strong>Statut :</strong> Ouvert <span class="badge bg-success"> {{ event.usersParticipate |length }} / {{event.numberOfPlaces}} places disponibles</span></p>
-                    {# <p class="card-text"><strong>Match :</strong> {{ match.team1.shortName }} Vs  {{ match.team2.shortName }}</p> #}
+                    <p class="card-text"><strong>Date de création :</strong> {{event.creationDate |date("m/d/Y H:i")}} </p>
+
+                    <p class="card-text">
+                        <strong>Statut :</strong> 
+                        {% if availablePlaces %}
+                            <span class="badge bg-success">
+                            Ouvert &nbsp;   
+                            {{ event.usersParticipate |length }} / {{event.numberOfPlaces}}</span>
+                        {% else %}
+                            <span class="badge bg-danger">
+                                complet &nbsp;
+                                {{ event.usersParticipate |length }} / {{event.numberOfPlaces}}</span>
+                        {% endif %}
+                    </p>
+
+                    <p class="card-text"><strong>Match :</strong> {{ match.team1.shortName }} Vs  {{ match.team2.shortName }}</p>
                     <p class="card-text"><strong>Catégorie :</strong> {{event.category.name}} </p>
                     <p class="card-text"><strong>Description :</strong> {{event.description}} </p>
                     <p class="card-text"><strong>début :</strong> {{event.startDate |date("m/d/Y H:i:")}}</p>
