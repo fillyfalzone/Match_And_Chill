@@ -40,7 +40,7 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
     }
 
     // Méthode pour récupérer l'enreigistrement ou un utlisateur et un événement auquel il participe 
-    public function participate($userId, $eventId)
+    public function getParticipate($userId, $eventId)
     {
         // Crée une instance de QueryBuilder pour construire la requête DQL
         $qb = $this->createQueryBuilder('u');

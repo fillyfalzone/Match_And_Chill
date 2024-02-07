@@ -58,11 +58,11 @@
                 {# ----- S'il reste des places disponible et si user n'est pas inscrit #}
                 {% if availablePlaces and not participate %}
                     <div class="col text-center">
-                        <a href="" class="btn btn-success d-inline-block mx-auto btn-lg">Participer à l'évènement</a>
+                        <a href="{{ path('app_events_participate', {"id": event.id}) }}" class="btn btn-success d-inline-block mx-auto btn-lg">Participer à l'évènement</a>
                     </div>
                 {% elseif participate %}
                     <div class="col text-center">
-                        <a href="" class="btn btn-danger d-inline-block mx-auto btn-lg">Se désinscrire de l'évènement</a>
+                        <a href="{{ path('app_events_unparticipate', {"id": event.id}) }}" class="btn btn-danger d-inline-block mx-auto btn-lg">Se désinscrire de l'évènement</a>
                     </div>
                 {% else %}
                     <div class="col text-center">

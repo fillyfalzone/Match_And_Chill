@@ -134,17 +134,27 @@ class EventsController extends AbstractController
     // Show event
     #[IsGranted('ROLE_USER', message: 'Vous devez être connecté pour afficher les détails d\'un événement')]
     #[Route('/events/show/{id}', name: 'app_events_show')]
-    public function show(OpenLigaDBClient $httpClient, EventRepository $eventRepository,UserRepository $userRepository, TokenStorageInterface $tokenStorage, int $id ): Response
+    public function show(OpenLigaDBClient $httpClient, EventRepository $eventRepository, TokenStorageInterface $tokenStorage, int $id ): Response
     {   
         // Récupérer l'événement
         $event = $eventRepository->find($id);
         // Récupérer l'utilisateur connecté
         $user = $tokenStorage->getToken()->getUser();
-        $userId = $user->getId();
 
         // Vérifier si l'utilisateur participe à l'événement
-        $participate = $userRepository->participate($id, $userId);
+        $participates =  $event->getUsersParticipate();
 
+        // On recupère l'utilisateur qui participe à l'événement
+        $participate = null; 
+        foreach ($participates as $participate) {
+            
+            if($participate == $user){
+                $participate;
+                break;
+            }else{
+                $participate;
+            }
+        }
         // On recupère le nombre de places disponibles
         $availablePlaces = $event->getNumberOfPlaces() - count($event->getUsersParticipate());
 

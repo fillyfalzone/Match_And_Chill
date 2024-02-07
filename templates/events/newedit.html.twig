@@ -42,21 +42,6 @@
         <h1 class="mb-4 fs-2 text-center title-event">Créer un Événement</h1>    
         {% endif %}
 
-
-    {#  Filtre selection d'équipe et match #}
-
-    <div class="d-flex justify-content-between gap-2 flex-wrap mb-4">
-        {# ------ Select équipe ----------- #}
-        <select id="select-teamId" name="select-teamId" class="form-select" style="width: 32%;">
-           <option value="0" disabled selected>Choisir une équipe</option>
-        </select>
-         {# ------ Select match ----------- #}
-        <select id="select-matchId" name="select-matchId" class="form-select" style="width: 32%;">
-            <option value="0" disabled selected>Choisir un match</option>
-        </select>
-    </div>
-    <p id="text-atl" class="text-danger text-center">Veuillez sélectionner une équipe et un match!</p>
-
     {# ----------- formulaire création d'évènements --------------------------- #}
     
     <div class="container mt-5">
@@ -121,8 +106,6 @@
                 {% endif %}
             </div>
         {{ form_end(form) }}
-        
-        <p id="text-atl" class="text-danger text-center">Veuillez sélectionner une équipe et un match!</p>
 
     </div>
 </div>

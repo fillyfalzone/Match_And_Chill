@@ -195,6 +195,7 @@ class EventFormType extends AbstractType
                 'class' => 'form-select mb-3',
             ],'mapped' => false,
             'choices' => $teams,
+            'required' => true,
         ]);
         
     }
