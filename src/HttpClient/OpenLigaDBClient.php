@@ -1,5 +1,8 @@
 <?php
 namespace App\HttpClient;
+
+use DateTimeZone;
+use Symfony\Component\Validator\Constraints\DateTime;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 class OpenLigaDBClient
@@ -29,23 +32,31 @@ class OpenLigaDBClient
         return $response->toArray();
     }
 
-    public function getMatchByTeamId($teamID)
+
+
+    public function getMatchByTeamId($teamId)
     {
-        $leagueId = 4608;
 
-        $nextMatchs = $this->client->request('GET', 'https://api.openligadb.de/getnextmatchbyleagueteam/'.$leagueId."/".$teamID, [
+        $matchs = $this->client->request('GET', 'https://api.openligadb.de/getmatchdata/bl1/2023', [
             'verify_peer' => false,
         ]);
-        $nextMatchs->toArray();
+        $matchsData= $matchs->toArray();
 
-        $lastMatchs = $this->client->request('GET', 'https://api.openligadb.de/getlastmatchbyleagueteam/'.$leagueId."/".$teamID, [
-            'verify_peer' => false,
-        ]);
-        $lastMatchs->toArray();
 
-        $matchs = array_merge($nextMatchs, $lastMatchs);
+        $now = new \DateTime('now', new DateTimeZone('UTC'));
 
-        return $matchs->toArray();
+
+        // Filtre les matchs en fonction de la date/heure du match et de l'ID de l'équipe
+        $filteredMatches = array_filter($matchsData, function ($match) use ($now, $teamId) {
+            $matchDateTime = new \DateTime($match['matchDateTimeUTC']); // Convertit la date/heure du match en objet DateTime
+            
+            // Vérifie si le match est futur et si l'une des équipes correspond à l'équipe sélectionnée
+            return $matchDateTime > $now && 
+                ($match['team1']['teamId'] == $teamId || $match['team2']['teamId'] == $teamId);
+        });
+        return $filteredMatches;
+
     }
+
 }
 ?>

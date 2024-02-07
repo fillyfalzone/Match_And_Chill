@@ -60,15 +60,31 @@ class EventsController extends AbstractController
         return new JsonResponse('events', $events);
     }
 
+    // Récupérer l'id de l'équipe
+    #[Route('/send/teamId', name: 'app_send_teamId', methods: ['POST'])]
+    public function getTeamId(Request $request): JsonResponse
+    {
+        // Décodage des données JSON envoyées dans la requête
+        $data = json_decode($request->getContent(), true);
+        $teamId = $data['teamId'];
+
+        return new JsonResponse('teamId', $teamId);
+    }
+    
+
     // Create new or edit event
+    #[IsGranted('ROLE_USER', message: 'Vous devez être connecté pour afficher les détails d\'un événement')]
     #[Route('/events/new', name: 'app_events_new')]
     #[Route('/events/edit/{id}', name: 'app_events_edit')]
     public function newedit(Event $event = null, EntityManagerInterface $entityManager, TokenStorageInterface $tokenStorage, Request $request): Response
-    {   
+    {
+        
+       
         // Création d'un nouvel objet Event si aucun n'est fourni
         if (!$event){
             $event = new Event();
         }
+        
         // Récupérer l'id de l'événement s'il existe
         $id = $event->getId();
         

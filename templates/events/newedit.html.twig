@@ -62,8 +62,17 @@
     <div class="container mt-5">
        
         {{ form_start(form, {'action': path('app_events_new'), 'method': 'POST'}) }}
-
-            {{ form_row(form.category) }}
+            <div class="row">
+                <div class="col-md-4">
+                    {{ form_row(form.teamId) }}
+                </div>
+                <div class="col-md-4">
+                    {{ form_row(form.matchId) }}
+                </div>
+                <div class="col-md-4">
+                    {{ form_row(form.category) }}
+                </div>
+            </div>
             <div class="row">
                 <div class="col-md-6">
                     {{ form_row(form.name) }}
@@ -106,9 +115,9 @@
             {{ form_row(form.honeyPot) }}
             <div class="col-4 my-3 mx-auto text-center" id="submit-container">
                 {% if id %}
-                    <a href="app_events_edit" class="btn btn-primary" id="btn-submit" >Modifier un évènement</a>
+                    <button type="submit" class="btn btn-primary">Modifier un évènement</button>
                 {% else %}
-                    <a href="{{ path('app_events_new') }}" class="btn btn-success" id="btn-submit" id="btn-submit" >Creer un évènement</a>
+                    <button type="submit" class="btn btn-success">Créer un évènement</button>
                 {% endif %}
             </div>
         {{ form_end(form) }}
