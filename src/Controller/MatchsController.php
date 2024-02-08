@@ -2,21 +2,21 @@
 
 namespace App\Controller;
 
+use Exception;
 use App\Entity\CommentMatch;
 use App\Entity\FavoriteMatch;
 use App\HttpClient\OpenLigaDBClient;
-use App\Repository\CommentMatchRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use App\Repository\CommentMatchRepository;
 use App\Repository\FavoriteMatchRepository;
-use App\Repository\UserRepository;
-use Exception;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 
 
@@ -36,8 +36,14 @@ class MatchsController extends AbstractController
         * Recupérer un match par id  
     */
     #[Route('/matchsList/match/{matchId}', name: 'app_match')]
-    public function detailsMatch($matchId, OpenLigaDBClient $httpClient, CommentMatchRepository $commentMatch): Response
+    public function detailsMatch($matchId, OpenLigaDBClient $httpClient, CommentMatchRepository $commentMatch, CsrfTokenManagerInterface $csrfTokenManager): Response
     {   
+
+        //les tokens de sécurité
+        $tokenEdit = $csrfTokenManager->getToken('token-edit-comment');
+        $tokenDelete = $csrfTokenManager->getToken('token-delete-comment');
+        $tokenComment = $csrfTokenManager->getToken('token-comment-match');
+
         // recupérer le match via httpClient 
         $match = $httpClient->getMatchById($matchId);
 
@@ -71,6 +77,9 @@ class MatchsController extends AbstractController
             'match' => $match,
             'status' => $status,
             'table' => $table,
+            'tokenEdit' => $tokenEdit,
+            'tokenDelete' => $tokenDelete,
+            'tokenComment' => $tokenComment,
         ]);
     }
   

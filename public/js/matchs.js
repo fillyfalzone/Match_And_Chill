@@ -432,12 +432,14 @@ document.addEventListener("DOMContentLoaded", function () {
             
             let commentId = document.getElementById('commentId').value;
             let commentText = document.getElementById('commentText').value;
+            let tokenEdit = document.getElementById('token-edit-comment').value;
             const matchId = window.location.pathname.split("/")[3];
     
             
             // Préparer les données à envoyer
             const data = {
-                commentText: commentText
+                commentText: commentText,
+                tokenEdit: tokenEdit
             };
     
             // Envoyer la requête AJAX

@@ -8,8 +8,10 @@ use Doctrine\ORM\EntityManagerInterface;
 use App\Repository\CommentMatchRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Security\Csrf\CsrfToken;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
@@ -27,13 +29,25 @@ class CommentMatchController extends AbstractController
 
     // Add commentMatch
     #[Route('matchsList/match/{matchId}/add', name: 'commentMatch_add')]
-    public function addCommentMatch($matchId, TokenStorageInterface $tokenStorage, EntityManagerInterface $entityManager, CommentMatch $commentMatch = null, Request $Request): Response
-    {
+    public function addCommentMatch(TokenStorageInterface $tokenStorage, EntityManagerInterface $entityManager, CommentMatch $commentMatch = null, Request $request, CsrfTokenManagerInterface $tokenManager, int $matchId): Response
+    {   
+
+        // recupère le commentaire envoyé
+        $comment = $request->request->get('comment-match');
+
+        //recupère le token
+        $csrfTokenValue = $request->request->get('token-comment-match');
+        $csrfToken = new CsrfToken('token-delete-comment', $csrfTokenValue);
+
+        if (!$tokenManager->isTokenValid($csrfToken)) {
+            // Gérer l'échec de la vérification du token CSRF, par exemple en renvoyant une erreur
+            throw new \Exception('Invalid CSRF token');
+        }
+
         // recupète le user connecté
         $user = $tokenStorage->getToken()->getUser();
 
-        // recupère le commentaire envoyé
-        $comment = $Request->request->get('comment-match');
+        // date de création
         $creationDate = new \DateTime();
 
         // on crée un nouveau commentaire
@@ -54,11 +68,19 @@ class CommentMatchController extends AbstractController
 
     // edit commentMatch
     #[Route('matchsList/match/{matchId}/edit/{commentId}', name: 'commentMatch_edit')]
-    public function editCommentMatch($matchId, $commentId, EntityManagerInterface $entityManager, CommentMatchRepository $commentMatch, Request $Request): JsonResponse
+    public function editCommentMatch( EntityManagerInterface $entityManager, CommentMatchRepository $commentMatch, Request $request, CsrfTokenManagerInterface $tokenManager,int $matchId, int $commentId): JsonResponse
     {
         // recupère le commentaire envoyé
-        $data = json_decode($Request->getContent(), true);
+        $data = json_decode($request->getContent(), true);
         $commentText = $data['commentText'] ?? null;
+        $csrfTokenValue = $data['tokenEdit'] ?? null;
+
+        $csrfToken = new CsrfToken('token-edit-comment', $csrfTokenValue);
+
+        if (!$tokenManager->isTokenValid($csrfToken)) {
+            // Gérer l'échec de la vérification du token CSRF, par exemple en renvoyant une erreur
+            throw new \Exception('Invalid CSRF token');
+        }
 
         $commentMatch = $commentMatch->find($commentId);
 
@@ -75,27 +97,30 @@ class CommentMatchController extends AbstractController
 
     // delete commentMatch
     #[Route('matchsList/match/{matchId}/delete/{id}', name: 'commentMatch_delete')]
-    public function deleteCommentMatch($matchId, $id, EntityManagerInterface $entityManager, CommentMatchRepository $commentMatch, Request $request): Response
+    public function deleteCommentMatch( EntityManagerInterface $entityManager, CommentMatchRepository $commentMatch, Request $request,  CsrfTokenManagerInterface $tokenManager, int $matchId, int $id): Response
     {
 
+        //recupère le token
+        $csrfTokenValue = $request->request->get('token-delete-comment');
+        $csrfToken = new CsrfToken('token-delete-comment', $csrfTokenValue);
+
+        if (!$tokenManager->isTokenValid($csrfToken)) {
+            // Gérer l'échec de la vérification du token CSRF, par exemple en renvoyant une erreur
+            throw new \Exception('Invalid CSRF token');
+        }
+
+        // recupère le commentaire
         $commentMatch = $commentMatch->find($id);
 
         if (!$commentMatch) {
-            // Gérer l'erreur, par exemple, renvoyer une réponse ou une exception
+            // Gérer l'erreur
             throw new Exception("Commentaire introuvable");
         }
-    
-        // Vérifier le jeton CSRF
-        $csrfToken = $request->request->get('_token');
-        if ($this->isCsrfTokenValid('delete' . $commentMatch->getId(), $csrfToken)) {
-            // on supprime le commentaire
-            $entityManager->remove($commentMatch);
-            $entityManager->flush(); 
+        // on supprime le commentaire
+        $entityManager->remove($commentMatch);
+        $entityManager->flush(); 
 
-            return $this->redirectToRoute('match_view', ['matchId' => $matchId, 'id' => $id]);
-        }
-    
-        // Gérer l'échec de la validation CSRF
-        throw new Exception(" token CSRF invalide");
+        return $this->redirectToRoute('match_view', ['matchId' => $matchId, 'id' => $id]);
+ 
     }
 }

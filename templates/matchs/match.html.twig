@@ -76,6 +76,8 @@
                             {# foulaire contenant une textarea pour rediger un commentaire #}
                             <form action="{{ path('commentMatch_add', {'matchId': matchId}) }}" method="post" id="post-form">
                                             <textarea name="comment-match" cols="30" rows="2" class="form-control" placeholder="écrire un commentaire ..." required></textarea>
+                                            <!-- Champ caché pour le token CSRF -->
+                                            <input type="hidden"  name="_csrf_token" value="{{ tokenComment }}">
                                 <input type="submit" value="submit" class="comment-sumbit button">
                             </form>
                         </div>
@@ -108,7 +110,8 @@
                                             {# Deleted comment #}
 
                                             <form action="{{ path('commentMatch_delete', {'matchId': matchId, 'id': comment.id}) }}" method="post" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer ce commentaire ?');">
-                                                <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ comment.id) }}">
+                                               <!-- Champ caché pour le token CSRF -->
+                                                <input type="hidden"  name="token-delete-comment" value="{{ tokenDelete }}">
                                                 <button type="submit" class="delete">
                                                     <iconify-icon title="supprimer" icon="material-symbols:delete" style="color:  #9c001a;" height="30" width="30"></iconify-icon>
                                                 </button>
@@ -189,6 +192,8 @@
                     <label for="commentText" class="col-form-label">Commentaire:</label>
                     <textarea class="form-control" id="commentText" name="commentText" required></textarea>
                     </div>
+                    <!-- Champ caché pour le token CSRF -->
+                    <input type="hidden" id="token-edit-comment"  name="token-edit-comment" value="{{ tokenEdit }}">
                     <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
                     <button type="submit" class="btn btn-primary">Enregistrer les Changements</button>
