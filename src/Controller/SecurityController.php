@@ -54,8 +54,6 @@ class SecurityController extends AbstractController
         $form = $this->createForm(VerifyEmailFormType::class);
         $form->handleRequest($request);
 
-       
-
         // On vérifie si le formulaire est soumis et valide
         if ($form->isSubmitted() && $form->isValid()) {
             // On récupère les données du formulaire
@@ -73,7 +71,6 @@ class SecurityController extends AbstractController
                 // générer le token
                 $token = $tokenManager->getToken('any_id')->getValue();
 
-              
                 // On crée le token
                 $passwordReset = new PasswordResetToken();
                 // On enregistre le token en BDD
@@ -98,7 +95,8 @@ class SecurityController extends AbstractController
                         // vous pouvez passer des variables au template ici
                         [
                             'url' => $url,
-                            
+                            'formPasswordReset' => $formPasswordReset,
+                            'token' => $token,
                         ]
                     )
                 );
