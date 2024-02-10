@@ -116,6 +116,8 @@ window.document.addEventListener('DOMContentLoaded', function() {
         fetch(`/events?teamId=${teamId}&status=${status}`)
             .then(response => response.text())
             .then(html => {
+                
+                eventsContainer.innerHTML = '';
                 eventsContainer.innerHTML = html;
             })
             .catch(error => {

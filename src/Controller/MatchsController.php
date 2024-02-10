@@ -88,13 +88,12 @@ class MatchsController extends AbstractController
     */
     // Ajouter ou supprimer un match des favoris
     // access control 
-    #[IsGranted('ROLE_USER', message: 'Vous devez être connecté pour ajouter un match à vos favoris')]
+    // #[IsGranted('ROLE_USER', message: 'Vous devez être connecté pour ajouter un match à vos favoris')]
     #[Route('/matchList/favorite', name: 'update_favorite_match', methods: ['POST'])]
     public function favoriteMatch(Request $request, TokenStorageInterface $tokenStorage, EntityManagerInterface $entityManager, FavoriteMatchRepository $favoriteManager): Response
     {
         // Récupération de l'utilisateur connecté à partir du token de sécurité
         $user = $tokenStorage->getToken()?->getUser();
-
         // Vérifier si un utilisateur est connecté
         if (!$user) {
             // Si aucun utilisateur n'est connecté, renvoyer une réponse JSON avec un message d'erreur
@@ -108,7 +107,7 @@ class MatchsController extends AbstractController
         $data = json_decode($request->getContent(), true);
         // néttoyage des données.
         $matchId = filter_var($data['id'], FILTER_SANITIZE_NUMBER_INT); // ID du match à mettre en favori ou à retirer des favoris
-        $status = filter_var($data['status'], FILTER_SANITIZE_NUMBER_INT); // Statut indiquant si le match doit être ajouté ou retiré des favoris
+        $status = filter_var($data['status'], FILTER_VALIDATE_BOOLEAN); // Status indicating whether the match should be added or removed from favorites
 
         try {
             // Traitement si le match doit être ajouté aux favoris
@@ -136,7 +135,7 @@ class MatchsController extends AbstractController
             $entityManager->flush();
         } catch (\Exception $e) {
             // Gestion des exceptions, par exemple, enregistrer un message d'erreur
-            return new JsonResponse(['status' => 'error', 'message' => 'Erreur du serveur'], Response::HTTP_INTERNAL_SERVER_ERROR);
+            return new JsonResponse(['status' => 'error', 'message' => 'Erreur du serveur', 'error' => $e->getMessage()], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
 
         // Renvoyer une réponse JSON indiquant que l'action a été exécutée avec succès

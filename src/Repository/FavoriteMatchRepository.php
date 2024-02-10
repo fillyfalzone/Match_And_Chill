@@ -21,6 +21,16 @@ class FavoriteMatchRepository extends ServiceEntityRepository
         parent::__construct($registry, FavoriteMatch::class);
     }
 
+    // Repérer les matchs favoris d'un utilisateur
+    public function findFavoritesByUserId($userId): array
+    {
+        $qb = $this->createQueryBuilder('fm')
+        ->where('fm.userId = :userId')
+        ->setParameter('userId', $userId);
+
+        return $qb->getQuery()->getResult();         
+    }
+
 //    /**
 //     * @return FavoriteMatch[] Returns an array of FavoriteMatch objects
 //     */

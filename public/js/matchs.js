@@ -4,6 +4,9 @@ document.addEventListener("DOMContentLoaded", function () {
     // Sélectionnez l'élément de liste déroulante par son ID
     const select = document.getElementById("filter-date");
 
+       // Charger les sessions de l'utilisateur
+       handleLoginSuccess();
+
     /*
         * ------------------ Filtre des match (On recupère les match en fonction de la date) ---------------------- 
     */
@@ -147,7 +150,7 @@ document.addEventListener("DOMContentLoaded", function () {
         // Si les favoris ne sont pas en session, les charger depuis le serveur
         if (!favorites) {
             loadFavorites();
-            // return;
+            
         }
 
         // Récupérer le conteneur des matchs
@@ -167,11 +170,12 @@ document.addEventListener("DOMContentLoaded", function () {
             let status = getStatus(match);
            
              // Vérifier si match.matchResults[1] est défini avant d'accéder à ses propriétés
-            let team1Points = match.matchResults[1] ? match.matchResults[1].pointsTeam1 : "N/A";
-            let team2Points = match.matchResults[1] ? match.matchResults[1].pointsTeam2 : "N/A";
+            let team1Points = match.matchResults[1] ? match.matchResults[1].pointsTeam1 : "";
+            let team2Points = match.matchResults[1] ? match.matchResults[1].pointsTeam2 : "";
 
             // Ajouter la logique pour définir l'icône de favori en fonction de l'état stocké
-            let isFavorite = favorites.includes(match.matchID);
+            let isFavorite = favorites.includes(match.matchID.toString());
+        
             let starIcon = isFavorite ? 'material-symbols-light:star' : 'material-symbols-light:star-outline';
             let starColor = isFavorite ? '#9c001a' : '#161B35';
 
@@ -293,55 +297,48 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Fonction appelée lorsqu'un utilisateur clique sur une étoile pour ajouter/supprimer un favori
     function favoriteMatch(starElement, idValue) {
-    
-       
-        let favorites = JSON.parse(sessionStorage.getItem('favorites'));
-        const isFavorite = favorites ? favorites.includes(idValue) : false;
+        let favorites = JSON.parse(sessionStorage.getItem('favorites')) || [];
+        let isFavorite = favorites.includes(idValue);
 
         // Préparer les données à envoyer
         const data = {
-            status: isFavorite,
+            status: !isFavorite, // Notez l'inversion ici pour refléter l'action souhaitée
             id: idValue
         };
 
         // Début de la requête fetch pour envoyer des données au back-end
         fetch('/matchList/favorite', {
-            method: 'POST', // Spécifier la méthode HTTP comme POST pour l'envoi des données
+            method: 'POST', 
             headers: {
-                'Content-Type': 'application/json', // Définir le type de contenu pour indiquer que le corps de la requête est au format JSON
+                'Content-Type': 'application/json',
             },
-            body: JSON.stringify(data) // Convertir les données en chaîne JSON et les placer dans le corps de la requête
+            body: JSON.stringify(data)
         })
         .then(response => {
-            // Vérifier la réponse du serveur
-            if (!response.ok && response.status === 401) {
-                // Gérer le cas spécifique où l'utilisateur n'est pas connecté
-                alert("Veuillez vous connecter ou vous inscrire pour effectuer cette action.");
-                return;
+            if (!response.ok) {
+                throw new Error('Network response was not ok for favorites.');
             }
-            // Convertir la réponse en JSON si la requête a réussi
-            return response.json();
+            return response.json(); // Assurez-vous que le serveur renvoie une réponse JSON
         })
         .then(data => {
-            // Traitement des données reçues du serveur
-            // Mettre à jour les données locales ou de session en fonction de la réponse
+            // Inverser l'état de isFavorite suite à la réponse
+            isFavorite = !isFavorite;
             updateLocalFavorites(idValue, isFavorite);
-             // Mise à jour de l'icône
-             starElement.setAttribute('icon', isFavorite ? 'material-symbols-light:star' : 'material-symbols-light:star-outline');
-             starElement.style.color = isFavorite ? '#9c001a' : '#161B35';
-            // Debug : Affichage des données reçues pour vérification
-            console.log('Success:', data);
+
+            // Mise à jour de l'icône et de la couleur basées sur le nouvel état
+            let newIcon = isFavorite ? 'material-symbols-light:star' : 'material-symbols-light:star-outline';
+            let newColor = isFavorite ? '#9c001a' : '#161B35';
+            starElement.setAttribute('icon', newIcon);
+            starElement.style.color = newColor;
+
         })
         .catch((error) => {
-            // Gestion des erreurs lors de la requête fetch
             console.error('Error:', error);
-
-            alert("Veuillez vous connecter ou vous inscrire pour ajouter des matchs à vos favoris.");
+            alert("Une erreur est survenue lors de la mise à jour de vos favoris. Ou vous n'êtes pas connecté.");
         });
-
     }
 
-    // Mettre à jours les matchs favorit de l'utilisateut stocké dans le localStorage
+    // Mettre à jours les matchs favorit de l'utilisateut stocké dans le sessionStorage
     function updateLocalFavorites(matchId, isFavorite) {
         // recupérer dans le local storage les favoris ou un tableau vite si l'utilisateur n'est pas connecté 
         let favorites = JSON.parse(sessionStorage.getItem('favorites')) || [];
@@ -360,7 +357,13 @@ document.addEventListener("DOMContentLoaded", function () {
     // Recevoir les favoris du serveur uniquement si l'utilisateur est connecté 
     function loadFavorites() {
         fetch('/matchList/favorite/getmatchs')
-            .then(response => response.json())
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('La réponse du réseau n\'est pas correcte pour les favoris.');
+                } else {
+                    return response.json();
+                }
+            })
             .then(data => {
                 sessionStorage.setItem('favorites', JSON.stringify(data.favoriteMatchIds));
                 let selectedDate = select.value;
@@ -381,18 +384,28 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
+    /**
+        *  
+    */
+
+
     function logoutUser() {
         // Effacer les favoris de la session
         sessionStorage.removeItem('favorites');
-        
-        // Supprimer le drapeau de connexion
-        localStorage.removeItem('isLoggedIn');
     }
 
     // Definir le Drapeau lors de la connection, pour verifier si un utilisateur est connecté ou non
+
+
     function handleLoginSuccess() {
         // Définir un drapeau indiquant que l'utilisateur est connecté
-        localStorage.setItem('isLoggedIn', 'true');
+        sessionStorage.setItem('isLoggedIn', 'true');
+        if (sessionStorage.getItem('favorites') ){
+
+            loadFavorites();
+        }
+
+
     }
 
     /*
@@ -454,7 +467,7 @@ document.addEventListener("DOMContentLoaded", function () {
             .then(response => response.json())
             .then(data => {
                 // Traiter la réponse
-                console.log(data);
+                // console.log(data);
             })
             .catch(error => {
                 // Gérer les erreurs.
