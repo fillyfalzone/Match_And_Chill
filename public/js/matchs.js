@@ -130,9 +130,11 @@ document.addEventListener("DOMContentLoaded", function () {
 
     }
 
-    function getFavoritesFromSession() {
-        let favoritesRaw = sessionStorage.getItem('favorites');
-    
+    // Fonction pour obtenir les favoris depuis le stockage local
+    function getFavoritesFromLocal() {
+        // Utilisation de localStorage au lieu de sessionStorage
+        let favoritesRaw = localStorage.getItem('favorites');
+
         if (favoritesRaw) {
             try {
                 return JSON.parse(favoritesRaw);
@@ -145,7 +147,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     function displayMatchs(matchs) {
 
-        let favorites = getFavoritesFromSession();
+        let favorites = getFavoritesFromLocal();
 
         // Si les favoris ne sont pas en session, les charger depuis le serveur
         if (!favorites) {
@@ -196,18 +198,6 @@ document.addEventListener("DOMContentLoaded", function () {
                     <div class="ext">
                         <div class="team-id">${match.team2.teamID}</div>
                         <p class="team-name2">${match.team2.shortName}  <span class="goal-number">${team2Points}</span></p>
-                    </div>
-                </div>
-                <div class="options">
-                    <div class="match-events">
-                        <iconify-icon title="évènement" class="event-icon" icon="streamline:party-popper" style="color: #161b35;" width="15" height="15"></iconify-icon>
-                        <sup class="number-events">25</sup>
-                    </div>
-                    <div class="comments-match">
-                        <span>
-                            <iconify-icon title="commentaires" class="comment-icon" icon="bx:comment" style="color: #161b35;" width="15" height="15" onclick="window.location.href='#match-detail'"></iconify-icon>
-                            <sup class="number-comments">25</sup>
-                        </span>
                     </div>
                 </div>
             </td>
@@ -297,7 +287,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Fonction appelée lorsqu'un utilisateur clique sur une étoile pour ajouter/supprimer un favori
     function favoriteMatch(starElement, idValue) {
-        let favorites = JSON.parse(sessionStorage.getItem('favorites')) || [];
+        let favorites = JSON.parse(localStorage.getItem('favorites')) || [];
         let isFavorite = favorites.includes(idValue);
 
         // Préparer les données à envoyer
@@ -337,24 +327,23 @@ document.addEventListener("DOMContentLoaded", function () {
             alert("Une erreur est survenue lors de la mise à jour de vos favoris. Ou vous n'êtes pas connecté.");
         });
     }
-
-    // Mettre à jours les matchs favorit de l'utilisateut stocké dans le sessionStorage
+    // Fonction pour mettre à jour les favoris dans le stockage local
     function updateLocalFavorites(matchId, isFavorite) {
-        // recupérer dans le local storage les favoris ou un tableau vite si l'utilisateur n'est pas connecté 
-        let favorites = JSON.parse(sessionStorage.getItem('favorites')) || [];
-        
-        if (isFavorite) {
-            if (!favorites.includes(matchId)) {
-                favorites.push(matchId);
-            }
-        } else {
-            favorites = favorites.filter(id => id !== matchId);
+    // Utilisation de localStorage au lieu de sessionStorage
+    let favorites = JSON.parse(localStorage.getItem('favorites')) || [];
+
+    if (isFavorite) {
+        if (!favorites.includes(matchId)) {
+            favorites.push(matchId);
         }
-    
-        sessionStorage.setItem('favorites', JSON.stringify(favorites)); // Mettre à jour le stockage de session
+    } else {
+        favorites = favorites.filter(id => id !== matchId);
     }
 
-    // Recevoir les favoris du serveur uniquement si l'utilisateur est connecté 
+    localStorage.setItem('favorites', JSON.stringify(favorites)); // Utilisation de localStorage au lieu de sessionStorage
+    }
+
+    // Fonction pour charger les favoris depuis le serveur et les stocker localement
     function loadFavorites() {
         fetch('/matchList/favorite/getmatchs')
             .then(response => {
@@ -365,13 +354,12 @@ document.addEventListener("DOMContentLoaded", function () {
                 }
             })
             .then(data => {
-                sessionStorage.setItem('favorites', JSON.stringify(data.favoriteMatchIds));
+                localStorage.setItem('favorites', JSON.stringify(data.favoriteMatchIds)); // Utilisation de localStorage au lieu de sessionStorage
                 let selectedDate = select.value;
                 getMatchsByDate(selectedDate);
             })
             .catch(error => console.error('Erreur lors du chargement des favoris:', error));
     }
-    
 
     // ---------------------------------------------------------------------------------------------------------------- 
 
@@ -389,24 +377,21 @@ document.addEventListener("DOMContentLoaded", function () {
     */
 
 
+    // / Fonction pour déconnecter l'utilisateur
     function logoutUser() {
-        // Effacer les favoris de la session
-        sessionStorage.removeItem('favorites');
+        // Suppression de l'élément favorites du localStorage
+        // localStorage.removeItem('favorites');
     }
 
-    // Definir le Drapeau lors de la connection, pour verifier si un utilisateur est connecté ou non
-
-
+    // Fonction pour gérer la connexion réussie de l'utilisateur
     function handleLoginSuccess() {
-        // Définir un drapeau indiquant que l'utilisateur est connecté
-        sessionStorage.setItem('isLoggedIn', 'true');
-        if (sessionStorage.getItem('favorites') ){
-
+        // Définition d'un indicateur indiquant que l'utilisateur est connecté
+        localStorage.setItem('isLoggedIn', 'true');
+        if (localStorage.getItem('favorites')) {
             loadFavorites();
         }
-
-
     }
+
 
     /*
         * Macth detail card content  

@@ -95,10 +95,10 @@
                 {# ------------ aside left Start -------------------------  #}
                 {% if app.user %}
                     <aside id="profil" class="aside-left">
-                        <figure class="block-img">
+                        <figure id="display-figure" class="block-img">
                             <img src="{{ asset('uploads/avatars/' ~ app.user.avatar) }}" alt="photo de profil" class="img-user"> 
                             <figcaption>
-                                {# {{app.user.pseudo}} #}
+                                {{app.user.pseudo}}
                             </figcaption>
                         </figure>
         
@@ -109,7 +109,7 @@
                                 </a>
                             </li>
                             <li class="detail-item">
-                                <a href="">
+                                <a href="{{ path('app_myMatchs') }}">
                                 mes matchs 
                                 </a>
                             </li>
@@ -130,6 +130,7 @@
                             </li>
                         </ul>
                     </aside>
+                    <span id="slide" class="slide-close"></span>
                 {% endif %}
                 {# ------------ aside left End-------------------------  #}
                 
@@ -177,10 +178,11 @@
 
 
         {# ------------------ script javascript local ----------------  #}
-        <script src="{{ asset('js/plugin.js') }}"></script>
+        <script src="{{ asset('js/base.js') }}"></script>
         <script src="{{ asset('js/pagination.js') }}"></script>
         <script src="{{ asset('js/card-discussion.js') }}"></script>
         <script src="{{ asset('js/event.js') }}"></script>
         <script src="{{ asset('js/matchs.js') }}"></script>
+        <script src="{{ asset('js/profil.js') }}"></script>
     </body>
 </html>

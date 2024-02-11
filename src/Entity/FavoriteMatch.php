@@ -17,7 +17,7 @@ class FavoriteMatch
     private ?string $matchId = null;
 
     #[ORM\Column(length: 255)]
-    private ?string $userID = null;
+    private ?string $userId = null;
 
     public function getId(): ?int
     {
@@ -36,14 +36,14 @@ class FavoriteMatch
         return $this;
     }
 
-    public function getUserID(): ?string
+    public function getUserId(): ?string
     {
-        return $this->userID;
+        return $this->userId;
     }
 
-    public function setUserID(string $userID): static
+    public function setUserId(string $userId): static
     {
-        $this->userID = $userID;
+        $this->userId = $userId;
 
         return $this;
     }

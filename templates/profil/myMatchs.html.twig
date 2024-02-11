@@ -1,13 +1,10 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Liste des Matchs{% endblock %}
+{% block title %}Les matchs préférés de {{app.user.pseudo}}{% endblock %}
 
-{% block meta_description %}
-    Bienvenue sur la page de liste des matchs
-{% endblock %}
+{% block meta_description %}Le service contact de Match&amp;Chill est disponible pour répondre à vos questions{% endblock %}
 
 {% block body %}
-{# ----------------- Section Center Start ---------------  #}
 <div id="section-center">
 
     {#  ------------------- file d'ariane ------------ #}
@@ -20,18 +17,9 @@
         <p id="here-ariane" class="here-ariane m-0">Aujourd'hui</p>
     </div>
 
-    {# ---------------------- Filter ----------------------------  #}
-    <div class="filter-select mb-3">
-        <div class="filter-block">
-            <div class="date-container">
-                <select id="filter-date" class="filter-date ms-5 form-select form-select-sm" aria-label="Small select example">
-                <!-- Ici sera déversé dynamiquement le calendrier des matchs-->
-                </select>
-            </div>
-        </div>
-    </div>
+
     {# --------------- Single title ------------------------------ #}
-    <h1 class="title-event text-center mb-4" style="color: #161b35 !important; background-color:white; border: 1px solid #161b35">liste des matchs</h1>
+    <h1 class="title-event text-center mb-4" style="color: #161b35 !important; background-color:rgba(255, 255, 255, 0); border: 1px solid #161b35 ">Ma liste de matchs</h1>
     {# ----------- TABLEAU DE COMPÉTITIONS ET MATCHS  -----------------------#}
 
     <article class="championship-card">
@@ -50,7 +38,7 @@
                 </tr>
             </thead>
             <!-- Container pour afficher les détails des matchs -->
-            <tbody id="matchs-container">
+            <tbody id="myMatchs-container">
                 
             </tbody>
         </table>

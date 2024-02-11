@@ -126,8 +126,10 @@ window.document.addEventListener('DOMContentLoaded', function() {
     }
 
     // Attacher l'événement de changement aux sélecteurs
-    sortByTeam.addEventListener('change', fetchSortedEvents);
-    sortByStatus.addEventListener('change', fetchSortedEvents);
+    if (sortByTeam && sortByStatus) {
+        sortByTeam.addEventListener('change', fetchSortedEvents);
+        sortByStatus.addEventListener('change', fetchSortedEvents);
+    }
 
 
 })

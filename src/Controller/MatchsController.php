@@ -108,12 +108,13 @@ class MatchsController extends AbstractController
         // néttoyage des données.
         $matchId = filter_var($data['id'], FILTER_SANITIZE_NUMBER_INT); // ID du match à mettre en favori ou à retirer des favoris
         $status = filter_var($data['status'], FILTER_VALIDATE_BOOLEAN); // Status indicating whether the match should be added or removed from favorites
-
+       
         try {
             // Traitement si le match doit être ajouté aux favoris
             if ($status) {
+
                 // Vérification de l'existence de l'entrée pour éviter les doublons
-                $existingFavorite = $favoriteManager->findOneBy(['matchId' => $matchId, 'userID' => $userId]);
+                $existingFavorite = $favoriteManager->findOneBy(['matchId' => $matchId, 'userId' => $userId]);
                 if (!$existingFavorite) {
                     // Création d'une nouvelle entrée FavoriteMatch si elle n'existe pas déjà
                     $favoriteMatch = new FavoriteMatch();
@@ -125,7 +126,7 @@ class MatchsController extends AbstractController
                 }
             } else {
                 // Traitement si le match doit être retiré des favoris
-                $favoriteMatch = $favoriteManager->findOneBy(['matchId' => $matchId, 'userID' => $userId]);
+                $favoriteMatch = $favoriteManager->findOneBy(['matchId' => $matchId, 'userId' => $userId]);
                 if ($favoriteMatch) {
                     // Suppression de l'entrée existante si elle existe
                     $entityManager->remove($favoriteMatch);
@@ -157,7 +158,7 @@ class MatchsController extends AbstractController
 
         $userId = $user->getId();
 
-        $favorites = $favoriteMatchRepository->findBy(['userID' => $userId]);
+        $favorites = $favoriteMatchRepository->findBy(['userId' => $userId]);
 
         $favoriteMatchIds = array_map(fn($fav) => $fav->getMatchID(), $favorites);
 

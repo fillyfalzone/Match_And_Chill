@@ -97,13 +97,14 @@
     display: flex;
     gap: 10px;
     padding: 0;
+    position: relative;
 }
 /*
     * Aside left
 */
 .aside-left{
     max-width: 20%;
-    min-width: 150px;
+    min-width: 170px;
     padding-right: 10px;
     min-height: 500px;
     box-shadow: 5px -5px 5px -5px rgba(0, 0, 0, 0.5);
@@ -213,6 +214,8 @@
 
 #profil  {
     font-family: var(--roboto);
+    position: relative;
+    height: fit-content;
 }
 
 .img-user {
@@ -287,4 +290,63 @@
 .detail-item:nth-child(4) a sup {
     color: var(--blood-red);
     font-weight: 600;
+}
+
+
+/*
+    * Slide aside -------------------------
+*/
+.slide-close {
+    display: none;
+}
+
+
+@media screen and (max-width: 800px) {
+
+    /* Profil slide*/
+    #profil  {
+        font-family: var(--roboto);
+        background-color: var(--light);
+        transition: all 0.3s;
+        display: none;
+    }
+  /* #display-figure{
+        display: none;
+    } */
+
+    .slide-close {
+        display: block;
+        width: 30px;
+        height: 30px;
+        position: absolute;
+        top: 40px;
+        left:0px;
+        background: url('../images/icon/arrow-slide.svg') center center / cover no-repeat;
+        transition: all 0.3s;
+        cursor: pointer;
+    }
+    
+    .slide-open {
+        transition: all 0.3s;
+        transform: rotateY(180deg);
+    }
+ 
+
+    @keyframes scaleUp {
+        0% {
+            transform: scale(1); 
+        }
+        50% {
+            transform: scale(1.2); 
+        }
+        100% {
+            transform: scale(1);
+        }
+    }
+    
+    .slide-close {
+        animation: scaleUp 2s infinite; /* Applique l'animation avec une durée de 2 secondes et la répète à l'infini */
+    }
+    
+    
 }
