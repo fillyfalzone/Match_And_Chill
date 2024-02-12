@@ -6,7 +6,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     
         // Début de la requête fetch à l'API pour obtenir les données des matchs
-        fetch(`/mymatchs/data`)
+        fetch(`/profil/mymatchs/data`)
         .then(response => response.json()) // Étape 1 : Réception de la réponse et conversion de la réponse JSON en objet JavaScript
         .then(data => {
             

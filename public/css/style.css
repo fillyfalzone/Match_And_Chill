@@ -362,6 +362,42 @@ section {
 /*---- DESKTOP MAIN SECTION ABOUT -------------------*/
 #about {
     background: url('../images/about_us.jpg') center center / cover no-repeat;
+    position: relative;
+}
+
+
+
+/** ----------------------- FOOTER ------------------------------------ **/
+
+#footer-home {
+    background-color: var(--bleu-navy);
+    width: 100%;
+    position:absolute;
+    bottom: 0;
+    padding: 20px 10px;
+}
+
+#footer-home .container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 20pxpx;
+}
+
+
+#footer-home  .media-list-footer {
+    padding: 0;
+    margin: 0;
+    margin: 20px 0;
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+#footer-home .container p {
+    color: var(--light);
 }
 
 /* ---------- MOBILE ----------------------*/

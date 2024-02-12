@@ -1,0 +1,29 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello ProfilController!{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <h1 class="sigle-tilte">Mon Compte</h1>
+
+        <div class="row my-5 width-fit-content mx-auto">
+            <div class="col-1">
+                <img src="{{ asset("uploads/avatars/"~ app.user.avatar) }}" alt="avatar" class="rounded-circle mb-2" width="50" height="50">
+            </div>
+            <div class="col-11 mb-5">
+                <p>Pseudo :  <span class="fw-bold">{{ app.user.pseudo}}</span></p>
+                <p>Email  :  <span class="fw-bold">{{ app.user.email}}</span></p>
+            </div>
+            <div class="col">
+                <a href="{{path('delete_profile', {'pseudo': app.user.pseudo})}}" class="btn btn-danger mx-2 py-1 me-3">Supprimer mon profil</a>
+
+                <a href="" class="btn btn-warning mx-2 py-1 me-3">Modifier mon profil</a>
+
+            </div>
+        </div>
+
+            
+
+    </div>
+
+{% endblock %}

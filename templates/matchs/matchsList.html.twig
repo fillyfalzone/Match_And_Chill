@@ -30,6 +30,20 @@
             </div>
         </div>
     </div>
+    {# ------------------------------ Message flash ------------------- #}
+    {% for flashMessage in app.flashes('success') %}
+        <div class="alert alert-success">{{ flashMessage }}</div>
+    {% endfor %}
+    {% for flashMessage in app.flashes('error') %}
+        <div class="alert alert-danger">{{ flashMessage }}</div>
+    {% endfor %}
+    {% for flashMessage in app.flashes('warning') %}
+        <div class="alert alert-warning">{{ flashMessage }}</div>
+    {% endfor %}
+    {% for flashMessage in app.flashes('info') %}
+        <div class="alert alert-info">{{ flashMessage }}</div>
+    {% endfor %}
+        
     {# --------------- Single title ------------------------------ #}
     <h1 class="title-event text-center mb-4" style="color: #161b35 !important; background-color:white; border: 1px solid #161b35">liste des matchs</h1>
     {# ----------- TABLEAU DE COMPÉTITIONS ET MATCHS  -----------------------#}

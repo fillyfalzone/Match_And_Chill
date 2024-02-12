@@ -67,12 +67,12 @@
                                         <span>évènéments</span>
                                     </a>
                                 </li>
-                                <li class="nav-item">
+                                {# <li class="nav-item">
                                     <a class="nav-link" href="{{ path('app_forum') }}">
                                         <iconify-icon class="icon" icon="fluent:people-community-16-regular" width="20" height="20"></iconify-icon>
                                         <span>forum</span>
                                     </a>
-                                </li>
+                                </li> #}
                                 <li class="nav-item">
                                     <a class="nav-link" href="{{ path('app_contact') }}">
                                         <iconify-icon class="icon" icon="jam:write-f" width="20" height="20"></iconify-icon>
@@ -125,17 +125,17 @@
                                 </a>
                             </li>
                             <li class="detail-item">
-                                <a href="">
+                                <a href="{{ path('app_myEvents') }}">
                                     mes évènement 
                                 </a>
                             </li>
-                            <li class="detail-item">
+                            {# <li class="detail-item">
                                 <a href="">
                                     ma messagerie <sup id="nb-message">3</sup>
                                 </a>
-                            </li>
+                            </li> #}
                             <li class="detail-item">
-                                <a href="">
+                                <a href="{{ path('app_profil') }}">
                                     mon compte
                                 </a>
                             </li>

@@ -1,0 +1,69 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Liste des Matchs{% endblock %}
+{% block meta_description %}
+    Liste des évènement
+{% endblock %}
+
+{% block body %}
+{# ----------------- Section Center Start ---------------  #}
+
+<div id="section-center" class="section-center">
+    {#  ------------------- file d'ariane ------------ #}
+    <div class="file-ariane mb-3">
+        <a class="home-ariane" href="{{ path('app_home') }}">
+            <iconify-icon class="icon" icon="ion:home-sharp" width="13" height="13"></iconify-icon>
+            <span>Match&amp;Chill <span class="slash">/</span></span>
+        </a>
+        <a class="second-ariane" href="">évènéments <span class="slash">/</span></a>
+        <span class="second-ariane" href="">mes évènements <span class="slash">/</span></span>
+    </div>
+    
+
+    {# -------------- List of event ------------------------- #}
+
+    <div class="container py-5">
+        <h1 class="title-event text-center mb-4">LISTE DES ÉVÉNEMENTS</h1>
+        {# ---------------------Créer un evenement ---------------  #}
+     
+        <div id="events-container" class="container">
+         
+            {% for event in events %}
+                <!-- Début d'un événement -->
+                <div class="card-myEvent mb-4">
+                    <div class="card-body">
+                        <div class="row align-items-center">
+                            <div class="col-auto">
+                                <!-- Placeholder pour l'avatar -->
+                                <img src="{{ asset("uploads/avatars/"~ event.user.avatar) }}" alt="avatar" class="rounded-circle mb-2" width="50" height="50">
+                                <p class="text-center mb-0">{{ event.user.pseudo }}</p>
+                            </div>
+                            <div class="card-detail col">
+                                <h5 class="card-title fs-6"><a href="{{ path('app_events_show', {"idInput": event.id}) }}">{{ event.name }}</a></h5>
+                                <p class="card-text small mb-1">Débute le {{ event.startDate |date("m/d/Y" ) }}</p>
+
+                                {% if event.usersParticipate |length == event.numberOfPlaces %}
+                                    <p class="card-text small mb-1">Statut : <span class="bg-danger fw-bold py-1 px-2 text-light rounded">complet</span></p>
+                                {% else %}
+                                    <p class="card-text small mb-1">
+                                        Statut : <span class="bg-success fw-bold py-1 px-2 text-light rounded">ouvert</span>
+                                    </p>
+                                    <p class="card-text small mb-1">
+                                        Disponibilité : {{ event.usersParticipate |length }} / {{ event.numberOfPlaces }} 
+                                    </p>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <hr class="mb-3">
+            {% endfor %}
+            <!-- Fin d'un événement -->
+        </div>
+
+        <!-- Répétez le bloc ci-dessus pour chaque événement... -->
+    
+    </div>
+</div>
+
+{% endblock %}

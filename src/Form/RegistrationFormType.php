@@ -27,10 +27,10 @@ class RegistrationFormType extends AbstractType
         ->add('pseudo', TextType::class, [
             'constraints' => [
                 // Regex pour valider le pseudo
-                new Regex([
-                    'pattern' => '^[a-zA-Z][a-zA-Z0-9._-]{2,15}$',
-                    'message' => 'Le pseudo doit contenir entre 3 et 15 caractères, commencer par une lettre et ne doit pas contenir d\'espace.',
-                ])
+                // new Regex([
+                //     'pattern' => '^[a-zA-Z][a-zA-Z0-9._-]{2,15}$',
+                //     'message' => 'Le pseudo doit contenir entre 3 et 15 caractères, commencer par une lettre et ne doit pas contenir d\'espace.',
+                // ])
             ],
         ])
         ->add('email', EmailType::class, [

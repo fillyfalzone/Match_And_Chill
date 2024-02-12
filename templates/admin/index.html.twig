@@ -4,42 +4,60 @@
 
 {% block body %}
     <div class="container">
+        {% for flashMessage in app.flashes('success') %}
+                <div class="alert alert-success">{{ flashMessage }}</div>
+            {% endfor %}
+            {% for flashMessage in app.flashes('error') %}
+                <div class="alert alert-danger">{{ flashMessage }}</div>
+            {% endfor %}
+            {% for flashMessage in app.flashes('warning') %}
+                <div class="alert alert-warning">{{ flashMessage }}</div>
+            {% endfor %}
+            {% for flashMessage in app.flashes('info') %}
+                <div class="alert alert-info">{{ flashMessage }}</div>
+        {% endfor %}
+        
         <h1 class="text-center single-title">Page admin</h1>
         <h2 class="single-title h3">Liste des Utilisateurs</h2>
-        <table class="table">
-            <thead>
-            <tr>
-                <th scope="col">#</th>
-                <th scope="col">Pseudo</th>
-                <th scope="col">Emain</th>
-                <th scope="col">
-                    {% if user.isBanned %}
-                        <a href="" class="btn-primary">débloquer</a>
-                        {% else %}
-                        <a href="" class="btn-primary">débloquer</a>
-                        
-                    {% endif %}
-                </th>
-            </tr>
+        <table class="table table-hover">
+            <thead class="text-center">
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Avatar</th>
+                    <th scope="col">Pseudo</th>
+                    <th scope="col">Email</th>
+                    <th scope="col">Bannir</th>
+                    <th scope="col">Supprimer</th>
+                </tr>
             </thead>
-            <tbody>
-            <tr>
-                <th scope="row">1</th>
-                <td>Mark</td>
-                <td>Otto</td>
-                <td>@mdo</td>
-            </tr>
-            <tr>
-                <th scope="row">2</th>
-                <td>Jacob</td>
-                <td>Thornton</td>
-                <td>@fat</td>
-            </tr>
-            <tr>
-                <th scope="row">3</th>
-                <td colspan="2">Larry the Bird</td>
-                <td>@twitter</td>
-            </tr>
+            <tbody class="text-center align-center">
+                {% for user in users %}
+                <tr>
+                    <th scope="row"> {{user.id}} </th>
+                    <td> <img src="{{ asset('uploads/avatars/' ~ user.avatar) }}" alt="photo de profil" class="img-user"></td>
+                    {% if user.isbanned %}
+                        <td class="fw-bold fs-6 text-danger">{{user.pseudo}}</td>
+                    {% else %}
+                    <td class="fw-bold fs-6">{{user.pseudo}}</td>
+                    {% endif %}
+                   
+                    {% if user.isbanned %}
+                        <td class="fw-bold fs-6 text-danger">{{user.email}}</td>
+                    {% else %}
+                        <td class="fw-bold fs-6">{{user.email}}</td>
+                    {% endif %}
+                    
+                    <td class="fw-bold fs-6">
+                        {% if user.isbanned %}
+                            <a href="" class="btn btn-success">débloquer</a>
+                            {% else %}
+                            <a href=" {{path('admin_ban_user', {'id': user.id})}} " class="btn btn-primary px-2 py-1 fw-bold text-light">Bannir</a>
+                            
+                        {% endif %}
+                    </td>
+                    <td scope="col"><a href="" class="btn btn-danger px-2 py-1 fw-bold text-light">Supprimer</a></td>
+                </tr>
+                {% endfor %}
             </tbody>
         </table>
     </div>
