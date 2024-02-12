@@ -38,10 +38,7 @@ class EventFormType extends AbstractType
             $teams[$team['shortName']] = $team['teamInfoId'];
         }
       
-        // Ajoute un écouteur d'événement PRE_SUBMIT au constructeur de formulaire.
-        // Cet écouteur sera déclenché juste avant que les données soumises soient
-        // appliquées au formulaire. C'est utile pour modifier dynamiquement le formulaire
-        // en fonction des données soumises.
+        // Ajoute un écouteur d'événement PRE_SUBMIT au constructeur de formulaire..
         $builder->addEventListener(FormEvents::PRE_SUBMIT, function (FormEvent $event) {
             // Récupère les données soumises au formulaire.
             $data = $event->getData();
@@ -59,8 +56,6 @@ class EventFormType extends AbstractType
                 // Boucle à travers chaque match récupéré.
                 foreach ($matches as $match) {
                     // Associe l'ID du match à lui-même dans le tableau $matchesId.
-                    // Ceci est fait pour préparer les options du champ de sélection 'matchId'
-                    // où la clé et la valeur sont les mêmes (l'ID du match).
                     $matchesId[$match['matchID']] = $match['matchID'];
                 }
                 
@@ -69,11 +64,8 @@ class EventFormType extends AbstractType
                     // Si oui, retire ce champ pour le réajouter avec les nouvelles options.
                     $form->remove('matchId');
                 }
-                
                 // Réajoute le champ 'matchId' au formulaire avec les nouvelles options.
                 // `array_flip` est utilisé pour que les valeurs des matchs deviennent les clés,
-                // et les clés (qui sont les IDs des matchs) deviennent les valeurs dans les options du champ,
-                // ceci est une exigence pour le type de champ ChoiceType dans Symfony.
                 $form->add('matchId', ChoiceType::class, [
                     'choices' => array_flip($matchesId),
                 ]);

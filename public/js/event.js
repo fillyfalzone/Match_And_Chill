@@ -31,12 +31,14 @@ window.document.addEventListener('DOMContentLoaded', function() {
         try {
             // Fetch pour récupérer les matchs pour l'équipe sélectionnée
             const matchesResponse = await fetch('https://api.openligadb.de/getmatchdata/bl1/2023');
+            // attente d'une promesse pour récupérer les données
             const matchesData = await matchesResponse.json();
             if (!matchesResponse.ok) {
-                throw new Error('Network response was not ok for matches data.');
+                throw new Error('la requête n\'a pas abouti, veuillez réessayer plus tard');
             }
 
             const now = new Date();
+            // Filtrer les matchs à venir pour l'équipe sélectionnée
             const filteredMatches = matchesData.filter(match => {
                 const matchDateTime = new Date(match.matchDateTimeUTC);
                 return matchDateTime > now && (match.team1.teamId == teamId || match.team2.teamId == teamId);
@@ -46,6 +48,7 @@ window.document.addEventListener('DOMContentLoaded', function() {
             matchsList.innerHTML = '';
             matchsList.appendChild(createOption('Choisir un match'));
 
+            // Ajouter des options pour chaque match filtré
             filteredMatches.forEach(match => {
                 const dateTime = formatDateTime(match.matchDateTime);
                 matchsList.appendChild(createOption(
@@ -108,6 +111,7 @@ window.document.addEventListener('DOMContentLoaded', function() {
     const sortByTeam = document.getElementById('sort-by-team');
     const sortByStatus = document.getElementById('sort-by-status'); // Correction du camelCase
 
+
     // Fonction pour trier et récupérer les événements
     function fetchSortedEvents() {
         const teamId = sortByTeam.value;
@@ -116,8 +120,9 @@ window.document.addEventListener('DOMContentLoaded', function() {
         fetch(`/events?teamId=${teamId}&status=${status}`)
             .then(response => response.text())
             .then(html => {
-                
+                console.log(html);
                 eventsContainer.innerHTML = '';
+
                 eventsContainer.innerHTML = html;
             })
             .catch(error => {
@@ -130,6 +135,52 @@ window.document.addEventListener('DOMContentLoaded', function() {
         sortByTeam.addEventListener('change', fetchSortedEvents);
         sortByStatus.addEventListener('change', fetchSortedEvents);
     }
+
+    /** 
+         * Géo localisation avec geo.api.gouv.fr
+    */
+    const address = document.getElementById('address').innerText;
+    const city = document.getElementById('city').innerText;
+    const zipCode = document.getElementById('zip-code').innerText;
+    const fullAddress = `${address}, ${zipCode} ${city}`;
+
+    console.log(fullAddress);
+    
+    function geocodeAddressGouvFr(address) {
+        var url = `https://api-adresse.data.gouv.fr/search/?q=${encodeURIComponent(address)}`;
+    
+        fetch(url)
+            .then(response => response.json())
+            .then(data => {
+                if (data.features && data.features.length > 0) {
+                    var latitude = data.features[0].geometry.coordinates[1];
+                    var longitude = data.features[0].geometry.coordinates[0];
+                    console.log('Latitude:', latitude, 'Longitude:', longitude);
+                    // Ici, vous pouvez utiliser ces coordonnées pour initialiser votre carte Leaflet
+
+                    // Créer une carte Leaflet 
+                    var map = L.map('map').setView([latitude, longitude], 13);
+
+                    // Ajouter des tuiles OpenStreetMap à la carte
+                    L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                        maxZoom: 19,
+                        attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+                    }).addTo(map);
+
+                    // Ajouter un marqueur à la carte 
+                    let marker = L.marker([latitude, longitude]).addTo(map);
+                    marker.bindPopup(address).openPopup();
+
+                } else {
+                    console.log('Geocoding failed: No results found');
+                }
+            })
+            .catch(error => console.log('Error:', error));
+    }
+    
+    //appel de la fonction
+    geocodeAddressGouvFr(fullAddress);
+
 
 
 })

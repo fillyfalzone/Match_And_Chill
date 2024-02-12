@@ -42,7 +42,7 @@ class EventsController extends AbstractController
         // Boucle sur chaque événement pour déterminer s'il correspond aux critères de filtrage.
         foreach ($events as $event) {
             // Initialisation de la variable pour décider de l'inclusion de l'événement.
-            $includeEvent = false;
+         
 
             // Chargement des données du match de l'API externe si un ID d'équipe est spécifié.
             if ($teamId) {
@@ -115,22 +115,17 @@ class EventsController extends AbstractController
     #[Route('/events/edit/{id}', name: 'app_events_edit')]
     public function newedit(Event $event = null, EntityManagerInterface $entityManager, TokenStorageInterface $tokenStorage, Request $request): Response
     {
-        
-       
         // Création d'un nouvel objet Event si aucun n'est fourni
         if (!$event){
             $event = new Event();
         }
-        
         // Récupérer l'id de l'événement s'il existe
         $id = $event->getId();
-        
         // Création du formulaire
         $form = $this->createForm(EventFormType::class, $event);
-
         // Traitement de la requête
         $form->handleRequest($request); 
-       
+       // Vérifier si le formulaire a été soumis et est valide
         if ($form->isSubmitted() && $form->isValid()) {
 
             // Ajouter les informations manquantes
@@ -282,9 +277,6 @@ class EventsController extends AbstractController
 
         // Boucle sur chaque événement pour déterminer s'il correspond aux critères de filtrage.
         foreach ($events as $event) {
-            // Initialisation de la variable pour décider de l'inclusion de l'événement.
-            $includeEvent = false;
-
             // Chargement des données du match de l'API externe si un ID d'équipe est spécifié.
             if ($teamId) {
                 $match = $httpClient->getMatchByTeamId($event->getMatchId());

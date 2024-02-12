@@ -1,6 +1,6 @@
 document.addEventListener("DOMContentLoaded", function () {
 
-    getMatchsByDate();
+    getFavoritesFromLocal();
 
     function getMatchsByDate() {
 
@@ -38,9 +38,8 @@ document.addEventListener("DOMContentLoaded", function () {
         let favorites = getFavoritesFromLocal();
 
         // Si les favoris ne sont pas en session, les charger depuis le serveur
-        if (favorites) {
+        if (!favorites) {
             loadFavorites();
-            
         }
 
         // Récupérer le conteneur des matchs
@@ -165,12 +164,12 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Fonction appelée lorsqu'un utilisateur clique sur une étoile pour ajouter/supprimer un favori
     function favoriteMatch(starElement, idValue) {
-        let favorites = JSON.parse(localStorage.getItem('favorites')) || [];
-        let isFavorite = favorites.includes(idValue);
+       
+        let isFavorite = false;
 
         // Préparer les données à envoyer
         const data = {
-            status: !isFavorite, // Notez l'inversion ici pour refléter l'action souhaitée
+            status: isFavorite, // Notez l'inversion ici pour refléter l'action souhaitée
             id: idValue
         };
 
@@ -234,11 +233,13 @@ document.addEventListener("DOMContentLoaded", function () {
             })
             .then(data => {
                 localStorage.setItem('favorites', JSON.stringify(data.favoriteMatchIds));
-                let selectedDate = select.value;
-                getMatchsByDate(selectedDate);
+               
+                getMatchsByDate();
             })
             .catch(error => console.error('Erreur lors du chargement des favoris:', error));
     }
     
+    // Appel de la fonction pour obtenir les matchs par date
+    getMatchsByDate();
 
 });

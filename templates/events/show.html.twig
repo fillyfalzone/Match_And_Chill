@@ -24,71 +24,71 @@
     <div class="container my-5">
         <div class="card">
             <div class="card-body">
-                <div class="mb-3">
-                    <div class="d-flex gap-2 flex-column" >
-                        <img src=" {{asset('uploads/avatars/'~ app.user.avatar)}} " class="rounded-circle me-2" alt="Avatar" style="width: 60px; height: 60px;">
-                        <p>{{app.user.pseudo}}</p>
+                <div class="event-card container">
+                    <div class="event-header d-flex align-items-center mb-4">
+                        <img src=" {{asset('uploads/avatars/'~ event.user.avatar)}} " class="rounded-circle me-2" alt="Avatar de {{event.user.pseudo}}" style="width: 60px; height: 60px;">
+                        <div class="ml-3">
+                        <h2 class="event-name">{{event.name}}</h2>
+                        <p class="organizer-name">Organisé par {{event.user.pseudo}}</p>
+                        <small>{{event.creationDate |date("m/d/Y H:i")}} </small>
+                        </div>
                     </div>
+                    <fieldset class="event-info mb-3">
+                        <legend>Informations de l'événement</legend>
+                            <strong>Statut :</strong> 
+                            {% if availablePlaces %}
+                            <p><span class="label">Statut :</span> <span class="bg-success rounded fw-bold text-light py-1 px-3">Ouvert: {{ event.usersParticipate |length }} / {{event.numberOfPlaces}}</span> </p>
+                            {% else %}
+                                <p><span class="label">Statut :</span> <span class="bg-danger rounded fw-bold text-light py-1 px-3">Fermé: {{ event.usersParticipate |length }} / {{event.numberOfPlaces}}</span> </p>
+                            {% endif %}
+                        <p><span class="label">Match :</span> <strong>{{ match.team1.shortName }}</strong> Vs  <strong>{{ match.team2.shortName }}</strong></p>
+                        <p><span class="label">Catégorie :</span> {{event.category.name}}</p>
+                        <p><span class="label">Description :</span>  {{event.description}}</p>
+                    </fieldset>
+                    <fieldset class="event-timing mb-3">
+                        <legend>Horaires</legend>
+                        <p><span class="label">Début :</span> {{event.startDate |date("m/d/Y H:i:")}}</p>
+                        <p><span class="label">Fin :</span> {{event.endDate |date("m/d/Y H:i:")}}</p>
+                    </fieldset>
+                    <fieldset class="event-location">
+                        <legend>Localisation</legend>
+                        <p><span class="label">Adresse :</span> {{event.adress}}</p>
+                        <p><span class="label">Ville :</span>{{event.city}} <br> <span class="label">Code postal :</span> {{event.zipCode}}</p>
+                        <p><span class="label">Pays :</span> {{event.country}}</p>
+                    </fieldset>
                 </div>
-                <h1 class="card-title text-center  mb-3"> {{event.name}}</h1>
-                <div class="row text-center">
-                    <p class="card-text"><strong>Date de création :</strong> {{event.creationDate |date("m/d/Y H:i")}} </p>
-
-                    <p class="card-text">
-                        <strong>Statut :</strong> 
-                        {% if availablePlaces %}
-                            <span class="badge bg-success">
-                            Ouvert &nbsp;   
-                            {{ event.usersParticipate |length }} / {{event.numberOfPlaces}}</span>
-                        {% else %}
-                            <span class="badge bg-danger">
-                                complet &nbsp;
-                                {{ event.usersParticipate |length }} / {{event.numberOfPlaces}}</span>
-                        {% endif %}
-                    </p>
-
-                    <p class="card-text"><strong>Match :</strong> {{ match.team1.shortName }} Vs  {{ match.team2.shortName }}</p>
-                    <p class="card-text"><strong>Catégorie :</strong> {{event.category.name}} </p>
-                    <p class="card-text"><strong>Description :</strong> {{event.description}} </p>
-                    <p class="card-text"><strong>début :</strong> {{event.startDate |date("m/d/Y H:i:")}}</p>
-                    <p class="card-text"><strong>fin :</strong> {{event.endDate |date("m/d/Y H:i:")}}</p>
-               
-                    <p class="card-text"><strong>Adresse :</strong> {{event.adress}}</p>
-                    <p class="card-text"><strong>Ville :</strong>{{event.city}} <strong>Code postal :</strong> {{event.zipCode}}</p>
-                    <p class="card-text"><strong>Pays :</strong>{{event.country}}</p>
-                </div>
+                  
                 {# ---------- Bouton supprimer modifier ------------- #}
-               {% if event.user or is_granted('ROLE_ADMIN') %}
+                {% if (event.user == app.user) or is_granted('ROLE_ADMIN') %}
                     <div class="d-flex justify-content-center my-3">
                         <a href="{{ path('app_events_edit', {'id': event.id}) }}" class="btn btn-primary me-2">Modifier</a>
                         <a href="{{path('app_events_delete', {'id': event.id}) }}" class="btn btn-danger">Supprimer</a>
                     </div>
-                    <div class="map-placeholder mb-3" style="height: 200px; background-color: #e9ecef;"></div>
                 {% endif %}
+            
                 
                 {# -------------Bouton Participer Annuler ---------  #}
 
                 {# ----- S'il reste des places disponible et si user n'est pas inscrit #}
-                {% if availablePlaces and not participate %}
-                    <div class="col text-center">
-                        <a href="{{ path('app_events_participate', {"id": event.id}) }}" class="btn btn-success d-inline-block mx-auto btn-lg">Participer à l'évènement</a>
-                    </div>
-                {% elseif participate %}
-                    <div class="col text-center">
-                        <a href="{{ path('app_events_unparticipate', {"id": event.id}) }}" class="btn btn-danger d-inline-block mx-auto btn-lg">Se désinscrire de l'évènement</a>
-                    </div>
-                {% else %}
-                    <div class="col text-center">
-                        <p class="text-danger fw-bold">
-                            Peut-être afficher un message indiquant qu'il n'y a pas de places disponibles ou que l'événement est complet
-                        </p>
-                    </div>
+                {% if event.user != app.user  %}
+
+                    {% if availablePlaces and not participate %}
+                        <div class="col text-center my-3">
+                            <a href="{{ path('app_events_participate', {"id": event.id}) }}" class="btn btn-success d-inline-block mx-auto btn-lg">Participer à l'évènement</a>
+                        </div>
+                    {% elseif participate %}
+                        <div class="col text-center my-3">
+                            <a href="{{ path('app_events_unparticipate', {"id": event.id}) }}" class="btn btn-danger d-inline-block mx-auto btn-lg">Se désinscrire de l'évènement</a>
+                        </div>
+                    {% else %}
+                        <div class="col text-center my-3">
+                            <p class="text-danger fw-bold">
+                                Peut-être afficher un message indiquant qu'il n'y a pas de places disponibles ou que l'événement est complet
+                            </p>
+                        </div>
+                    {% endif %}
                 {% endif %}
-
-
-
-          
-               
+                <div id="map" class="my-3" style="height: 300px;"></div>
             </div>
         </div>
     </div>

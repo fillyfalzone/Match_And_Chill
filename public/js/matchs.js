@@ -2,7 +2,7 @@ document.addEventListener("DOMContentLoaded", function () {
     // On recupère le bouton logout
     const logOut = document.getElementById("logout");
     // Sélectionnez l'élément de liste déroulante par son ID
-    const select = document.getElementById("filter-date");
+    var select = document.getElementById("filter-date");
 
        // Charger les sessions de l'utilisateur
        handleLoginSuccess();
@@ -345,6 +345,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Fonction pour charger les favoris depuis le serveur et les stocker localement
     function loadFavorites() {
+      
         fetch('/matchList/favorite/getmatchs')
             .then(response => {
                 if (!response.ok) {
@@ -355,8 +356,13 @@ document.addEventListener("DOMContentLoaded", function () {
             })
             .then(data => {
                 localStorage.setItem('favorites', JSON.stringify(data.favoriteMatchIds)); // Utilisation de localStorage au lieu de sessionStorage
-                let selectedDate = select.value;
+               
+                if (select) {
+                    // Récupérez la nouvelle date sélectionnée
+                    let selectedDate = select.value;
+                    // Appelez la fonction
                 getMatchsByDate(selectedDate);
+                }
             })
             .catch(error => console.error('Erreur lors du chargement des favoris:', error));
     }
@@ -466,53 +472,5 @@ document.addEventListener("DOMContentLoaded", function () {
             window.location.reload();
         });
     }
-
-
-
-
-
-    // // Recupération des icons des commentaires et évènements 
-    // const commentIcons = document.querySelectorAll(".comment-icon");
-    // const eventIcons = document.querySelectorAll(".event-icon");
-
-
-    // const numberEvents = document.querySelectorAll(".number-events");
-    // const numberComments = document.querySelectorAll(".number-comments");
-
-
-    // // Modification de l'état des icônes de commentaires
-    // commentIcons.forEach(commentIcon => {
-    //     commentIcon.addEventListener('click', () => {
-    //         const isCommentFilled = commentIcon.getAttribute('icon') === 'bxs:comment';
-
-    //         // Bascule entre l'état initial et l'état modifié
-    //         if (isCommentFilled) {
-    //             commentIcon.setAttribute('icon', 'bx:comment');
-    //             commentIcon.style.color = '#161b35';
-    //         } else {
-    //             commentIcon.setAttribute('icon', 'bxs:comment');
-    //             commentIcon.style.color = '#9c001a';
-    //         }
-    //     });
-    // });
-
-    // // Modification de l'état des icônes d'événements
-    // eventIcons.forEach(eventIcon => {
-    //     eventIcon.addEventListener('click', () => {
-    //         // Recupérer l'attrbut 'icon' de l'élément 
-    //         const isEventFilled = eventIcon.getAttribute('icon') === 'streamline:party-popper-solid';
-
-    //         // Bascule entre l'état initial et l'état modifié lorsque l'utilisateur selectionne ou non un évènement 
-    //         if (isEventFilled) {
-    //             eventIcon.setAttribute('icon', 'streamline:party-popper');
-    //             eventIcon.style.color = '#161b35';
-    //         } else {
-    //             eventIcon.setAttribute('icon', 'streamline:party-popper-solid');
-    //             eventIcon.style.color = '#9c001a';
-    //         }
-    //     });
-    // });
-
-
 });
 
