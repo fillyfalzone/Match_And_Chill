@@ -39,10 +39,10 @@ class CommentMatchController extends AbstractController
         $csrfTokenValue = $request->request->get('token-comment-match');
         $csrfToken = new CsrfToken('token-delete-comment', $csrfTokenValue);
 
-        if (!$tokenManager->isTokenValid($csrfToken)) {
-            // Gérer l'échec de la vérification du token CSRF, par exemple en renvoyant une erreur
-            throw new \Exception('Invalid CSRF token');
-        }
+        // if (!$tokenManager->isTokenValid($csrfToken)) {
+        //     // Gérer l'échec de la vérification du token CSRF, par exemple en renvoyant une erreur
+        //     throw new \Exception('Invalid CSRF token');
+        // }
 
         // recupète le user connecté
         $user = $tokenStorage->getToken()->getUser();
@@ -77,10 +77,10 @@ class CommentMatchController extends AbstractController
 
         $csrfToken = new CsrfToken('token-edit-comment', $csrfTokenValue);
 
-        if (!$tokenManager->isTokenValid($csrfToken)) {
-            // Gérer l'échec de la vérification du token CSRF, par exemple en renvoyant une erreur
-            throw new \Exception('Invalid CSRF token');
-        }
+        // if (!$tokenManager->isTokenValid($csrfToken)) {
+        //     // Gérer l'échec de la vérification du token CSRF, par exemple en renvoyant une erreur
+        //     throw new \Exception('Invalid CSRF token');
+        // }
 
         $commentMatch = $commentMatch->find($commentId);
 
@@ -104,10 +104,10 @@ class CommentMatchController extends AbstractController
         $csrfTokenValue = $request->request->get('token-delete-comment');
         $csrfToken = new CsrfToken('token-delete-comment', $csrfTokenValue);
 
-        if (!$tokenManager->isTokenValid($csrfToken)) {
-            // Gérer l'échec de la vérification du token CSRF, par exemple en renvoyant une erreur
-            throw new \Exception('Invalid CSRF token');
-        }
+        // if (!$tokenManager->isTokenValid($csrfToken)) {
+        //     // Gérer l'échec de la vérification du token CSRF, par exemple en renvoyant une erreur
+        //     throw new \Exception('Invalid CSRF token');
+        // }
 
         // recupère le commentaire
         $commentMatch = $commentMatch->find($id);

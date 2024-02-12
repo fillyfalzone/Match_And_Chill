@@ -53,13 +53,13 @@ class RegistrationFormType extends AbstractType
             'required' => true,
             'first_options'  => ['label' => 'Mot de passe'],
             'second_options' => ['label' => 'Confirmation du mot de passe'],
-            // 'constraints' => [
-            //     // Regex pour valider le mot de passe
-            //     new Regex([
-            //         'pattern' => '^(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()])[A-Za-z\d!@#$%^&*()]{14,}$',
-            //         'message' => 'Le mot de passe doit contenir au moins une lettre majuscule, une lettre minuscule, un chiffre, un symbone et avoir une longueur d\'au moins 14 caractères.'
-            //     ])
-            // ],
+            'constraints' => [
+                // Regex pour valider le mot de passe
+                new Regex([
+                    'pattern' => '^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{12,}$^',
+                    'message' => 'Le mot de passe doit contenir au moins une lettre majuscule, une lettre minuscule, un chiffre, un symbole et avoir une longueur d\'au moins 12 caractères.'
+                ])
+            ],
         ])
         
         ->add('avatar', FileType::class, [

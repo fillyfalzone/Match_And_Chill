@@ -20,17 +20,28 @@ use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 class SecurityController extends AbstractController
 {
     #[Route(path: '/login', name: 'app_login')]
-    public function login(AuthenticationUtils $authenticationUtils): Response
+    public function login(AuthenticationUtils $authenticationUtils, UserRepository $userManager, TokenStorageInterface $tokenStorage): Response
     {
         if ($this->getUser()) {
      
             return $this->redirectToRoute('app_matchsList');
         }
-    
+        
+        //check if user is banned
+        $user = $this->getUser();
+        if ($user) {
+            $user = $userManager->findOneBy(['email' => $user->getEmail()]);
+            if ($user->isIsBanned() == true) {
+                $this->addFlash('error', 'Votre compte a été suspendu');
+                return $this->redirectToRoute('app_logout');
+            }
+        }
+
         // get the login error if there is one
         $error = $authenticationUtils->getLastAuthenticationError();
         // last username entered by the user

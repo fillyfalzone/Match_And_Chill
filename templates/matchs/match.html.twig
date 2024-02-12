@@ -33,19 +33,29 @@
                   </div>
                 
                 <div class="match-info">
-                  <p class="match-date-time">{{ match.matchDateTime |date("d-m-Y h:i") }}</p>
-                  <div class="scoreboard">
-                    {% if match.matchResults is not same as ([]) %}
-                        <span class="score">{{ match.matchResults[1].pointsTeam1 }} </span> 
-                     {% endif %}
-    
-                    <span class="dash">-</span>
-    
-                    {% if match.matchResults is not same as ([]) %}
-                    <span class="score">{{ match.matchResults[1].pointsTeam2 }} </span> 
-                    {% endif %}
-                  </div>
-                  <p class="match-status">{{status}}</p>
+                    <p class="match-date-time">{{ match.matchDateTime |date("d-m-Y h:i") }}</p>
+                    <div class="scoreboard">
+                        {% if match.matchResults is not same as ([]) %}
+
+                            {% if match.matchResults[1].pointsTeam1 is not same as (null) %}
+                                <span class="score">{{ match.matchResults[1].pointsTeam1 }} </span>
+                            {% else %}
+                                <span class="score">{{ match.matchResults[0].pointsTeam1 }} </span>
+                            {% endif %}
+
+                            <span class="dash">-</span>
+
+                            {% if match.matchResults[1].pointsTeam2 is not same as (null) %}
+                                <span class="score">{{ match.matchResults[1].pointsTeam2 }} </span>
+                            {% else %}
+                                <span class="score">{{ match.matchResults[0].pointsTeam2 }} </span>
+                            {% endif %}
+                            
+                        {% else %}
+                            <span>Aucun résultat disponible</span>
+                        {% endif %}
+                    </div>
+                    <p class="match-status">{{status}}</p>
                 </div>
                 
                 <div class="team">
@@ -58,7 +68,7 @@
                 <ul class="match-nav-list">
                     <li class="match-nav-item"><span id="btn-discussion" href="">discussions</span></li>
                     <li class="match-nav-item"><span id="btn-classement" href="">classement</span></li>
-                    <li class="match-nav-item"><span id="btn-events" href="">évènements</span></li>
+                    {# <li class="match-nav-item"><span id="btn-events" href="">évènements</span></li> #}
                 </ul>
             </nav>
             {# ----------- card-body ------------------------------ #}
@@ -105,22 +115,24 @@
                                         <div class="content-option">
                                             <span class="time"> {{ comment.creationDate|date('d-m-Y H:i') }} </span>
 
-                                            {# Edit comment #}
-                                            <span class="edit" data-comment-id="{{ comment.id }}" data-comment-text="{{ comment.text|e('html_attr') }}" ><iconify-icon title="éditer" icon="tabler:edit" style="color: rgb(197, 197, 0);" height="30" width="30"></iconify-icon></span>
-                                            {# Deleted comment #}
+                                            {% if app.user == comment.user %}
+                                                {# Edit comment #}
+                                                <span class="edit" data-comment-id="{{ comment.id }}" data-comment-text="{{ comment.text|e('html_attr') }}" ><iconify-icon title="éditer" icon="tabler:edit" style="color: rgb(197, 197, 0);" height="30" width="30"></iconify-icon></span>
+                                                {# Deleted comment #}
 
-                                            <form action="{{ path('commentMatch_delete', {'matchId': matchId, 'id': comment.id}) }}" method="post" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer ce commentaire ?');">
-                                               <!-- Champ caché pour le token CSRF -->
-                                                <input type="hidden"  name="token-delete-comment" value="{{ tokenDelete }}">
-                                                <button type="submit" class="delete">
-                                                    <iconify-icon title="supprimer" icon="material-symbols:delete" style="color:  #9c001a;" height="30" width="30"></iconify-icon>
-                                                </button>
-                                            </form>
+                                                <form action="{{ path('commentMatch_delete', {'matchId': matchId, 'id': comment.id}) }}" method="post" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer ce commentaire ?');">
+                                                <!-- Champ caché pour le token CSRF -->
+                                                    <input type="hidden"  name="token-delete-comment" value="{{ tokenDelete }}">
+                                                    <button type="submit" class="delete">
+                                                        <iconify-icon title="supprimer" icon="material-symbols:delete" style="color:  #9c001a;" height="30" width="30"></iconify-icon>
+                                                    </button>
+                                                </form>
+                                            {% endif %}
                                             {# Commentaire Signaler #}
-                                            <form action="" method="post" id="signal-id" class="signal-form">
+                                            {# <form action="" method="post" id="signal-id" class="signal-form">
                                                 <input type="checkbox" name="userSignaled" id="report" value=" {{comment.id}} ">
                                                 <label for="report">Signaler</label>
-                                            </form>
+                                            </form> #}
                                         </div>
                                     </div>
                                 </div>

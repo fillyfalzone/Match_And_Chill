@@ -49,7 +49,7 @@
                     
                     <td class="fw-bold fs-6">
                         {% if user.isbanned %}
-                            <a href="" class="btn btn-success">débloquer</a>
+                            <a href=" {{path('admin_unban_user', {'id': user.id})}} " class="btn btn-success">débloquer</a>
                             {% else %}
                             <a href=" {{path('admin_ban_user', {'id': user.id})}} " class="btn btn-primary px-2 py-1 fw-bold text-light">Bannir</a>
                             

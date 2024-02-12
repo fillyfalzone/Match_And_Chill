@@ -153,14 +153,14 @@ class EventsController extends AbstractController
 
     // Show event
     #[IsGranted('ROLE_USER', message: 'Vous devez être connecté pour afficher les détails d\'un événement')]
-    #[Route('/events/show/{idInput}', name: 'app_events_show')]
-    public function show(OpenLigaDBClient $httpClient, EventRepository $eventRepository, TokenStorageInterface $tokenStorage, $idInput ): Response
+    #[Route('/events/show/{id}', name: 'app_events_show')]
+    public function show(OpenLigaDBClient $httpClient, EventRepository $eventRepository, TokenStorageInterface $tokenStorage, $id ): Response
     {   
 
         // filtrer l'input
-        $id = filter_var($idInput, FILTER_VALIDATE_INT);
+        $idFilter = filter_var($id, FILTER_VALIDATE_INT);
         // Récupérer l'événement
-        $event = $eventRepository->find($id);
+        $event = $eventRepository->find($idFilter);
         // Récupérer l'utilisateur connecté
         $user = $tokenStorage->getToken()->getUser();
 
