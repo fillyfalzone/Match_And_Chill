@@ -31,20 +31,21 @@
       
         <div class="d-flex justify-content-between gap-2 flex-wrap mb-4">
             <select id="sort-by-team" class="form-select" style="width: 32%;">
-                <option selected>Trier par équipe</option>
+                <option  selected>Trier par équipe</option>
                 {# on boucle sur le classement #}
                 {% for team in table %}
                     <option value="{{ team.teamInfoId }}">{{ team.shortName }}</option>
                 {% endfor %}
             </select>
             <select id="sort-by-status" class="form-select" style="width: 32%;">
-                <option selected disabled>Trier par statut</option>
+                <option selected >Trier par statut</option>
                 <option value="1">Terminé</option>
                 <option value="0">Ouvert</option> 
             </select>
         </div>
      
         <div id="events-container">
+         
             {% for event in eventsSort %}
                 <!-- Début d'un événement -->
                 <div class="card-event mb-4">

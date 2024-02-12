@@ -117,18 +117,52 @@ window.document.addEventListener('DOMContentLoaded', function() {
         const teamId = sortByTeam.value;
         const status = sortByStatus.value;
 
-        fetch(`/events?teamId=${teamId}&status=${status}`)
-            .then(response => response.text())
-            .then(html => {
-                console.log(html);
-                eventsContainer.innerHTML = '';
+        fetch(`/events/sorted/${teamId}/${status}`)
+        .then(response => response.json())
+        .then(eventsSort => {
+            eventsContainer.innerHTML = ''; // Nettoie le conteneur
+            
+            const eventsHtml = eventsSort.map(event => {
+                // Gestion de l'affichage du statut et de la disponibilité
+                let statusHtml = event.usersParticipate.length === event.numberOfPlaces ?
+                    `<p class="card-text small mb-1">Statut : <span class="bg-danger fw-bold py-1 px-2 text-light rounded">complet</span></p>` :
+                    `<p class="card-text small mb-1">
+                        Statut : <span class="bg-success fw-bold py-1 px-2 text-light rounded">ouvert</span>
+                    </p>
+                    <p class="card-text small mb-1">
+                        Disponibilité : ${event.usersParticipate.length} / ${event.numberOfPlaces}
+                    </p>`;
 
-                eventsContainer.innerHTML = html;
-            })
-            .catch(error => {
-                console.error('Error:', error);
-            });
+                // Génère le HTML pour chaque événement
+                return `
+                    <div class="card-event mb-4">
+                        <div class="card-body">
+                            <div class="row align-items-center">
+                                <div class="col-auto">
+                                    <img src="/uploads/avatars/${event.user.avatar}" alt="avatar" class="rounded-circle mb-2" width="50" height="50">
+                                    <p class="text-center mb-0">${event.user.pseudo}</p>
+                                </div>
+                                <div class="card-detail col">
+                                    <h5 class="card-title fs-6"><a href="/events/show/${event.id}">${event.name}</a></h5>
+                                    <p class="card-text small mb-1">Débute le ${new Date(event.startDate).toLocaleDateString()}</p>
+                                    ${statusHtml}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join(''); // Joint tous les éléments HTML en une seule chaîne
+
+            eventsContainer.innerHTML = eventsHtml; // Injecte le HTML généré dans le conteneur
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
+
     }
+
+    // Afficher les évènements au chargement de la page
+    fetchSortedEvents();
 
     // Attacher l'événement de changement aux sélecteurs
     if (sortByTeam && sortByStatus) {

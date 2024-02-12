@@ -7,6 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 use App\Repository\EventRepository;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 #[ORM\Entity(repositoryClass: EventRepository::class)]
@@ -15,24 +16,31 @@ class Event
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(groups: ['events.show'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 100)]
+    #[Groups(groups: ['events.show'])]
     private ?string $name = null;
-
+    
     #[ORM\Column(type: Types::TEXT)]
+    #[Groups(groups: ['events.show'])]
     private ?string $description = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
+    #[Groups(groups: ['events.show'])]
     private ?\DateTimeInterface $creationDate = null;
 
     #[ORM\Column]
+    #[Groups(groups: ['events.show'])]
     private ?int $numberOfPlaces = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
+    #[Groups(groups: ['events.show'])]
     private ?\DateTimeInterface $startDate = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
+    #[Groups(groups: ['events.show'])]
     private ?\DateTimeInterface $endDate = null;
 
     #[ORM\Column(length: 100)]
@@ -49,6 +57,7 @@ class Event
     private ?CategoryEvent $category = null;
 
     #[ORM\ManyToOne(inversedBy: 'events')]
+    #[Groups(groups: ['events.show'])]
     #[ORM\JoinColumn(nullable: false)]
     private ?User $user = null;
 
@@ -61,6 +70,7 @@ class Event
 
     #[ORM\ManyToMany(targetEntity: User::class, inversedBy: 'paticipateEvents')]
     #[ORM\JoinTable(name:'participate',)]
+    #[Groups(groups: ['events.show'])]
     private Collection $usersParticipate;
 
     #[ORM\OneToMany(mappedBy: 'event', targetEntity: Picture::class)]
@@ -70,6 +80,7 @@ class Event
     private Collection $commentEvents;
 
     #[ORM\Column(length: 10)]
+    #[Groups(groups: ['events.show'])]
     private ?string $matchId = null;
 
     #[ORM\Column(length: 255)]

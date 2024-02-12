@@ -79,6 +79,14 @@
                                         <span>contact</span>
                                     </a>
                                 </li>
+                                {% if is_granted("ROLE_ADMIN") %}
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="{{ path('app_admin') }}">
+                                            <iconify-icon class="icon" icon="jam:write-f" width="20" height="20"></iconify-icon>
+                                            <span>admin</span>
+                                        </a>
+                                    </li>
+                                {% endif %}
                             </ul>
                         </div>
                         <div class="navbar bg-body-tertiary">

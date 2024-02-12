@@ -25,76 +25,60 @@ class EventsController extends AbstractController
         // Récupérer le tableau de la Bundesliga
         $table = $httpClient->getTable();
 
-        // Récupération des paramètres de filtrage depuis la requête.
-        $teamIdInput = $request->query->get('teamId');
-        $statusInput = $request->query->get('status', false); // 'false' indique aucun filtre de statut par défaut.
+        $events = $eventRepository->findAll();
+        $eventsSort = [];
+
+        return $this->render('events/events.html.twig', [
+            'table' => $table,
+            'eventsSort' => $eventsSort,
+            'events' => $events,
+        ]);
+        
+    }
+
+    // Trier les événements 
+    #[Route('/events/sorted/{teamIdInput}/{statusInput}', name: 'app_events_sorted')]
+    public function eventsSorted(EventRepository $eventRepository, OpenLigaDBClient $httpClient, $teamIdInput, $statusInput)
+    {
 
         // filtrer les inputs
         $teamId = filter_var($teamIdInput, FILTER_VALIDATE_INT);
-        $status = filter_var($statusInput, FILTER_VALIDATE_BOOLEAN);
-
+        $status = filter_var($statusInput, FILTER_VALIDATE_INT);
+    
         // Récupère tous les événements de la base de données, triés par date de commencement.
         $events = $eventRepository->findBy([], ['startDate' => 'ASC']);
         
         // Initialisation du tableau qui va contenir les événements filtrés.
-        $eventsSort = [];
+        $eventsSorted = [];
 
-        // Boucle sur chaque événement pour déterminer s'il correspond aux critères de filtrage.
-        foreach ($events as $event) {
-            // Initialisation de la variable pour décider de l'inclusion de l'événement.
-         
-
-            // Chargement des données du match de l'API externe si un ID d'équipe est spécifié.
-            if ($teamId) {
+       // Si ni teamId ni status ne sont définis, retourner tous les événements.
+        if ($teamId === false && $status === false) {
+            $eventsSorted = $events;
+        } else {
+            // Boucle sur chaque événement pour déterminer s'il correspond aux critères de filtrage.
+            foreach ($events as $event) {
                 $match = $httpClient->getMatchById($event->getMatchId());
 
                 // Utilisation de l'opérateur de coalescence nulle pour éviter l'erreur sur les clés inexistantes.
                 $team1Id = $match['team1']['teamId'] ?? null;
                 $team2Id = $match['team2']['teamId'] ?? null;
-        
                 // Vérification si l'événement correspond à l'équipe spécifiée.
                 $isTeamMatch = ($team1Id == $teamId || $team2Id == $teamId);
-            } else {
-                // Si aucun ID d'équipe n'est spécifié, l'événement correspond par défaut à ce critère.
-                $isTeamMatch = true;
-            }
 
-            // Vérification si l'événement correspond au statut spécifié.
-            $isStatusMatch = $status !== false ? $event->isIsLocked() == $status : true;
-
-            // Inclusion de l'événement si et seulement si il correspond aux deux critères.
-            if ($isTeamMatch && $isStatusMatch) {
-                $eventsSort[] = $event;
+                if ($isTeamMatch && $status === false) {
+                    $eventsSorted[] = $event;
+                } elseif ($status !== false && $teamId === false) {
+                    if ($event->isIsLocked() == $status) {
+                        $eventsSorted[] = $event;
+                    }
+                } elseif ($isTeamMatch && $event->isIsLocked() == $status) {
+                    $eventsSorted[] = $event;
+                }
             }
         }
+            
+       return $this->json($eventsSorted, 200, [], ['groups' => 'events.show']);
         
-        return $this->render('events/events.html.twig', [
-            'table' => $table,
-            'eventsSort' => $eventsSort,
-        ]);
-    }
-
-    // list events sorted by date or status
-    #[Route('/events/sorted', name: 'app_events_sorted', methods: ['POST'])]
-    public function sorted(EventRepository $eventRepository, OpenLigaDBClient $httpClient, Request $request): JsonResponse
-    {   
-        // Décodage des données JSON envoyées dans la requête
-        $data = json_decode($request->getContent(), true);
-
-        $teamId = $data['teamId'] ?? null;
-
-        // On recupère les matchs d'une équipe
-        $matchs = $httpClient->getMatchByTeamId($data['teamId']);
-
-        if($teamId){
-            // On recupère les événements associés à ces matchs
-            foreach ($matchs as $match) {
-                $event = $eventRepository->findOneBy(['matchId' => $teamId]);
-                $events[] = $event;
-            }
-        }
-
-        return new JsonResponse('events', $events);
     }
 
     // Récupérer l'id de l'équipe
@@ -132,9 +116,13 @@ class EventsController extends AbstractController
             $event->setUser($tokenStorage->getToken()->getUser());
             $event->setCreationDate(new \DateTime());
             $event->setIsLocked("0");
+             // On inscrit le craeteur de l'événement
+             $user = $tokenStorage->getToken()->getUser();
+             $event->addUserParticipate($user);
 
             // Enregistrer l'événement
             $entityManager->persist($event);
+
             $entityManager->flush();
 
             // Rediriger vers la page de l'événement
@@ -165,9 +153,12 @@ class EventsController extends AbstractController
 
     // Show event
     #[IsGranted('ROLE_USER', message: 'Vous devez être connecté pour afficher les détails d\'un événement')]
-    #[Route('/events/show/{id}', name: 'app_events_show')]
-    public function show(OpenLigaDBClient $httpClient, EventRepository $eventRepository, TokenStorageInterface $tokenStorage, int $id ): Response
+    #[Route('/events/show/{idInput}', name: 'app_events_show')]
+    public function show(OpenLigaDBClient $httpClient, EventRepository $eventRepository, TokenStorageInterface $tokenStorage, $idInput ): Response
     {   
+
+        // filtrer l'input
+        $id = filter_var($idInput, FILTER_VALIDATE_INT);
         // Récupérer l'événement
         $event = $eventRepository->find($id);
         // Récupérer l'utilisateur connecté
@@ -257,48 +248,5 @@ class EventsController extends AbstractController
         return $this->redirectToRoute('app_events_show', ['id' => $id]);
     }
 
-    // Trier les événements 
-    #[Route('/events/sorted', name: 'app_events_sorted')]
-    public function eventsSorted(Request $request, EventRepository $eventRepository, OpenLigaDBClient $httpClient): Response
-    {
-        // Récupération des paramètres de filtrage depuis la requête.
-        $teamIdInput = $request->query->get('teamId');
-        $statusInput = $request->query->get('status', false); // 'false' indique aucun filtre de statut par défaut.
-
-        // filtrer les inputs
-        $teamId = filter_var($teamIdInput, FILTER_VALIDATE_INT);
-        $status = filter_var($statusInput, FILTER_VALIDATE_BOOLEAN);
-
-        // Récupère tous les événements de la base de données, triés par date de commencement.
-        $events = $eventRepository->findBy([], ['startDate' => 'ASC']);
-
-        // Initialisation du tableau qui va contenir les événements filtrés.
-        $eventsSort = [];
-
-        // Boucle sur chaque événement pour déterminer s'il correspond aux critères de filtrage.
-        foreach ($events as $event) {
-            // Chargement des données du match de l'API externe si un ID d'équipe est spécifié.
-            if ($teamId) {
-                $match = $httpClient->getMatchByTeamId($event->getMatchId());
-                // Vérification si l'événement correspond à l'équipe spécifiée.
-                $isTeamMatch = ($match['team1']['teamId'] == $teamId || $match['team2']['teamId'] == $teamId);
-            } else {
-                // Si aucun ID d'équipe n'est spécifié, l'événement correspond par défaut à ce critère.
-                $isTeamMatch = true;
-            }
-
-            // Vérification si l'événement correspond au statut spécifié.
-            $isStatusMatch = $status !== false ? $event->isIsLocked() == $status : true;
-
-            // Inclusion de l'événement si et seulement si il correspond aux deux critères.
-            if ($isTeamMatch && $isStatusMatch) {
-                $eventsSort[] = $event;
-            }
-        }
-
-        // Affichage de la page des événements
-        return $this->render('events/eventSorted.html.twig', [
-            'eventsSorted' => $eventsSort,
-        ]);
-    }
+    
 }

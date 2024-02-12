@@ -13,10 +13,12 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInt
 class ProfilController extends AbstractController
 {
     #[Route('/profil', name: 'app_profil')]
-    public function index(): Response
+    public function index(TokenStorageInterface $tokenStorage): Response
     {   
-        return $this->render('profil/index.html.twig', [
-            'controller_name' => 'ProfilController',
+        $user = $tokenStorage->getToken()->getUser();
+    
+        return $this->render('profil/myAccount.html.twig', [
+            'user' => $user,
         ]);
     }
 
